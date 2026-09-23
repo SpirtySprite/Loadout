@@ -1,0 +1,54 @@
+name: Loadout
+version: '${project.version}'
+main: com.kirugoldzzzz.loadout.Loadout
+api-version: '1.21'
+folia-supported: true
+author: KiruGoldzZz
+description: "Kits avec progression, cérémonies et éditeur en jeu pour Paper et Folia"
+softdepend: [PlaceholderAPI, Vault]
+commands:
+  kit:
+    description: Récupérer, prévisualiser, offrir et administrer les kits
+    usage: /kit [nom|apercu|offrir|admin]
+    aliases: [kits]
+permissions:
+  loadout.kit.use:
+    description: Utiliser /kit, ouvrir le menu et récupérer les kits
+    default: true
+  loadout.kit.gift:
+    description: Offrir un kit à un autre joueur
+    default: true
+  loadout.admin.kits:
+    description: Créer, éditer, donner et remettre à zéro les kits
+    default: op
+    children:
+      loadout.kit.use: true
+  loadout.kit.bypass:
+    description: Ignorer recharge, prix, conditions et permissions des kits
+    default: false
+    children:
+      loadout.kit.bypass.cooldown: true
+      loadout.kit.bypass.cost: true
+      loadout.kit.bypass.requirements: true
+      loadout.kit.bypass.permission: true
+  loadout.kit.bypass.cooldown:
+    description: Ignorer la recharge et les remises à zéro des kits
+    default: false
+  loadout.kit.bypass.cost:
+    description: Récupérer les kits payants sans payer
+    default: false
+  loadout.kit.bypass.requirements:
+    description: Ignorer les conditions des kits
+    default: false
+  loadout.kit.bypass.permission:
+    description: Accéder aux kits réservés
+    default: false
+  loadout.kit.vip:
+    description: Accès au kit VIP d'exemple
+    default: false
+  loadout.kit.legende:
+    description: Accès au kit Légende d'exemple
+    default: false
+  loadout.alerts.kits:
+    description: Alertes de configuration des kits non enregistrée
+    default: op
