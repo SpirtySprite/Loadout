@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.api.event.KitClaimEvent;
+import com.kirugoldzzzz.loadout.api.event.KitClaimedEvent;
 import com.kirugoldzzzz.loadout.common.text.Tr;
 
 import com.kirugoldzzzz.loadout.common.effect.Particles;
@@ -67,6 +69,10 @@ public final class KitService {
             this.charge = charge;
             this.record = record;
             this.feedback = feedback;
+        }
+
+        public String id() {
+            return name().toLowerCase(java.util.Locale.ROOT).replace('_', '-');
         }
     }
 
@@ -313,6 +319,9 @@ public final class KitService {
             UUID owner = viewer.owner(kit);
             KitCost cost = cost(kit, now);
             boolean charge = source.charge && !viewer.has(KitViewer.BYPASS_COST) && !cost.free();
+            if (!announce(player, kit, source, charge ? cost.money() : 0.0D)) {
+                return Outcome.of(Result.REFUSED, kit, null, "cancelled");
+            }
             boolean record = source.record || (source == Source.VOUCHER && !kit.options().voucherIgnoresLimits());
             KitClaim before = repository.find(owner, kit.id());
             KitMastery mastery = catalog.masteryOf(kit);
@@ -380,6 +389,10 @@ public final class KitService {
             if (roulette) {
                 ItemReturn.park(id, rouletteItems(kit, pulls, settings));
             }
+            if (Bukkit.getServer() != null) {
+                Bukkit.getPluginManager().callEvent(new KitClaimedEvent(player, kit.id(), source.id(),
+                        delivery.items(), levelAfter[0]));
+            }
             try {
                 after(player, kit, source, delivery, charge, cost, bonus, streak, levelBefore, levelAfter[0], mastery,
                         roulette);
@@ -399,6 +412,15 @@ public final class KitService {
         } finally {
             claiming.remove(id);
         }
+    }
+
+    private static boolean announce(Player player, Kit kit, Source source, double price) {
+        if (Bukkit.getServer() == null) {
+            return true;
+        }
+        KitClaimEvent event = new KitClaimEvent(player, kit.id(), source.id(), price);
+        Bukkit.getPluginManager().callEvent(event);
+        return !event.isCancelled();
     }
 
     List<ItemStack> rouletteItems(Kit kit, List<KitPool.Pull> pulls, KitSettings settings) {
