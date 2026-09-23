@@ -1,7 +1,6 @@
 package com.kirugoldzzzz.loadout;
 
 import com.kirugoldzzzz.loadout.common.text.Tr;
-
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

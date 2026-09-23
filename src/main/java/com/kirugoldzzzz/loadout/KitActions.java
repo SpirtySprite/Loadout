@@ -1,16 +1,14 @@
 package com.kirugoldzzzz.loadout;
 
-import com.kirugoldzzzz.loadout.common.text.Tr;
-
+import com.kirugoldzzzz.loadout.common.gui.ChatPrompts;
 import com.kirugoldzzzz.loadout.common.gui.ConfirmMenu;
 import com.kirugoldzzzz.loadout.common.gui.Guis;
-import com.kirugoldzzzz.loadout.common.gui.ChatPrompts;
 import com.kirugoldzzzz.loadout.common.text.Card;
 import com.kirugoldzzzz.loadout.common.text.Messages;
 import com.kirugoldzzzz.loadout.common.text.Mini;
 import com.kirugoldzzzz.loadout.common.text.Numbers;
 import com.kirugoldzzzz.loadout.common.text.Palette;
-import com.kirugoldzzzz.loadout.common.text.Numbers;
+import com.kirugoldzzzz.loadout.common.text.Tr;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,8 +17,8 @@ import org.bukkit.inventory.ItemStack;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public final class KitActions {

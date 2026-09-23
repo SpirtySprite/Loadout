@@ -1,7 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
-import com.kirugoldzzzz.loadout.common.gui.Guis;
 import com.kirugoldzzzz.loadout.common.gui.ChatPrompts;
+import com.kirugoldzzzz.loadout.common.gui.Guis;
 import com.kirugoldzzzz.loadout.common.text.Messages;
 import com.kirugoldzzzz.loadout.common.text.Mini;
 import com.kirugoldzzzz.loadout.common.text.Numbers;

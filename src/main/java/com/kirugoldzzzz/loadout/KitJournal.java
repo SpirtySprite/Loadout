@@ -1,9 +1,8 @@
 package com.kirugoldzzzz.loadout;
 
-import com.kirugoldzzzz.loadout.common.text.Tr;
-
 import com.kirugoldzzzz.loadout.common.scheduler.Scheduling;
 import com.kirugoldzzzz.loadout.common.storage.Database;
+import com.kirugoldzzzz.loadout.common.text.Tr;
 import org.bukkit.entity.Player;
 
 import java.sql.PreparedStatement;

@@ -1,11 +1,10 @@
 package com.kirugoldzzzz.loadout;
 
 import com.kirugoldzzzz.loadout.common.text.Tr;
-
 import org.bukkit.Color;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.inventory.ItemStack;
 
 public record KitShow(int level, String name, Color primary, Color accent, Material pedestalMaterial, int items) {
 

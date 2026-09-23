@@ -2,8 +2,6 @@ package com.kirugoldzzzz.loadout;
 
 import com.kirugoldzzzz.loadout.api.event.KitClaimEvent;
 import com.kirugoldzzzz.loadout.api.event.KitClaimedEvent;
-import com.kirugoldzzzz.loadout.common.text.Tr;
-
 import com.kirugoldzzzz.loadout.common.effect.Particles;
 import com.kirugoldzzzz.loadout.common.item.Inventories;
 import com.kirugoldzzzz.loadout.common.item.ItemReturn;
@@ -13,7 +11,7 @@ import com.kirugoldzzzz.loadout.common.scheduler.Scheduling;
 import com.kirugoldzzzz.loadout.common.text.Messages;
 import com.kirugoldzzzz.loadout.common.text.Mini;
 import com.kirugoldzzzz.loadout.common.text.Numbers;
-import com.kirugoldzzzz.loadout.Wallet;
+import com.kirugoldzzzz.loadout.common.text.Tr;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;

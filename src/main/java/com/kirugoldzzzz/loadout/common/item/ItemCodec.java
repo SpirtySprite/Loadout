@@ -1,7 +1,6 @@
 package com.kirugoldzzzz.loadout.common.item;
 
 import com.kirugoldzzzz.loadout.common.text.Tr;
-
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;

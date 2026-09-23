@@ -1,13 +1,11 @@
 package com.kirugoldzzzz.loadout;
 
-import com.kirugoldzzzz.loadout.common.text.Tr;
-
 import com.kirugoldzzzz.loadout.common.command.NexusCommand;
 import com.kirugoldzzzz.loadout.common.scheduler.Scheduling;
 import com.kirugoldzzzz.loadout.common.text.Messages;
 import com.kirugoldzzzz.loadout.common.text.Mini;
 import com.kirugoldzzzz.loadout.common.text.Numbers;
-import com.kirugoldzzzz.loadout.Wallet;
+import com.kirugoldzzzz.loadout.common.text.Tr;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

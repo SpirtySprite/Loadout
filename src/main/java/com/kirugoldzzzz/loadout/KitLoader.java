@@ -1,8 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
-import com.kirugoldzzzz.loadout.common.text.Tr;
-
 import com.kirugoldzzzz.loadout.common.item.ItemSpec;
+import com.kirugoldzzzz.loadout.common.text.Tr;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;

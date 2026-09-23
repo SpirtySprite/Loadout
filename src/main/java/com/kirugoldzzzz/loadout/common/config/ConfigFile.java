@@ -1,9 +1,8 @@
 package com.kirugoldzzzz.loadout.common.config;
 
-import com.kirugoldzzzz.loadout.common.text.Tr;
-
 import com.kirugoldzzzz.loadout.common.log.LogTopic;
 import com.kirugoldzzzz.loadout.common.log.NexusLog;
+import com.kirugoldzzzz.loadout.common.text.Tr;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;

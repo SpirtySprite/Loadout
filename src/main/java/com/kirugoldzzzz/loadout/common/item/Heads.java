@@ -1,14 +1,13 @@
 package com.kirugoldzzzz.loadout.common.item;
 
 import com.kirugoldzzzz.loadout.common.scheduler.Scheduling;
+import com.kirugoldzzzz.loadout.common.util.LruCache;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-
-import com.kirugoldzzzz.loadout.common.util.LruCache;
 
 import java.util.Set;
 import java.util.UUID;

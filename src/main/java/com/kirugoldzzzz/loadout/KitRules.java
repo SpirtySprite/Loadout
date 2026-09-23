@@ -1,8 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
-import com.kirugoldzzzz.loadout.common.text.Tr;
-
 import com.kirugoldzzzz.loadout.common.text.Numbers;
+import com.kirugoldzzzz.loadout.common.text.Tr;
 
 import java.time.ZoneId;
 import java.util.ArrayList;

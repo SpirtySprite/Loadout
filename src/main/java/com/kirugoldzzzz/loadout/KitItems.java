@@ -1,9 +1,8 @@
 package com.kirugoldzzzz.loadout;
 
-import com.kirugoldzzzz.loadout.common.text.Tr;
-
 import com.foliagui.builder.item.ItemBuilder;
 import com.kirugoldzzzz.loadout.common.text.Mini;
+import com.kirugoldzzzz.loadout.common.text.Tr;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;

@@ -1,15 +1,14 @@
 package com.kirugoldzzzz.loadout;
 
-import com.kirugoldzzzz.loadout.common.text.Tr;
-
 import com.foliagui.animation.GuiAnimation;
 import com.foliagui.gui.Gui;
 import com.foliagui.item.GuiItem;
-import net.kyori.adventure.text.Component;
 import com.kirugoldzzzz.loadout.common.gui.Guis;
 import com.kirugoldzzzz.loadout.common.text.Card;
 import com.kirugoldzzzz.loadout.common.text.Mini;
 import com.kirugoldzzzz.loadout.common.text.Palette;
+import com.kirugoldzzzz.loadout.common.text.Tr;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

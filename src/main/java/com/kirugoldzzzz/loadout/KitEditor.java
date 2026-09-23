@@ -1,7 +1,5 @@
 package com.kirugoldzzzz.loadout;
 
-import com.kirugoldzzzz.loadout.common.text.Tr;
-
 import com.kirugoldzzzz.loadout.common.config.ConfigFile;
 import com.kirugoldzzzz.loadout.common.config.Sections;
 import com.kirugoldzzzz.loadout.common.item.ItemSpec;
@@ -10,6 +8,7 @@ import com.kirugoldzzzz.loadout.common.log.NexusLog;
 import com.kirugoldzzzz.loadout.common.log.StaffAlert;
 import com.kirugoldzzzz.loadout.common.text.Card;
 import com.kirugoldzzzz.loadout.common.text.Numbers;
+import com.kirugoldzzzz.loadout.common.text.Tr;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;

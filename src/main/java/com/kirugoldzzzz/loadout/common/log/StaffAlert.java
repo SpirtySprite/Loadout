@@ -1,12 +1,11 @@
 package com.kirugoldzzzz.loadout.common.log;
 
-import com.kirugoldzzzz.loadout.common.text.Tr;
-
 import com.kirugoldzzzz.loadout.common.text.Card;
 import com.kirugoldzzzz.loadout.common.text.Messages;
 import com.kirugoldzzzz.loadout.common.text.Mini;
 import com.kirugoldzzzz.loadout.common.text.Numbers;
 import com.kirugoldzzzz.loadout.common.text.Palette;
+import com.kirugoldzzzz.loadout.common.text.Tr;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.event.ClickEvent;

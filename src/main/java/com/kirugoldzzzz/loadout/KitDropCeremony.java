@@ -1,10 +1,9 @@
 package com.kirugoldzzzz.loadout;
 
-import com.kirugoldzzzz.loadout.common.text.Tr;
-
 import com.kirugoldzzzz.loadout.common.anim.Ease;
 import com.kirugoldzzzz.loadout.common.text.Card;
 import com.kirugoldzzzz.loadout.common.text.Palette;
+import com.kirugoldzzzz.loadout.common.text.Tr;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 

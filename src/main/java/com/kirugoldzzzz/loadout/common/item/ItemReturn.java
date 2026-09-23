@@ -1,11 +1,10 @@
 package com.kirugoldzzzz.loadout.common.item;
 
-import com.kirugoldzzzz.loadout.common.text.Tr;
-
 import com.kirugoldzzzz.loadout.common.log.LogTopic;
 import com.kirugoldzzzz.loadout.common.log.NexusLog;
 import com.kirugoldzzzz.loadout.common.scheduler.Scheduling;
 import com.kirugoldzzzz.loadout.common.storage.RecoveryRepository;
+import com.kirugoldzzzz.loadout.common.text.Tr;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

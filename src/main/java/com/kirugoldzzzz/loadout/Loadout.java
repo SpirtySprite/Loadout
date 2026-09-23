@@ -1,9 +1,9 @@
 package com.kirugoldzzzz.loadout;
 
 import com.foliagui.FoliaGUI;
+import com.kirugoldzzzz.loadout.api.LoadoutApi;
 import com.kirugoldzzzz.loadout.common.command.NexusCommand;
 import com.kirugoldzzzz.loadout.common.config.ConfigFile;
-import com.kirugoldzzzz.loadout.api.LoadoutApi;
 import com.kirugoldzzzz.loadout.common.gui.Guis;
 import com.kirugoldzzzz.loadout.common.platform.Telemetry;
 import com.kirugoldzzzz.loadout.common.platform.UpdateChecker;

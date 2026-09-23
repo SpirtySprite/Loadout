@@ -1,7 +1,6 @@
 package com.kirugoldzzzz.loadout;
 
 import com.kirugoldzzzz.loadout.common.text.Tr;
-
 import org.bukkit.Material;
 
 import java.time.ZoneId;

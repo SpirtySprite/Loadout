@@ -1,10 +1,9 @@
 package com.kirugoldzzzz.loadout;
 
-import com.kirugoldzzzz.loadout.common.text.Tr;
-
 import com.kirugoldzzzz.loadout.common.log.LogTopic;
 import com.kirugoldzzzz.loadout.common.log.NexusLog;
 import com.kirugoldzzzz.loadout.common.scheduler.Scheduling;
+import com.kirugoldzzzz.loadout.common.text.Tr;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

@@ -1,12 +1,11 @@
 package com.kirugoldzzzz.loadout;
 
-import com.kirugoldzzzz.loadout.common.text.Tr;
-
 import com.kirugoldzzzz.loadout.common.effect.Particles;
 import com.kirugoldzzzz.loadout.common.log.LogTopic;
 import com.kirugoldzzzz.loadout.common.log.NexusLog;
 import com.kirugoldzzzz.loadout.common.scheduler.Scheduling;
 import com.kirugoldzzzz.loadout.common.text.Mini;
+import com.kirugoldzzzz.loadout.common.text.Tr;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
