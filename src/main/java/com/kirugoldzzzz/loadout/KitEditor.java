@@ -9,6 +9,7 @@ import com.kirugoldzzzz.loadout.common.log.StaffAlert;
 import com.kirugoldzzzz.loadout.common.text.Card;
 import com.kirugoldzzzz.loadout.common.text.Numbers;
 import com.kirugoldzzzz.loadout.common.text.Tr;
+import com.kirugoldzzzz.loadout.importer.Imported;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,11 +20,13 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public final class KitEditor {
@@ -157,6 +160,83 @@ public final class KitEditor {
         }
         apply(id, Tr.t("création"));
         return id;
+    }
+
+    public Map<String, String> importKits(List<Imported.Kit> imported, Function<Imported.Item, ItemStack> items,
+                                          List<String> warnings) {
+        Map<String, String> written = new LinkedHashMap<>();
+        for (Imported.Kit kit : imported) {
+            String id = slug(kit.id());
+            if (id.isEmpty() || kits().contains(id)) {
+                warnings.add(kit.id() + Tr.t(" : un kit porte déjà cet identifiant, il est ignoré"));
+                continue;
+            }
+            ConfigurationSection section = kits().createSection(id);
+            section.set("name", kit.name());
+            section.set("order", kits().getKeys(false).size());
+            if (kit.once()) {
+                section.set("max-uses", 1);
+            } else if (kit.cooldownSeconds() > 0L) {
+                section.set("cooldown", kit.cooldownSeconds() + "s");
+            }
+            if (kit.price() > 0.0D) {
+                section.set("cost.money", Numbers.round(kit.price()));
+            }
+            ConfigurationSection contents = section.createSection("contents");
+            Material icon = Material.CHEST;
+            int next = 0;
+            for (Imported.Item entry : kit.items()) {
+                ItemStack item = items.apply(entry);
+                int slot = armourSlot(item.getType());
+                if (slot < 0 || contents.contains(String.valueOf(slot))) {
+                    while (next < KitSlots.SIZE - 5 && contents.contains(String.valueOf(next))) {
+                        next++;
+                    }
+                    if (next >= KitSlots.SIZE - 5) {
+                        warnings.add(id + Tr.t(" : inventaire plein, objet ignoré ") + item.getType().name());
+                        continue;
+                    }
+                    slot = next;
+                }
+                if (icon == Material.CHEST) {
+                    icon = item.getType();
+                }
+                ItemSpec.write(contents.createSection(String.valueOf(slot)), item);
+            }
+            section.set("icon.material", icon.name());
+            if (kit.money() > 0.0D) {
+                section.set("rewards.money", Numbers.round(kit.money()));
+            }
+            if (!kit.commands().isEmpty()) {
+                section.set("rewards.commands", new ArrayList<>(kit.commands()));
+            }
+            prune(section);
+            written.put(kit.id(), id);
+        }
+        if (!written.isEmpty()) {
+            apply(null, Tr.t("import de ") + String.join(", ", written.values()));
+        }
+        return written;
+    }
+
+    static int armourSlot(Material material) {
+        String name = material.name();
+        if (name.endsWith("_HELMET")) {
+            return 39;
+        }
+        if (name.endsWith("_CHESTPLATE") || material == Material.ELYTRA) {
+            return 38;
+        }
+        if (name.endsWith("_LEGGINGS")) {
+            return 37;
+        }
+        if (name.endsWith("_BOOTS")) {
+            return 36;
+        }
+        if (material == Material.SHIELD) {
+            return 40;
+        }
+        return -1;
     }
 
     public String duplicate(String id) {

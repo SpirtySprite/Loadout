@@ -14,6 +14,11 @@ chat-input:
   expired: "<prefix><warning>The input expired. Start again from the menu."
 
 kits:
+  import-usage: "<prefix><secondary>⌨</secondary> <muted>ᴄᴏᴍᴍᴀɴᴅ</muted> <primary>/kit import <source> <muted>| sources: <text><sources>"
+  import-missing: "<prefix><error><cross></error> <text>Folder of <secondary><plugin></secondary> not found: <muted><folder>"
+  import-started: "<prefix><secondary>⌛</secondary> <text>Importing from <secondary><plugin></secondary>..."
+  import-done: "<prefix><success><check></success> <text>Import from <secondary><plugin></secondary> done: <secondary><kits></secondary> kits, <secondary><items></secondary> items, <secondary><claims></secondary> cooldowns carried over."
+  import-warnings: "<prefix><warning>⚠</warning> <secondary><amount></secondary> <text>warning(s), details in the console."
   usage: "<prefix><secondary>⌨</secondary> <muted>ᴄᴏᴍᴍᴀɴᴅ</muted> <primary>/kit</primary> <muted>|</muted> <primary>/kit <name></primary> <muted>|</muted> <primary>/kit preview <name></primary> <muted>|</muted> <primary>/kit gift <player> <name></primary> <muted>|</muted> <primary>/kit all</primary> <muted>|</muted> <primary>/kit collection</primary> <muted>|</muted> <primary>/kit history</primary> <muted>|</muted> <primary>/kit mastery <name></primary> <muted>|</muted> <primary>/kit tryon <name>"
   admin-usage: "<prefix><secondary>⌨</secondary> <muted>ᴀᴅᴍɪɴ</muted> <primary>/kit ceremony <0-4> [kit]</primary> <muted>|</muted> <primary>/kit admin</primary> <muted>|</muted> <primary>/kit create <id></primary> <muted>|</muted> <primary>/kit edit <kit></primary> <muted>|</muted> <primary>/kit capture <kit></primary> <muted>|</muted> <primary>/kit give <player> <kit></primary> <muted>|</muted> <primary>/kit voucher <player> <kit> [amount]</primary> <muted>|</muted> <primary>/kit reset <player> [kit]</primary> <muted>|</muted> <primary>/kit player <player></primary> <muted>|</muted> <primary>/kit delete <kit></primary> <muted>|</muted> <primary>/kit reload"
   unknown: "<prefix><error><cross></error> <text>No kit named <secondary><id></secondary><text>."

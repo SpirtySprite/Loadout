@@ -6,10 +6,13 @@ import com.kirugoldzzzz.loadout.common.text.Messages;
 import com.kirugoldzzzz.loadout.common.text.Mini;
 import com.kirugoldzzzz.loadout.common.text.Numbers;
 import com.kirugoldzzzz.loadout.common.text.Tr;
+import com.kirugoldzzzz.loadout.importer.Imported;
+import com.kirugoldzzzz.loadout.importer.KitSource;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -23,11 +26,11 @@ public final class KitCommand extends NexusCommand {
     private static final List<String> PLAYER_ACTIONS_FR = List.of("apercu", "offrir", "aide", "collection",
             "historique", "tout", "maitrise", "essayer");
     private static final List<String> ADMIN_ACTIONS_FR = List.of("admin", "creer", "editer", "capturer", "supprimer",
-            "donner", "bon", "reset", "joueur", "stock", "recharger", "liste", "ceremonie");
+            "donner", "bon", "reset", "joueur", "stock", "recharger", "liste", "ceremonie", "importer");
     private static final List<String> PLAYER_ACTIONS_EN = List.of("preview", "gift", "help", "collection",
             "history", "all", "mastery", "tryon");
     private static final List<String> ADMIN_ACTIONS_EN = List.of("admin", "create", "edit", "capture", "delete",
-            "give", "voucher", "reset", "player", "stock", "reload", "list", "ceremony");
+            "give", "voucher", "reset", "player", "stock", "reload", "list", "ceremony", "import");
     private static final List<String> CEREMONY_LEVELS = List.of("0", "1", "2", "3", "4");
     private static final int VOUCHER_LIMIT = 256;
 
@@ -37,6 +40,7 @@ public final class KitCommand extends NexusCommand {
     private final KitAdminMenu admin;
     private final KitEditor editor;
     private final Wallet economy;
+    private KitImporter importer;
     private KitCollectionMenu collection;
     private KitHistoryMenu history;
     private KitMasteryMenu mastery;
@@ -47,6 +51,41 @@ public final class KitCommand extends NexusCommand {
         this.collection = collectionMenu;
         this.history = historyMenu;
         this.mastery = masteryMenu;
+    }
+
+    public void importer(KitImporter value) {
+        this.importer = value;
+    }
+
+    private void importFrom(CommandSender sender, String[] args) {
+        Optional<KitSource> source = args.length < 2 ? Optional.empty() : KitSource.byId(args[1]);
+        if (source.isEmpty() || importer == null) {
+            Messages.send(sender, "kits.import-usage", Mini.value("sources",
+                    String.join(", ", KitSource.ALL.stream().map(KitSource::id).toList())));
+            return;
+        }
+        File folder = KitImporter.folder(source.get());
+        if (!folder.isDirectory()) {
+            Messages.send(sender, "kits.import-missing", Mini.value("plugin", source.get().plugin()),
+                    Mini.value("folder", folder.getPath()));
+            return;
+        }
+        Messages.send(sender, "kits.import-started", Mini.value("plugin", source.get().plugin()));
+        Scheduling.async(() -> {
+            Imported.Result result = source.get().read(folder);
+            Scheduling.global(() -> {
+                KitImporter.Summary summary = importer.write(result);
+                Messages.send(sender, "kits.import-done",
+                        Mini.value("plugin", source.get().plugin()),
+                        Mini.value("kits", String.valueOf(summary.kits())),
+                        Mini.value("items", String.valueOf(summary.items())),
+                        Mini.value("claims", String.valueOf(summary.claims())));
+                if (!summary.warnings().isEmpty()) {
+                    Messages.send(sender, "kits.import-warnings",
+                            Mini.value("amount", String.valueOf(summary.warnings().size())));
+                }
+            });
+        });
     }
 
     public void onReload(Runnable action) {
@@ -116,7 +155,8 @@ public final class KitCommand extends NexusCommand {
             }
             case "admin", "creer", "create", "editer", "edit", "capturer", "capture", "supprimer", "delete", "donner",
                  "give", "bon", "voucher", "reset", "joueur", "player", "stock", "recharger", "reload", "liste",
-                 "list", "ceremonie", "cérémonie", "ceremony" -> adminAction(sender, player, action, args);
+                 "list", "ceremonie", "cérémonie", "ceremony", "import", "importer" ->
+                    adminAction(sender, player, action, args);
             default -> claim(sender, player, args[0]);
         }
     }
@@ -244,6 +284,7 @@ public final class KitCommand extends NexusCommand {
                 service().repository().resetStock(kit.id());
                 Messages.send(sender, "kits.stock-reset", KitService.kitResolver(kit));
             });
+            case "import", "importer" -> importFrom(sender, args);
             case "recharger", "reload" -> {
                 reloadSettings.run();
                 editor.reload();
@@ -414,6 +455,8 @@ public final class KitCommand extends NexusCommand {
             return switch (action) {
                 case "apercu", "preview", "voir", "maitrise", "mastery", "essayer", "tryon" ->
                         match(visibleKits(sender), args[1]);
+                case "import", "importer" -> admin
+                        ? match(KitSource.ALL.stream().map(KitSource::id).toList(), args[1]) : List.of();
                 case "offrir", "gift" -> match(online, args[1]);
                 case "editer", "edit", "capturer", "capture", "supprimer", "delete", "stock" ->
                         admin ? match(kits, args[1]) : List.of();

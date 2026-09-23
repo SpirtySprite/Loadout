@@ -78,6 +78,7 @@ public final class Loadout extends JavaPlugin {
         KitCommand command = new KitCommand(actions, menu, preview, adminMenu, editor, wallet);
         command.bind(collection, history, mastery);
         command.onReload(this::loadSettings);
+        command.importer(new KitImporter(service, editor));
         bind("kit", command);
         getServer().getPluginManager().registerEvents(new KitListener(actions), this);
         if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {

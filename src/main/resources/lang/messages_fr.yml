@@ -14,6 +14,11 @@ chat-input:
   expired: "<prefix><warning>La saisie a expiré. Recommencez depuis le menu."
 
 kits:
+  import-usage: "<prefix><secondary>⌨</secondary> <muted>ᴄᴏᴍᴍᴀɴᴅᴇ</muted> <primary>/kit importer <source> <muted>| sources : <text><sources>"
+  import-missing: "<prefix><error><cross></error> <text>Dossier de <secondary><plugin></secondary> introuvable : <muted><folder>"
+  import-started: "<prefix><secondary>⌛</secondary> <text>Import depuis <secondary><plugin></secondary> en cours..."
+  import-done: "<prefix><success><check></success> <text>Import de <secondary><plugin></secondary> terminé : <secondary><kits></secondary> kits, <secondary><items></secondary> objets, <secondary><claims></secondary> recharges reprises."
+  import-warnings: "<prefix><warning>⚠</warning> <secondary><amount></secondary> <text>avertissement(s), détails dans la console."
   usage: "<prefix><secondary>⌨</secondary> <muted>ᴄᴏᴍᴍᴀɴᴅᴇ</muted> <primary>/kit</primary> <muted>|</muted> <primary>/kit <nom></primary> <muted>|</muted> <primary>/kit apercu <nom></primary> <muted>|</muted> <primary>/kit offrir <joueur> <nom></primary> <muted>|</muted> <primary>/kit tout</primary> <muted>|</muted> <primary>/kit collection</primary> <muted>|</muted> <primary>/kit historique</primary> <muted>|</muted> <primary>/kit maitrise <nom></primary> <muted>|</muted> <primary>/kit essayer <nom>"
   admin-usage: "<prefix><secondary>⌨</secondary> <muted>ᴀᴅᴍɪɴ</muted> <primary>/kit ceremonie <0-4> [kit]</primary> <muted>|</muted> <primary>/kit admin</primary> <muted>|</muted> <primary>/kit creer <id></primary> <muted>|</muted> <primary>/kit editer <kit></primary> <muted>|</muted> <primary>/kit capturer <kit></primary> <muted>|</muted> <primary>/kit donner <joueur> <kit></primary> <muted>|</muted> <primary>/kit bon <joueur> <kit> [quantité]</primary> <muted>|</muted> <primary>/kit reset <joueur> [kit]</primary> <muted>|</muted> <primary>/kit joueur <joueur></primary> <muted>|</muted> <primary>/kit supprimer <kit></primary> <muted>|</muted> <primary>/kit recharger"
   unknown: "<prefix><error><cross></error> <text>Aucun kit nommé <secondary><id></secondary><text>."
