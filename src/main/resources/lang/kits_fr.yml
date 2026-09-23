@@ -1,0 +1,648 @@
+settings:
+  timezone: Europe/Paris
+  show-locked: true
+  reminders: true
+  join-summary: true
+  animation: true
+  broadcasts: true
+  protected-lore: "<#6E7681>⛓ Objet de kit, invendable"
+  first-join-delay-ticks: 60
+  claim-spacing-millis: 750
+  voucher:
+    material: PAPER
+    name: "<#A78BFA><b>Bon de kit</b> <#6E7681>▸</#6E7681> <kit>"
+    lore:
+      - "<#6E7681>[ʙᴏɴ ᴅᴇ ᴋɪᴛ]"
+      - ""
+      - "<#C9D1D9>Ce bon contient le kit <kit><#C9D1D9>."
+      - "<#C9D1D9>Il se garde, s'échange et s'offre."
+      - ""
+      - "<#FBBF24>ᐅ <b>ᴄʟɪᴄ ᴅʀᴏɪᴛ</b> <#C9D1D9>pour l'ouvrir"
+
+progression:
+  mastery:
+    bronze:
+      name: "Bronze"
+      claims: 5
+      cooldown-reduction: 5
+      bonus: 10
+      upgrade:
+        money: 2500
+    argent:
+      name: "Argent"
+      claims: 15
+      cooldown-reduction: 10
+      bonus: 20
+      upgrade:
+        money: 7500
+    or:
+      name: "Or"
+      claims: 35
+      cooldown-reduction: 15
+      bonus: 35
+      extra-rolls: 1
+      upgrade:
+        money: 20000
+    diamant:
+      name: "Diamant"
+      claims: 70
+      cooldown-reduction: 20
+      bonus: 50
+      extra-rolls: 1
+      items:
+        pomme:
+          material: GOLDEN_APPLE
+          amount: 2
+    netherite:
+      name: "Netherite"
+      claims: 150
+      cooldown-reduction: 30
+      bonus: 75
+      extra-rolls: 2
+      items:
+        pommes:
+          material: ENCHANTED_GOLDEN_APPLE
+        bouteilles:
+          material: EXPERIENCE_BOTTLE
+          amount: 16
+  streaks:
+    enabled: true
+    bonus-per-claim: 5
+    maximum-bonus: 50
+    warning: 3h
+    milestones:
+      '3':
+        money: 500
+        lines:
+          - "500 pour 3 jours d'affilée"
+      '7':
+        money: 2500
+        levels: 5
+      '14':
+        money: 7500
+        shards: 25
+      '30':
+        money: 25000
+        shards: 100
+        levels: 20
+  collection:
+    '3':
+      money: 1000
+    '6':
+      money: 5000
+      levels: 10
+    '10':
+      money: 15000
+      shards: 50
+  featured:
+    enabled: true
+    discount: 30
+    rotation: "00:00"
+    kits: []
+
+categories:
+  debut:
+    name: "<#4ADE80><b>Débuts</b>"
+    icon: WOODEN_SWORD
+    order: 1
+    description:
+      - "De quoi bien démarrer l'aventure."
+  recompenses:
+    name: "<#FBBF24><b>Récompenses</b>"
+    icon: CLOCK
+    order: 2
+    description:
+      - "Des kits qui reviennent chaque"
+      - "jour et chaque semaine."
+  grades:
+    name: "<#A78BFA><b>Grades</b>"
+    icon: DIAMOND
+    order: 3
+    description:
+      - "Les kits réservés aux grades."
+  evenements:
+    name: "<#F87171><b>Événements</b>"
+    icon: CAKE
+    order: 4
+    description:
+      - "Disponibles seulement pendant"
+      - "les événements du serveur."
+
+kits:
+  premier-pas:
+    name: "<gradient:#4ADE80:#22D3EE><b>Premier pas</b></gradient>"
+    description:
+      - "Offert à votre toute première"
+      - "connexion sur le serveur."
+    icon:
+      material: OAK_SAPLING
+    category: debut
+    order: 1
+    max-uses: 1
+    options:
+      first-join: true
+      protect-items: true
+    contents:
+      '0':
+        material: STONE_SWORD
+      '1':
+        material: STONE_PICKAXE
+      '2':
+        material: STONE_AXE
+      '3':
+        material: BREAD
+        amount: 16
+      '4':
+        material: TORCH
+        amount: 32
+      '39':
+        material: LEATHER_HELMET
+      '38':
+        material: LEATHER_CHESTPLATE
+      '37':
+        material: LEATHER_LEGGINGS
+      '36':
+        material: LEATHER_BOOTS
+    rewards:
+      money: 100
+
+  debutant:
+    name: "<gradient:#4ADE80:#A3E635><b>Débutant</b></gradient>"
+    description:
+      - "Des outils et de la nourriture"
+      - "pour survivre aux premières nuits."
+    icon:
+      material: STONE_PICKAXE
+    category: debut
+    order: 2
+    cooldown: 12h
+    options:
+      protect-items: true
+    contents:
+      '0':
+        material: STONE_SWORD
+      '1':
+        material: STONE_PICKAXE
+      '2':
+        material: COOKED_BEEF
+        amount: 12
+      '3':
+        material: TORCH
+        amount: 16
+
+  reapparition:
+    name: "<gradient:#94A3B8:#C9D1D9><b>Réapparition</b></gradient>"
+    animation-level: auto
+    description:
+      - "Redonné automatiquement après"
+      - "une mort, pour repartir du bon pied."
+    icon:
+      material: TOTEM_OF_UNDYING
+    category: debut
+    order: 3
+    cooldown: 10m
+    options:
+      respawn: true
+      protect-items: true
+      animation: false
+    contents:
+      '0':
+        material: WOODEN_SWORD
+      '1':
+        material: BREAD
+        amount: 6
+
+  quotidien:
+    name: "<gradient:#FBBF24:#F59E0B><b>Quotidien</b></gradient>"
+    description:
+      - "Un peu d'argent et un minerai"
+      - "surprise, chaque jour à minuit."
+    icon:
+      material: SUNFLOWER
+    category: recompenses
+    order: 1
+    reset: quotidienne
+    reset-time: "00:00"
+    pool:
+      rolls: 1
+      unique: true
+      entries:
+        fer:
+          material: IRON_INGOT
+          weight: 50
+          min-amount: 4
+          max-amount: 8
+        or:
+          material: GOLD_INGOT
+          weight: 30
+          min-amount: 3
+          max-amount: 6
+        emeraude:
+          material: EMERALD
+          weight: 15
+          min-amount: 2
+          max-amount: 4
+        diamant:
+          material: DIAMOND
+          weight: 5
+          min-amount: 1
+          max-amount: 2
+    rewards:
+      money: 250
+      lines:
+        - "Un minerai tiré au sort"
+
+  hebdomadaire:
+    name: "<gradient:#F59E0B:#F87171><b>Hebdomadaire</b></gradient>"
+    description:
+      - "Le gros coffre du lundi pour"
+      - "les joueurs réguliers."
+    icon:
+      material: ENDER_CHEST
+    category: recompenses
+    order: 2
+    reset: hebdomadaire
+    reset-day: lundi
+    reset-time: "00:00"
+    requirements:
+      playtime: 2h
+    pool:
+      rolls: 3
+      unique: true
+      entries:
+        diamants:
+          material: DIAMOND
+          weight: 20
+          min-amount: 2
+          max-amount: 5
+        pommes:
+          material: GOLDEN_APPLE
+          weight: 30
+          min-amount: 1
+          max-amount: 3
+        bouteilles:
+          material: EXPERIENCE_BOTTLE
+          weight: 30
+          min-amount: 8
+          max-amount: 16
+        enclume:
+          material: ANVIL
+          weight: 10
+        livre:
+          material: ENCHANTED_BOOK
+          weight: 10
+        netherite:
+          material: NETHERITE_SCRAP
+          weight: 3
+    rewards:
+      money: 1000
+      levels: 5
+      lines:
+        - "3 objets différents tirés au sort"
+
+  aventurier:
+    name: "<gradient:#22D3EE:#A78BFA><b>Aventurier</b></gradient>"
+    description:
+      - "L'équipement complet pour partir"
+      - "explorer loin du spawn."
+    icon:
+      material: COMPASS
+    category: debut
+    order: 4
+    cooldown: 1j
+    cost:
+      money: 1500
+    requirements:
+      playtime: 1h
+      kits:
+        - debutant
+    options:
+      giftable: true
+      voucher: true
+    contents:
+      '0':
+        material: IRON_SWORD
+        enchantments:
+          - sharpness:1
+      '1':
+        material: IRON_PICKAXE
+        enchantments:
+          - efficiency:2
+      '2':
+        material: SHIELD
+      '3':
+        material: COOKED_PORKCHOP
+        amount: 24
+      '4':
+        material: WATER_BUCKET
+      '5':
+        material: ENDER_PEARL
+        amount: 4
+      '38':
+        material: IRON_CHESTPLATE
+      '40':
+        material: TORCH
+        amount: 32
+
+  vip:
+    name: "<gradient:#A78BFA:#F0ABFC><b>VIP</b></gradient>"
+    description:
+      - "Une armure en fer enchantée et"
+      - "des ressources pour les VIP."
+    hint:
+      - "Débloqué avec le grade VIP."
+    icon:
+      material: IRON_CHESTPLATE
+    category: grades
+    order: 1
+    permission: loadout.kit.vip
+    cooldown: 2j
+    options:
+      protect-items: true
+      announce: true
+    contents:
+      '0':
+        material: IRON_SWORD
+        enchantments:
+          - sharpness:3
+          - unbreaking:2
+      '1':
+        material: GOLDEN_APPLE
+        amount: 4
+      '39':
+        material: IRON_HELMET
+        enchantments:
+          - protection:2
+      '38':
+        material: IRON_CHESTPLATE
+        enchantments:
+          - protection:2
+      '37':
+        material: IRON_LEGGINGS
+        enchantments:
+          - protection:2
+      '36':
+        material: IRON_BOOTS
+        enchantments:
+          - protection:2
+    rewards:
+      money: 2500
+
+  legende:
+    name: "<gradient:#FBBF24:#F87171><b>Légende</b></gradient>"
+    animation-level: 4
+    description:
+      - "Du diamant, des pommes et un"
+      - "tirage netherite pour les Légendes."
+    hint:
+      - "Débloqué avec le grade Légende."
+    icon:
+      material: NETHERITE_CHESTPLATE
+    category: grades
+    order: 2
+    permission: loadout.kit.legende
+    cooldown: 3j
+    options:
+      protect-items: true
+      announce: true
+    contents:
+      '0':
+        material: DIAMOND_SWORD
+        enchantments:
+          - sharpness:4
+          - unbreaking:3
+      '1':
+        material: DIAMOND_PICKAXE
+        enchantments:
+          - efficiency:4
+          - unbreaking:3
+      '2':
+        material: ENCHANTED_GOLDEN_APPLE
+      '39':
+        material: DIAMOND_HELMET
+        enchantments:
+          - protection:3
+      '38':
+        material: DIAMOND_CHESTPLATE
+        enchantments:
+          - protection:3
+      '37':
+        material: DIAMOND_LEGGINGS
+        enchantments:
+          - protection:3
+      '36':
+        material: DIAMOND_BOOTS
+        enchantments:
+          - protection:3
+    pool:
+      rolls: 1
+      entries:
+        lingot:
+          material: NETHERITE_INGOT
+          weight: 10
+        debris:
+          material: ANCIENT_DEBRIS
+          weight: 40
+          min-amount: 2
+          max-amount: 4
+        diamants:
+          material: DIAMOND_BLOCK
+          weight: 50
+    rewards:
+      money: 5000
+      effects:
+        - strength:3m:1
+        - regeneration:1m:1
+
+  week-end:
+    name: "<gradient:#22D3EE:#4ADE80><b>Week-end</b></gradient>"
+    description:
+      - "Un coup de boost pour profiter"
+      - "du samedi et du dimanche."
+    icon:
+      material: FIREWORK_ROCKET
+    category: evenements
+    order: 1
+    reset: quotidienne
+    requirements:
+      days:
+        - samedi
+        - dimanche
+    contents:
+      '0':
+        material: FIREWORK_ROCKET
+        amount: 16
+      '1':
+        material: EXPERIENCE_BOTTLE
+        amount: 16
+    rewards:
+      effects:
+        - speed:5m:2
+        - haste:5m:2
+
+  noel:
+    name: "<gradient:#F87171:#4ADE80><b>Noël</b></gradient>"
+    description:
+      - "Le cadeau de Noël du serveur,"
+      - "une seule fois par joueur."
+    icon:
+      material: CAKE
+    category: evenements
+    order: 2
+    max-uses: 1
+    requirements:
+      from: 24/12/2026 00:00
+      until: 27/12/2026 00:00
+    options:
+      announce: true
+    contents:
+      '0':
+        material: CAKE
+      '1':
+        material: DIAMOND
+        amount: 5
+      '2':
+        material: FIREWORK_ROCKET
+        amount: 32
+    rewards:
+      money: 2000
+
+  mystere:
+    name: "<gradient:#A78BFA:#F472B6><b>Mystère</b></gradient>"
+    description:
+      - "Une roulette animée révèle trois"
+      - "objets tirés au sort."
+    icon:
+      material: ENDER_EYE
+    category: recompenses
+    order: 3
+    cooldown: 8h
+    cost:
+      money: 750
+    options:
+      roulette: true
+      giftable: true
+    pool:
+      rolls: 3
+      unique: true
+      entries:
+        emeraudes:
+          material: EMERALD
+          weight: 30
+          min-amount: 4
+          max-amount: 12
+        diamants:
+          material: DIAMOND
+          weight: 20
+          min-amount: 1
+          max-amount: 4
+        perles:
+          material: ENDER_PEARL
+          weight: 25
+          min-amount: 4
+          max-amount: 8
+        totem:
+          material: TOTEM_OF_UNDYING
+          weight: 5
+        trident:
+          material: TRIDENT
+          weight: 2
+        elytres:
+          material: ELYTRA
+          weight: 1
+        pommes:
+          material: GOLDEN_APPLE
+          weight: 17
+          min-amount: 2
+          max-amount: 4
+
+  equipe:
+    name: "<gradient:#22D3EE:#4ADE80><b>Équipe</b></gradient>"
+    description:
+      - "Un ravitaillement partagé, un seul"
+      - "membre le récupère par jour."
+    icon:
+      material: WHITE_BANNER
+    category: recompenses
+    order: 4
+    reset: quotidienne
+    options:
+      team: true
+    contents:
+      '0':
+        material: COOKED_BEEF
+        amount: 32
+      '1':
+        material: IRON_INGOT
+        amount: 16
+      '2':
+        material: ARROW
+        amount: 64
+    rewards:
+      money: 500
+
+  chasseur:
+    name: "<gradient:#F87171:#FBBF24><b>Chasseur</b></gradient>"
+    description:
+      - "Réservé aux joueurs qui ont prouvé"
+      - "leur valeur face aux monstres."
+    icon:
+      material: BOW
+    category: grades
+    order: 3
+    cooldown: 1j
+    requirements:
+      statistics:
+        - mob_kills:250
+        - kill_entity:creeper:25
+    contents:
+      '0':
+        material: BOW
+        enchantments:
+          - power:3
+          - unbreaking:2
+      '1':
+        material: ARROW
+        amount: 64
+      '2':
+        material: SPECTRAL_ARROW
+        amount: 32
+
+  assaut:
+    name: "<gradient:#F87171:#A78BFA><b>Assaut</b></gradient>"
+    description:
+      - "Un équipement de combat surpuissant"
+      - "qui disparaît au bout d'une heure."
+    icon:
+      material: NETHERITE_SWORD
+    category: evenements
+    order: 3
+    cooldown: 12h
+    item-lifetime: 1h
+    options:
+      protect-items: true
+    contents:
+      '0':
+        material: NETHERITE_SWORD
+        enchantments:
+          - sharpness:5
+      '39':
+        material: NETHERITE_HELMET
+        enchantments:
+          - protection:4
+      '38':
+        material: NETHERITE_CHESTPLATE
+        enchantments:
+          - protection:4
+      '37':
+        material: NETHERITE_LEGGINGS
+        enchantments:
+          - protection:4
+      '36':
+        material: NETHERITE_BOOTS
+        enchantments:
+          - protection:4
+
+crate-keys:
+  command: "cle give {player} {crate} {amount}"
+  crates: {}
