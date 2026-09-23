@@ -4,6 +4,7 @@ general:
   no-permission: "<prefix><error><cross></error> <text>You don't have permission to do that."
   players-only: "<prefix><error><cross></error> <text>Only players can use this command."
   unknown-player: "<prefix><error><cross></error> <text>No player named <text><player></text> was found."
+  update-available: "<prefix><primary>✦</primary> <text><plugin> <secondary><version></secondary> <text>is available <muted>(installed: <current>)</muted> <link>"
 logs:
   prefix: "<gradient:#F87171:#A78BFA><b>ʟᴏɢs</b></gradient> <muted>▸</muted> "
   alert: "<logs><icon> <muted><topic></muted> <muted>┃</muted> <text><title><muted>:</muted> <text><summary> <muted>[<secondary>ᴅᴇᴛᴀɪʟs</secondary><muted>]"

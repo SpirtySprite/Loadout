@@ -72,6 +72,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>${junit.version}</version>
@@ -124,6 +129,10 @@
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <relocations>
+                                <relocation>
+                                    <pattern>org.bstats</pattern>
+                                    <shadedPattern>com.kirugoldzzzz.loadout.lib.bstats</shadedPattern>
+                                </relocation>
                                 <relocation>
                                     <pattern>com.foliagui</pattern>
                                     <shadedPattern>com.kirugoldzzzz.loadout.lib.foliagui</shadedPattern>
