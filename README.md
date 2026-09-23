@@ -89,6 +89,43 @@ With PlaceholderAPI: `%loadout_kit_featured%`, `%loadout_kit_featured_discount%`
 `%loadout_kit_<kit>_<info>%` where `<info>` is `status`, `ready`, `cooldown`, `uses`, `tier`,
 `level`, `streak`, `best` or `name`.
 
+## Developer API
+
+Add Loadout as a `depend` or `softdepend`, then get the service:
+
+```java
+LoadoutApi.get().ifPresent(loadout -> {
+    if (loadout.available(player, "daily")) {
+        loadout.claim(player, "daily");
+    }
+    loadout.giveVouchers(player, "vip", 1);
+});
+```
+
+`LoadoutApi` covers kit ids, availability, cooldowns, use counts, claiming with every rule applied,
+giving a kit while skipping the rules, vouchers, resets and opening the menu or a preview. Unknown
+kits and non-positive amounts throw `IllegalArgumentException`.
+
+Events:
+
+| Event | When |
+|---|---|
+| `KitClaimEvent` | before anything is paid or given, cancellable, with the kit, the source and the price |
+| `KitClaimedEvent` | after the kit was delivered, with the items given and the new mastery level |
+
+The source is one of `menu`, `command`, `voucher`, `gift`, `first-join`, `respawn`, `bulk` or
+`admin`.
+
+## Reloading, updates and metrics
+
+`/kit reload` rereads `config.yml`, the language files and `kits.yml`. Changing `language` takes
+full effect after a restart.
+
+On start Loadout checks the latest GitHub release and tells the console and players with
+`loadout.admin.kits` when a newer version exists. Set `update-checker: false` in `config.yml` to
+turn it off. Anonymous usage statistics go through bStats and follow the global bStats opt-out in
+`plugins/bStats/config.yml`.
+
 ## Building
 
 ```bash

@@ -22,10 +22,14 @@ public final class KitCommand extends NexusCommand {
 
     public static final String ADMIN = "loadout.admin.kits";
     static final String GIFT = "loadout.kit.gift";
-    private static final List<String> PLAYER_ACTIONS = List.of("apercu", "offrir", "aide", "collection",
+    private static final List<String> PLAYER_ACTIONS_FR = List.of("apercu", "offrir", "aide", "collection",
             "historique", "tout", "maitrise", "essayer");
-    private static final List<String> ADMIN_ACTIONS = List.of("admin", "creer", "editer", "capturer", "supprimer",
+    private static final List<String> ADMIN_ACTIONS_FR = List.of("admin", "creer", "editer", "capturer", "supprimer",
             "donner", "bon", "reset", "joueur", "stock", "recharger", "liste", "ceremonie");
+    private static final List<String> PLAYER_ACTIONS_EN = List.of("preview", "gift", "help", "collection",
+            "history", "all", "mastery", "tryon");
+    private static final List<String> ADMIN_ACTIONS_EN = List.of("admin", "create", "edit", "capture", "delete",
+            "give", "voucher", "reset", "player", "stock", "reload", "list", "ceremony");
     private static final List<String> CEREMONY_LEVELS = List.of("0", "1", "2", "3", "4");
     private static final int VOUCHER_LIMIT = 256;
 
@@ -38,11 +42,17 @@ public final class KitCommand extends NexusCommand {
     private KitCollectionMenu collection;
     private KitHistoryMenu history;
     private KitMasteryMenu mastery;
+    private Runnable reloadSettings = () -> {
+    };
 
     public void bind(KitCollectionMenu collectionMenu, KitHistoryMenu historyMenu, KitMasteryMenu masteryMenu) {
         this.collection = collectionMenu;
         this.history = historyMenu;
         this.mastery = masteryMenu;
+    }
+
+    public void onReload(Runnable action) {
+        this.reloadSettings = action;
     }
 
     public KitCommand(KitActions actions, KitMenu menu, KitPreviewMenu preview, KitAdminMenu admin, KitEditor editor,
@@ -237,6 +247,7 @@ public final class KitCommand extends NexusCommand {
                 Messages.send(sender, "kits.stock-reset", KitService.kitResolver(kit));
             });
             case "recharger", "reload" -> {
+                reloadSettings.run();
                 editor.reload();
                 Messages.send(sender, "kits.reloaded",
                         Mini.value("amount", String.valueOf(service().catalog().kits().size())));
@@ -392,9 +403,10 @@ public final class KitCommand extends NexusCommand {
         List<String> kits = new ArrayList<>(service().catalog().kits().keySet());
         if (args.length == 1) {
             List<String> options = new ArrayList<>(visibleKits(sender));
-            options.addAll(PLAYER_ACTIONS);
+            boolean french = "fr".equals(Tr.language());
+            options.addAll(french ? PLAYER_ACTIONS_FR : PLAYER_ACTIONS_EN);
             if (admin) {
-                options.addAll(ADMIN_ACTIONS);
+                options.addAll(french ? ADMIN_ACTIONS_FR : ADMIN_ACTIONS_EN);
             }
             return match(options, args[0]);
         }
