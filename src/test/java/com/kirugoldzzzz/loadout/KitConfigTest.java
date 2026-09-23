@@ -3,6 +3,8 @@ package com.kirugoldzzzz.loadout;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -213,10 +215,11 @@ class KitConfigTest {
         assertTrue(loaded.get().problems().isEmpty(), loaded.get().problems().toString());
     }
 
-    @Test
-    void bundledKitsFileLoadsCleanly() throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {"kits.yml", "lang/kits_fr.yml"})
+    void bundledKitsFileLoadsCleanly(String resource) throws Exception {
         YamlConfiguration yaml = new YamlConfiguration();
-        try (var stream = getClass().getClassLoader().getResourceAsStream("kits.yml")) {
+        try (var stream = getClass().getClassLoader().getResourceAsStream(resource)) {
             assertNotNull(stream);
             yaml.load(new InputStreamReader(stream, StandardCharsets.UTF_8));
         }

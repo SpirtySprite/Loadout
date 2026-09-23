@@ -5,19 +5,19 @@ settings:
   join-summary: true
   animation: true
   broadcasts: true
-  protected-lore: "<#6E7681>⛓ Objet de kit, invendable"
+  protected-lore: "<#6E7681>⛓ Kit item, cannot be sold"
   first-join-delay-ticks: 60
   claim-spacing-millis: 750
   voucher:
     material: PAPER
-    name: "<#A78BFA><b>Bon de kit</b> <#6E7681>▸</#6E7681> <kit>"
+    name: "<#A78BFA><b>Kit voucher</b> <#6E7681>▸</#6E7681> <kit>"
     lore:
-      - "<#6E7681>[ʙᴏɴ ᴅᴇ ᴋɪᴛ]"
+      - "<#6E7681>[ᴋɪᴛ ᴠᴏᴜᴄʜᴇʀ]"
       - ""
-      - "<#C9D1D9>Ce bon contient le kit <kit><#C9D1D9>."
-      - "<#C9D1D9>Il se garde, s'échange et s'offre."
+      - "<#C9D1D9>This voucher holds the kit <kit><#C9D1D9>."
+      - "<#C9D1D9>It can be kept, traded and gifted."
       - ""
-      - "<#FBBF24>ᐅ <b>ᴄʟɪᴄ ᴅʀᴏɪᴛ</b> <#C9D1D9>pour l'ouvrir"
+      - "<#FBBF24>ᐅ <b>ʀɪɢʜᴛ ᴄʟɪᴄᴋ</b> <#C9D1D9>to open it"
 
 progression:
   mastery:
@@ -28,41 +28,41 @@ progression:
       bonus: 10
       upgrade:
         money: 2500
-    argent:
-      name: "Argent"
+    silver:
+      name: "Silver"
       claims: 15
       cooldown-reduction: 10
       bonus: 20
       upgrade:
         money: 7500
-    or:
-      name: "Or"
+    gold:
+      name: "Gold"
       claims: 35
       cooldown-reduction: 15
       bonus: 35
       extra-rolls: 1
       upgrade:
         money: 20000
-    diamant:
-      name: "Diamant"
+    diamond:
+      name: "Diamond"
       claims: 70
       cooldown-reduction: 20
       bonus: 50
       extra-rolls: 1
       items:
-        pomme:
+        apple:
           material: GOLDEN_APPLE
           amount: 2
-    diamant:
-      name: "Diamant"
+    netherite:
+      name: "Netherite"
       claims: 150
       cooldown-reduction: 30
       bonus: 75
       extra-rolls: 2
       items:
-        pommes:
+        apples:
           material: ENCHANTED_GOLDEN_APPLE
-        bouteilles:
+        bottles:
           material: EXPERIENCE_BOTTLE
           amount: 16
   streaks:
@@ -74,7 +74,7 @@ progression:
       '3':
         money: 500
         lines:
-          - "500 pour 3 jours d'affilée"
+          - "500 for 3 days in a row"
       '7':
         money: 2500
         levels: 5
@@ -101,42 +101,42 @@ progression:
     kits: []
 
 categories:
-  debut:
-    name: "<#4ADE80><b>Débuts</b>"
+  starter:
+    name: "<#4ADE80><b>Starter</b>"
     icon: WOODEN_SWORD
     order: 1
     description:
-      - "De quoi bien démarrer l'aventure."
-  recompenses:
-    name: "<#FBBF24><b>Récompenses</b>"
+      - "Everything to start the adventure right."
+  rewards:
+    name: "<#FBBF24><b>Rewards</b>"
     icon: CLOCK
     order: 2
     description:
-      - "Des kits qui reviennent chaque"
-      - "jour et chaque semaine."
-  grades:
-    name: "<#A78BFA><b>Grades</b>"
+      - "Kits that come back every"
+      - "day and every week."
+  ranks:
+    name: "<#A78BFA><b>Ranks</b>"
     icon: DIAMOND
     order: 3
     description:
-      - "Les kits réservés aux grades."
-  evenements:
-    name: "<#F87171><b>Événements</b>"
+      - "Kits reserved for ranks."
+  events:
+    name: "<#F87171><b>Events</b>"
     icon: CAKE
     order: 4
     description:
-      - "Disponibles seulement pendant"
-      - "les événements du serveur."
+      - "Only available during"
+      - "server events."
 
 kits:
-  premier-pas:
-    name: "<gradient:#4ADE80:#22D3EE><b>Premier pas</b></gradient>"
+  first-steps:
+    name: "<gradient:#4ADE80:#22D3EE><b>First Steps</b></gradient>"
     description:
-      - "Offert à votre toute première"
-      - "connexion sur le serveur."
+      - "Given on your very first"
+      - "join to the server."
     icon:
       material: OAK_SAPLING
-    category: debut
+    category: starter
     order: 1
     max-uses: 1
     options:
@@ -166,14 +166,14 @@ kits:
     rewards:
       money: 100
 
-  debutant:
-    name: "<gradient:#4ADE80:#A3E635><b>Débutant</b></gradient>"
+  beginner:
+    name: "<gradient:#4ADE80:#A3E635><b>Beginner</b></gradient>"
     description:
-      - "Des outils et de la nourriture"
-      - "pour survivre aux premières nuits."
+      - "Tools and food"
+      - "to survive the first nights."
     icon:
       material: STONE_PICKAXE
-    category: debut
+    category: starter
     order: 2
     cooldown: 12h
     options:
@@ -190,15 +190,15 @@ kits:
         material: TORCH
         amount: 16
 
-  reapparition:
-    name: "<gradient:#94A3B8:#C9D1D9><b>Réapparition</b></gradient>"
+  respawn:
+    name: "<gradient:#94A3B8:#C9D1D9><b>Respawn</b></gradient>"
     animation-level: auto
     description:
-      - "Redonné automatiquement après"
-      - "une mort, pour repartir du bon pied."
+      - "Given back automatically after"
+      - "a death, to get back on your feet."
     icon:
       material: TOTEM_OF_UNDYING
-    category: debut
+    category: starter
     order: 3
     cooldown: 10m
     options:
@@ -212,37 +212,37 @@ kits:
         material: BREAD
         amount: 6
 
-  quotidien:
-    name: "<gradient:#FBBF24:#F59E0B><b>Quotidien</b></gradient>"
+  daily:
+    name: "<gradient:#FBBF24:#F59E0B><b>Daily</b></gradient>"
     description:
-      - "Un peu d'argent et un minerai"
-      - "surprise, chaque jour à minuit."
+      - "Some money and a surprise"
+      - "ore, every day at midnight."
     icon:
       material: SUNFLOWER
-    category: recompenses
+    category: rewards
     order: 1
-    reset: quotidienne
+    reset: daily
     reset-time: "00:00"
     pool:
       rolls: 1
       unique: true
       entries:
-        fer:
+        iron:
           material: IRON_INGOT
           weight: 50
           min-amount: 4
           max-amount: 8
-        or:
+        gold:
           material: GOLD_INGOT
           weight: 30
           min-amount: 3
           max-amount: 6
-        emeraude:
+        emerald:
           material: EMERALD
           weight: 15
           min-amount: 2
           max-amount: 4
-        diamant:
+        diamond:
           material: DIAMOND
           weight: 5
           min-amount: 1
@@ -250,19 +250,19 @@ kits:
     rewards:
       money: 250
       lines:
-        - "Un minerai tiré au sort"
+        - "A randomly drawn ore"
 
-  hebdomadaire:
-    name: "<gradient:#F59E0B:#F87171><b>Hebdomadaire</b></gradient>"
+  weekly:
+    name: "<gradient:#F59E0B:#F87171><b>Weekly</b></gradient>"
     description:
-      - "Le gros coffre du lundi pour"
-      - "les joueurs réguliers."
+      - "The big Monday chest for"
+      - "regular players."
     icon:
       material: ENDER_CHEST
-    category: recompenses
+    category: rewards
     order: 2
-    reset: hebdomadaire
-    reset-day: lundi
+    reset: weekly
+    reset-day: monday
     reset-time: "00:00"
     requirements:
       playtime: 2h
@@ -270,25 +270,25 @@ kits:
       rolls: 3
       unique: true
       entries:
-        diamants:
+        diamonds:
           material: DIAMOND
           weight: 20
           min-amount: 2
           max-amount: 5
-        pommes:
+        apples:
           material: GOLDEN_APPLE
           weight: 30
           min-amount: 1
           max-amount: 3
-        bouteilles:
+        bottles:
           material: EXPERIENCE_BOTTLE
           weight: 30
           min-amount: 8
           max-amount: 16
-        enclume:
+        anvil:
           material: ANVIL
           weight: 10
-        livre:
+        book:
           material: ENCHANTED_BOOK
           weight: 10
         netherite:
@@ -298,24 +298,24 @@ kits:
       money: 1000
       levels: 5
       lines:
-        - "3 objets différents tirés au sort"
+        - "3 different randomly drawn items"
 
-  aventurier:
-    name: "<gradient:#22D3EE:#A78BFA><b>Aventurier</b></gradient>"
+  adventurer:
+    name: "<gradient:#22D3EE:#A78BFA><b>Adventurer</b></gradient>"
     description:
-      - "L'équipement complet pour partir"
-      - "explorer loin du spawn."
+      - "The full gear to head out"
+      - "and explore far from spawn."
     icon:
       material: COMPASS
-    category: debut
+    category: starter
     order: 4
-    cooldown: 1j
+    cooldown: 1d
     cost:
       money: 1500
     requirements:
       playtime: 1h
       kits:
-        - debutant
+        - beginner
     options:
       giftable: true
       voucher: true
@@ -347,16 +347,16 @@ kits:
   vip:
     name: "<gradient:#A78BFA:#F0ABFC><b>VIP</b></gradient>"
     description:
-      - "Une armure en fer enchantée et"
-      - "des ressources pour les VIP."
+      - "Enchanted iron armor and"
+      - "resources for VIPs."
     hint:
-      - "Débloqué avec le grade VIP."
+      - "Unlocked with the VIP rank."
     icon:
       material: IRON_CHESTPLATE
-    category: grades
+    category: ranks
     order: 1
     permission: loadout.kit.vip
-    cooldown: 2j
+    cooldown: 2d
     options:
       protect-items: true
       announce: true
@@ -388,20 +388,20 @@ kits:
     rewards:
       money: 2500
 
-  legende:
-    name: "<gradient:#FBBF24:#F87171><b>Légende</b></gradient>"
+  legend:
+    name: "<gradient:#FBBF24:#F87171><b>Legend</b></gradient>"
     animation-level: 4
     description:
-      - "Du diamant, des pommes et un"
-      - "tirage netherite pour les Légendes."
+      - "Diamond, apples and a"
+      - "netherite draw for Legends."
     hint:
-      - "Débloqué avec le grade Légende."
+      - "Unlocked with the Legend rank."
     icon:
       material: NETHERITE_CHESTPLATE
-    category: grades
+    category: ranks
     order: 2
-    permission: loadout.kit.legende
-    cooldown: 3j
+    permission: loadout.kit.legend
+    cooldown: 3d
     options:
       protect-items: true
       announce: true
@@ -437,7 +437,7 @@ kits:
     pool:
       rolls: 1
       entries:
-        lingot:
+        ingot:
           material: NETHERITE_INGOT
           weight: 10
         debris:
@@ -445,7 +445,7 @@ kits:
           weight: 40
           min-amount: 2
           max-amount: 4
-        diamants:
+        diamond_blocks:
           material: DIAMOND_BLOCK
           weight: 50
     rewards:
@@ -454,20 +454,20 @@ kits:
         - strength:3m:1
         - regeneration:1m:1
 
-  week-end:
-    name: "<gradient:#22D3EE:#4ADE80><b>Week-end</b></gradient>"
+  weekend:
+    name: "<gradient:#22D3EE:#4ADE80><b>Weekend</b></gradient>"
     description:
-      - "Un coup de boost pour profiter"
-      - "du samedi et du dimanche."
+      - "A boost to make the most"
+      - "of Saturday and Sunday."
     icon:
       material: FIREWORK_ROCKET
-    category: evenements
+    category: events
     order: 1
-    reset: quotidienne
+    reset: daily
     requirements:
       days:
-        - samedi
-        - dimanche
+        - saturday
+        - sunday
     contents:
       '0':
         material: FIREWORK_ROCKET
@@ -480,14 +480,14 @@ kits:
         - speed:5m:2
         - haste:5m:2
 
-  noel:
-    name: "<gradient:#F87171:#4ADE80><b>Noël</b></gradient>"
+  christmas:
+    name: "<gradient:#F87171:#4ADE80><b>Christmas</b></gradient>"
     description:
-      - "Le cadeau de Noël du serveur,"
-      - "une seule fois par joueur."
+      - "The server's Christmas gift,"
+      - "only once per player."
     icon:
       material: CAKE
-    category: evenements
+    category: events
     order: 2
     max-uses: 1
     requirements:
@@ -507,14 +507,14 @@ kits:
     rewards:
       money: 2000
 
-  mystere:
-    name: "<gradient:#A78BFA:#F472B6><b>Mystère</b></gradient>"
+  mystery:
+    name: "<gradient:#A78BFA:#F472B6><b>Mystery</b></gradient>"
     description:
-      - "Une roulette animée révèle trois"
-      - "objets tirés au sort."
+      - "An animated roulette reveals three"
+      - "randomly drawn items."
     icon:
       material: ENDER_EYE
-    category: recompenses
+    category: rewards
     order: 3
     cooldown: 8h
     cost:
@@ -526,17 +526,17 @@ kits:
       rolls: 3
       unique: true
       entries:
-        emeraudes:
+        emeralds:
           material: EMERALD
           weight: 30
           min-amount: 4
           max-amount: 12
-        diamants:
+        diamonds:
           material: DIAMOND
           weight: 20
           min-amount: 1
           max-amount: 4
-        perles:
+        pearls:
           material: ENDER_PEARL
           weight: 25
           min-amount: 4
@@ -547,25 +547,25 @@ kits:
         trident:
           material: TRIDENT
           weight: 2
-        elytres:
+        elytra:
           material: ELYTRA
           weight: 1
-        pommes:
+        apples:
           material: GOLDEN_APPLE
           weight: 17
           min-amount: 2
           max-amount: 4
 
-  equipe:
-    name: "<gradient:#22D3EE:#4ADE80><b>Équipe</b></gradient>"
+  team:
+    name: "<gradient:#22D3EE:#4ADE80><b>Team</b></gradient>"
     description:
-      - "Un ravitaillement partagé, un seul"
-      - "membre le récupère par jour."
+      - "A shared supply drop, only one"
+      - "member claims it per day."
     icon:
       material: WHITE_BANNER
-    category: recompenses
+    category: rewards
     order: 4
-    reset: quotidienne
+    reset: daily
     options:
       team: true
     contents:
@@ -581,16 +581,16 @@ kits:
     rewards:
       money: 500
 
-  chasseur:
-    name: "<gradient:#F87171:#FBBF24><b>Chasseur</b></gradient>"
+  hunter:
+    name: "<gradient:#F87171:#FBBF24><b>Hunter</b></gradient>"
     description:
-      - "Réservé aux joueurs qui ont prouvé"
-      - "leur valeur face aux monstres."
+      - "Reserved for players who proved"
+      - "themselves against monsters."
     icon:
       material: BOW
-    category: grades
+    category: ranks
     order: 3
-    cooldown: 1j
+    cooldown: 1d
     requirements:
       statistics:
         - mob_kills:250
@@ -608,14 +608,14 @@ kits:
         material: SPECTRAL_ARROW
         amount: 32
 
-  assaut:
-    name: "<gradient:#F87171:#A78BFA><b>Assaut</b></gradient>"
+  assault:
+    name: "<gradient:#F87171:#A78BFA><b>Assault</b></gradient>"
     description:
-      - "Un équipement de combat surpuissant"
-      - "qui disparaît au bout d'une heure."
+      - "Overpowered combat gear"
+      - "that disappears after one hour."
     icon:
       material: NETHERITE_SWORD
-    category: evenements
+    category: events
     order: 3
     cooldown: 12h
     item-lifetime: 1h
