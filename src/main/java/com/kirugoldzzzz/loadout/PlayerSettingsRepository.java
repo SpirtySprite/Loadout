@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.kirugoldzzzz.loadout.common.scheduler.Scheduling;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -49,7 +51,7 @@ public final class PlayerSettingsRepository {
         try {
             yaml.save(file);
         } catch (IOException failure) {
-            LOGGER.warning("Impossible d'enregistrer les préférences : " + failure.getMessage());
+            LOGGER.warning(Tr.t("Impossible d'enregistrer les préférences : ") + failure.getMessage());
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.foliagui.animation.GuiAnimation;
 import com.foliagui.gui.Gui;
 import com.foliagui.item.GuiItem;
@@ -31,11 +33,11 @@ public final class KitMenu {
     static final long REFRESH_TICKS = 20L;
 
     public enum Filter {
-        ALL("Tous les kits", Material.HOPPER),
-        FAVORITES("Favoris", Material.NETHER_STAR),
-        AVAILABLE("Disponibles", Material.LIME_DYE),
-        WAITING("En recharge", Material.CLOCK),
-        LOCKED("Verrouillés", Material.GRAY_DYE);
+        ALL(Tr.t("Tous les kits"), Material.HOPPER),
+        FAVORITES(Tr.t("Favoris"), Material.NETHER_STAR),
+        AVAILABLE(Tr.t("Disponibles"), Material.LIME_DYE),
+        WAITING(Tr.t("En recharge"), Material.CLOCK),
+        LOCKED(Tr.t("Verrouillés"), Material.GRAY_DYE);
 
         private final String label;
         private final Material icon;
@@ -98,7 +100,7 @@ public final class KitMenu {
         long started = System.nanoTime();
         Gui gui = Gui.builder()
                 .rows(ROWS)
-                .title(Mini.parse(Palette.smallTitle("Kits")))
+                .title(Mini.parse(Palette.smallTitle(Tr.t("Kits"))))
                 .create();
         Guis.fill(gui);
         render(gui, player, view);
@@ -198,13 +200,13 @@ public final class KitMenu {
 
     private GuiItem allTab(Player player, View view, KitCatalog catalog) {
         boolean selected = view.category.equals(KitCategory.ALL);
-        List<String> lore = Card.of(KitStyle.HEX).tag("Catégorie")
+        List<String> lore = Card.of(KitStyle.HEX).tag(Tr.t("Catégorie"))
                 .blank()
-                .line("Tous les kits du serveur.")
+                .line(Tr.t("Tous les kits du serveur."))
                 .blank()
-                .count(Card.AMOUNT, "Kits", catalog.kits().size())
+                .count(Card.AMOUNT, Tr.t("Kits"), catalog.kits().size())
                 .blank()
-                .click(selected ? "catégorie affichée" : "pour afficher")
+                .click(selected ? Tr.t("catégorie affichée") : Tr.t("pour afficher"))
                 .build();
         return new GuiItem(KitStyle.decorate(new ItemStack(Material.NETHER_STAR),
                 (selected ? Palette.SECONDARY : Palette.TEXT) + "<b>Tous</b>", lore, selected), event -> {
@@ -215,11 +217,11 @@ public final class KitMenu {
 
     private GuiItem tab(Player player, View view, KitCategory category) {
         boolean selected = view.category.equals(category.id());
-        Card card = Card.of(KitStyle.HEX).tag("Catégorie").blank();
+        Card card = Card.of(KitStyle.HEX).tag(Tr.t("Catégorie")).blank();
         category.description().forEach(card::line);
-        card.blank().count(Card.AMOUNT, "Kits", actions.service().catalog().inCategory(category.id()).size())
+        card.blank().count(Card.AMOUNT, Tr.t("Kits"), actions.service().catalog().inCategory(category.id()).size())
                 .blank()
-                .click(selected ? "catégorie affichée" : "pour afficher");
+                .click(selected ? Tr.t("catégorie affichée") : Tr.t("pour afficher"));
         return new GuiItem(KitStyle.decorate(new ItemStack(category.icon()), category.name(), card.build(), selected),
                 event -> select((Player) event.getWhoClicked(), view, category.id()));
     }
@@ -269,21 +271,21 @@ public final class KitMenu {
     }
 
     private GuiItem empty(View view) {
-        return Guis.display(Material.COBWEB, Palette.MUTED + "<b>" + Card.small("Aucun kit") + "</b>",
+        return Guis.display(Material.COBWEB, Palette.MUTED + "<b>" + Card.small(Tr.t("Aucun kit")) + "</b>",
                 Card.of(KitStyle.HEX).blank()
-                        .line(view.filter == Filter.ALL ? "Rien dans cette catégorie." : "Aucun kit ne correspond")
-                        .line(view.filter == Filter.ALL ? "" : "au filtre " + view.filter.label.toLowerCase(Locale.ROOT) + ".")
+                        .line(view.filter == Filter.ALL ? Tr.t("Rien dans cette catégorie.") : Tr.t("Aucun kit ne correspond"))
+                        .line(view.filter == Filter.ALL ? "" : Tr.t("au filtre ") + view.filter.label.toLowerCase(Locale.ROOT) + ".")
                         .build());
     }
 
     private GuiItem filterButton(Gui gui, Player player, View view) {
-        Card card = Card.of(KitStyle.HEX).tag("Filtre").blank();
+        Card card = Card.of(KitStyle.HEX).tag(Tr.t("Filtre")).blank();
         for (Filter filter : Filter.values()) {
             card.option(filter == view.filter, filter.label);
         }
-        card.blank().click("pour changer de filtre");
+        card.blank().click(Tr.t("pour changer de filtre"));
         return new GuiItem(KitStyle.decorate(new ItemStack(view.filter.icon),
-                Palette.heading("Filtre : " + view.filter.label), card.build(), false), event -> {
+                Palette.heading(Tr.t("Filtre : ") + view.filter.label), card.build(), false), event -> {
             Player viewer = (Player) event.getWhoClicked();
             Guis.click(viewer);
             view.filter = view.filter.next();
@@ -293,9 +295,9 @@ public final class KitMenu {
     }
 
     private GuiItem pageButton(Gui gui, Player player, View view, int step, int pages) {
-        String label = step < 0 ? Palette.BACK + " Page précédente" : "Page suivante " + Palette.POINTER;
+        String label = step < 0 ? Palette.BACK + Tr.t(" Page précédente") : Tr.t("Page suivante ") + Palette.POINTER;
         return new GuiItem(KitStyle.decorate(new ItemStack(Material.ARROW), Palette.ACCENT + label,
-                Card.of(KitStyle.HEX).tag("Navigation").stat(Card.FLAG, "Page", (view.page + 1) + " / " + pages)
+                Card.of(KitStyle.HEX).tag(Tr.t("Navigation")).stat(Card.FLAG, Tr.t("Page"), (view.page + 1) + " / " + pages)
                         .build(), false), event -> {
             Player viewer = (Player) event.getWhoClicked();
             Guis.click(viewer);
@@ -306,39 +308,39 @@ public final class KitMenu {
 
     private GuiItem summary(Player player, int available, int total, long soonest, long now) {
         KitService service = actions.service();
-        Card card = Card.of(KitStyle.HEX).tag("Vos kits").blank()
-                .stat(Palette.SUCCESS, Palette.CHECK, "Disponibles", available + " / " + total)
-                .stat(Card.CATEGORY, "Collection", service.collected(player.getUniqueId()).size() + " / " + total);
+        Card card = Card.of(KitStyle.HEX).tag(Tr.t("Vos kits")).blank()
+                .stat(Palette.SUCCESS, Palette.CHECK, Tr.t("Disponibles"), available + " / " + total)
+                .stat(Card.CATEGORY, Tr.t("Collection"), service.collected(player.getUniqueId()).size() + " / " + total);
         if (soonest != Long.MAX_VALUE) {
-            card.stat(Palette.WARNING, Card.TIME, "Prochain prêt dans", Numbers.duration(soonest));
+            card.stat(Palette.WARNING, Card.TIME, Tr.t("Prochain prêt dans"), Numbers.duration(soonest));
         }
         String featured = service.featured(now);
         if (featured != null) {
-            service.kit(featured).ifPresent(kit -> card.section("Kit du jour")
+            service.kit(featured).ifPresent(kit -> card.section(Tr.t("Kit du jour"))
                     .raw(Palette.WARNING + "⚡ " + kit.name())
-                    .stat(Palette.SUCCESS, "✚", "Réduction", "-" + service.catalog().progression().featured().discount()
+                    .stat(Palette.SUCCESS, "✚", Tr.t("Réduction"), "-" + service.catalog().progression().featured().discount()
                             + "%")
-                    .stat(Card.TIME, "Change dans", Numbers.duration(service.catalog().progression().featured()
+                    .stat(Card.TIME, Tr.t("Change dans"), Numbers.duration(service.catalog().progression().featured()
                             .nextRotation(now, service.settings().zone()) - now)));
         }
         card.blank()
-                .line("Clic gauche sur un kit pour le")
-                .line("récupérer, clic droit pour voir")
-                .line("tout son contenu, shift clic droit")
-                .line("pour l'épingler en favori.");
+                .line(Tr.t("Clic gauche sur un kit pour le"))
+                .line(Tr.t("récupérer, clic droit pour voir"))
+                .line(Tr.t("tout son contenu, shift clic droit"))
+                .line(Tr.t("pour l'épingler en favori."));
         ItemStack head = Heads.of(player.getUniqueId());
         return new GuiItem(KitStyle.decorate(head, Palette.title(Mini.escape(player.getName())), card.build(),
                 false), event -> event.setCancelled(true));
     }
 
     private GuiItem historyButton(View view) {
-        List<String> lore = Card.of(KitStyle.HEX).tag("Historique").blank()
-                .line("Toutes vos récupérations, cadeaux")
-                .line("et bons utilisés.")
+        List<String> lore = Card.of(KitStyle.HEX).tag(Tr.t("Historique")).blank()
+                .line(Tr.t("Toutes vos récupérations, cadeaux"))
+                .line(Tr.t("et bons utilisés."))
                 .blank()
-                .click("pour ouvrir")
+                .click(Tr.t("pour ouvrir"))
                 .build();
-        return new GuiItem(KitStyle.decorate(new ItemStack(Material.WRITABLE_BOOK), Palette.heading("Historique"),
+        return new GuiItem(KitStyle.decorate(new ItemStack(Material.WRITABLE_BOOK), Palette.heading(Tr.t("Historique")),
                 lore, false), event -> {
             Player viewer = (Player) event.getWhoClicked();
             if (history == null) {
@@ -353,16 +355,16 @@ public final class KitMenu {
         KitService service = actions.service();
         int owned = service.collected(player.getUniqueId()).size();
         int total = service.catalog().kits().size();
-        List<String> lore = Card.of(KitStyle.HEX).tag("Collection").blank()
-                .line("Découvrez tous les kits et")
-                .line("débloquez des récompenses.")
+        List<String> lore = Card.of(KitStyle.HEX).tag(Tr.t("Collection")).blank()
+                .line(Tr.t("Découvrez tous les kits et"))
+                .line(Tr.t("débloquez des récompenses."))
                 .blank()
-                .stat(Card.CATEGORY, "Découverts", owned + " / " + total)
+                .stat(Card.CATEGORY, Tr.t("Découverts"), owned + " / " + total)
                 .raw(KitStyle.progress(total == 0 ? 0.0D : owned / (double) total))
                 .blank()
-                .click("pour ouvrir")
+                .click(Tr.t("pour ouvrir"))
                 .build();
-        return new GuiItem(KitStyle.decorate(new ItemStack(Material.KNOWLEDGE_BOOK), Palette.heading("Collection"),
+        return new GuiItem(KitStyle.decorate(new ItemStack(Material.KNOWLEDGE_BOOK), Palette.heading(Tr.t("Collection")),
                 lore, owned == total && total > 0), event -> {
             Player viewer = (Player) event.getWhoClicked();
             if (collection == null) {
@@ -374,16 +376,16 @@ public final class KitMenu {
     }
 
     private GuiItem claimAllButton(Gui gui, View view, int ready) {
-        List<String> lore = Card.of(KitStyle.HEX).tag("Tout récupérer").blank()
-                .line("Récupère d'un coup tous les kits")
-                .line("gratuits disponibles.")
+        List<String> lore = Card.of(KitStyle.HEX).tag(Tr.t("Tout récupérer")).blank()
+                .line(Tr.t("Récupère d'un coup tous les kits"))
+                .line(Tr.t("gratuits disponibles."))
                 .blank()
-                .count(Card.AMOUNT, "Kits prêts", ready)
+                .count(Card.AMOUNT, Tr.t("Kits prêts"), ready)
                 .blank()
-                .raw(ready > 0 ? Card.clickLine("pour tout récupérer") : Card.denyLine("Rien à récupérer"))
+                .raw(ready > 0 ? Card.clickLine(Tr.t("pour tout récupérer")) : Card.denyLine(Tr.t("Rien à récupérer")))
                 .build();
         return new GuiItem(KitStyle.decorate(new ItemStack(ready > 0 ? Material.HOPPER_MINECART : Material.MINECART),
-                (ready > 0 ? Palette.SUCCESS : Palette.MUTED) + "<b>Tout récupérer</b>", lore, ready > 0), event -> {
+                (ready > 0 ? Palette.SUCCESS : Palette.MUTED) + Tr.t("<b>Tout récupérer</b>"), lore, ready > 0), event -> {
             Player viewer = (Player) event.getWhoClicked();
             if (ready <= 0) {
                 Guis.deny(viewer);
@@ -396,17 +398,17 @@ public final class KitMenu {
 
     private GuiItem reminderButton(Gui gui, Player player, View view) {
         boolean enabled = settings.get(player.getUniqueId()).enabled(PlayerSettings.Setting.KIT_REMINDERS);
-        List<String> lore = Card.of(KitStyle.HEX).tag("Rappels").blank()
-                .line("Un message vous prévient dès")
-                .line("qu'un kit est de nouveau prêt.")
+        List<String> lore = Card.of(KitStyle.HEX).tag(Tr.t("Rappels")).blank()
+                .line(Tr.t("Un message vous prévient dès"))
+                .line(Tr.t("qu'un kit est de nouveau prêt."))
                 .blank()
-                .option(enabled, "Activés")
-                .option(!enabled, "Désactivés")
+                .option(enabled, Tr.t("Activés"))
+                .option(!enabled, Tr.t("Désactivés"))
                 .blank()
-                .click(enabled ? "pour désactiver" : "pour activer")
+                .click(enabled ? Tr.t("pour désactiver") : Tr.t("pour activer"))
                 .build();
         return new GuiItem(KitStyle.decorate(new ItemStack(enabled ? Material.BELL : Material.GRAY_DYE),
-                Palette.heading("Rappels de kits"), lore, enabled), event -> {
+                Palette.heading(Tr.t("Rappels de kits")), lore, enabled), event -> {
             Player viewer = (Player) event.getWhoClicked();
             settings.toggle(viewer.getUniqueId(), PlayerSettings.Setting.KIT_REMINDERS);
             Guis.click(viewer);

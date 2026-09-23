@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.foliagui.gui.Gui;
 import com.foliagui.gui.PaginatedGui;
 import com.foliagui.item.GuiItem;
@@ -61,13 +63,13 @@ public final class KitAdminMenu {
         long started = System.nanoTime();
         PaginatedGui gui = PaginatedGui.builder()
                 .rows(ROWS)
-                .title(Mini.parse(Palette.smallTitle("Administration des kits")))
+                .title(Mini.parse(Palette.smallTitle(Tr.t("Administration des kits"))))
                 .create();
         Guis.paginationBar(gui, null);
         Runnable reopen = () -> open(player);
-        gui.setItem(ROWS, 2, KitEditorMenu.action(Material.NETHER_STAR, "Créer un kit", List.of(
-                        Palette.TEXT + "L'objet en main devient l'icône.", Palette.TEXT + "Vous choisissez l'identifiant."),
-                "pour créer", viewer -> ChatPrompts.open(viewer, "l'identifiant", typed -> {
+        gui.setItem(ROWS, 2, KitEditorMenu.action(Material.NETHER_STAR, Tr.t("Créer un kit"), List.of(
+                        Palette.TEXT + Tr.t("L'objet en main devient l'icône."), Palette.TEXT + Tr.t("Vous choisissez l'identifiant.")),
+                Tr.t("pour créer"), viewer -> ChatPrompts.open(viewer, "l'identifiant", typed -> {
                     String slug = KitEditor.slug(typed == null ? "" : typed);
                     if (!KitLoader.ID.matcher(slug).matches()) {
                         Guis.deny(viewer);
@@ -79,16 +81,16 @@ public final class KitAdminMenu {
                     Messages.send(viewer, "kits.created", Mini.value("id", id));
                     kitEditor.open(viewer, id, reopen);
                 })));
-        gui.setItem(ROWS, 4, KitEditorMenu.action(Material.BOOKSHELF, "Catégories", List.of(Palette.TEXT
-                        + service.catalog().categories().size() + " catégorie(s)"), "pour gérer",
+        gui.setItem(ROWS, 4, KitEditorMenu.action(Material.BOOKSHELF, Tr.t("Catégories"), List.of(Palette.TEXT
+                        + service.catalog().categories().size() + Tr.t(" catégorie(s)")), Tr.t("pour gérer"),
                 viewer -> categories(viewer, reopen)));
-        gui.setItem(ROWS, 6, KitEditorMenu.action(Material.COMPARATOR, "Réglages généraux", List.of(
-                        Palette.TEXT + "Rappels, animations, annonces,", Palette.TEXT + "bons et fuseau horaire."),
-                "pour ouvrir", viewer -> settings(viewer, reopen)));
+        gui.setItem(ROWS, 6, KitEditorMenu.action(Material.COMPARATOR, Tr.t("Réglages généraux"), List.of(
+                        Palette.TEXT + Tr.t("Rappels, animations, annonces,"), Palette.TEXT + Tr.t("bons et fuseau horaire.")),
+                Tr.t("pour ouvrir"), viewer -> settings(viewer, reopen)));
         gui.setItem(ROWS, 8, reloadButton(reopen));
-        gui.setItem(ROWS, 1, KitEditorMenu.action(Material.EXPERIENCE_BOTTLE, "Progression", List.of(
-                        Palette.TEXT + "Maîtrise, séries, collection", Palette.TEXT + "et kit du jour."),
-                "pour configurer", viewer -> {
+        gui.setItem(ROWS, 1, KitEditorMenu.action(Material.EXPERIENCE_BOTTLE, Tr.t("Progression"), List.of(
+                        Palette.TEXT + Tr.t("Maîtrise, séries, collection"), Palette.TEXT + Tr.t("et kit du jour.")),
+                Tr.t("pour configurer"), viewer -> {
                     if (progression != null) {
                         progression.open(viewer, reopen);
                     }
@@ -96,8 +98,8 @@ public final class KitAdminMenu {
 
         List<Kit> kits = new ArrayList<>(service.catalog().kits().values());
         if (kits.isEmpty()) {
-            gui.setItem(3, 5, Guis.display(Material.COBWEB, Palette.MUTED + "<b>Aucun kit</b>",
-                    Card.of(KitStyle.HEX).blank().line("Créez votre premier kit avec").line("le bouton en bas.").build()));
+            gui.setItem(3, 5, Guis.display(Material.COBWEB, Palette.MUTED + Tr.t("<b>Aucun kit</b>"),
+                    Card.of(KitStyle.HEX).blank().line(Tr.t("Créez votre premier kit avec")).line(Tr.t("le bouton en bas.")).build()));
         }
         DeferredPage<Kit> page = Guis.deferred(gui, kits, 45, kit -> entry(kit, reopen));
         Guis.controls(gui, page);
@@ -108,21 +110,21 @@ public final class KitAdminMenu {
     private GuiItem entry(Kit kit, Runnable reopen) {
         KitRepository.Stats stats = service.repository().stats(kit.id());
         Card card = Card.of(KitStyle.HEX).tag("Kit " + kit.id()).blank()
-                .stat(Card.CATEGORY, "Catégorie", kit.category() == null ? "aucune" : kit.category())
-                .stat(Card.FLAG, "Permission", kit.permission() == null ? "aucune" : kit.permission())
-                .count(Card.AMOUNT, "Objets", kit.contents().size())
-                .stat(Card.TIME, "Recharge", kit.cooldown() <= 0L ? "aucune" : Numbers.duration(kit.cooldown()))
-                .stat(Card.TIME, "Remise à zéro", KitStyle.resetLabel(kit))
+                .stat(Card.CATEGORY, Tr.t("Catégorie"), kit.category() == null ? Tr.t("aucune") : kit.category())
+                .stat(Card.FLAG, Tr.t("Permission"), kit.permission() == null ? Tr.t("aucune") : kit.permission())
+                .count(Card.AMOUNT, Tr.t("Objets"), kit.contents().size())
+                .stat(Card.TIME, Tr.t("Recharge"), kit.cooldown() <= 0L ? Tr.t("aucune") : Numbers.duration(kit.cooldown()))
+                .stat(Card.TIME, Tr.t("Remise à zéro"), KitStyle.resetLabel(kit))
                 .blank()
-                .count(Card.AMOUNT, "Récupérations", stats.claims())
-                .count(Card.PLAYER, "Joueurs", stats.players());
+                .count(Card.AMOUNT, Tr.t("Récupérations"), stats.claims())
+                .count(Card.PLAYER, Tr.t("Joueurs"), stats.players());
         if (kit.empty()) {
-            card.blank().deny("Kit vide, rien à donner");
+            card.blank().deny(Tr.t("Kit vide, rien à donner"));
         }
         card.blank()
-                .click("Clic gauche", "éditer")
-                .click("Clic droit", "aperçu joueur")
-                .click("Shift clic droit", "se donner le kit");
+                .click(Tr.t("Clic gauche"), Tr.t("éditer"))
+                .click(Tr.t("Clic droit"), Tr.t("aperçu joueur"))
+                .click(Tr.t("Shift clic droit"), Tr.t("se donner le kit"));
         return new GuiItem(KitStyle.decorate(KitStyle.icon(kit), kit.name(), card.build(), !kit.empty()), event -> {
             Player viewer = (Player) event.getWhoClicked();
             ClickType click = event.getClick();
@@ -144,19 +146,19 @@ public final class KitAdminMenu {
 
     private GuiItem reloadButton(Runnable reopen) {
         List<String> problems = service.catalog().problems();
-        Card card = Card.of(KitStyle.HEX).tag("Fichier").blank()
-                .line("Relit kits.yml après une")
-                .line("modification à la main.")
+        Card card = Card.of(KitStyle.HEX).tag(Tr.t("Fichier")).blank()
+                .line(Tr.t("Relit kits.yml après une"))
+                .line(Tr.t("modification à la main."))
                 .blank()
-                .count(Card.AMOUNT, "Kits chargés", service.catalog().kits().size());
+                .count(Card.AMOUNT, Tr.t("Kits chargés"), service.catalog().kits().size());
         if (!problems.isEmpty()) {
-            card.blank().deny(problems.size() + " problème(s) au dernier chargement");
+            card.blank().deny(problems.size() + Tr.t(" problème(s) au dernier chargement"));
             for (int index = 0; index < Math.min(4, problems.size()); index++) {
                 card.raw(Palette.MUTED + KitListMenu.shorten(problems.get(index)));
             }
         }
-        card.blank().click("pour recharger");
-        return new GuiItem(KitStyle.decorate(new ItemStack(Material.RECOVERY_COMPASS), Palette.heading("Recharger"),
+        card.blank().click(Tr.t("pour recharger"));
+        return new GuiItem(KitStyle.decorate(new ItemStack(Material.RECOVERY_COMPASS), Palette.heading(Tr.t("Recharger")),
                 card.build(), !problems.isEmpty()), event -> {
             Player viewer = (Player) event.getWhoClicked();
             editor.reload();
@@ -169,21 +171,21 @@ public final class KitAdminMenu {
 
     private void categories(Player player, Runnable back) {
         Runnable reopen = () -> categories(player, back);
-        Gui gui = Gui.builder().rows(ROWS).title(Mini.parse(Palette.smallTitle("Catégories de kits"))).create();
+        Gui gui = Gui.builder().rows(ROWS).title(Mini.parse(Palette.smallTitle(Tr.t("Catégories de kits")))).create();
         Guis.fill(gui);
         List<KitCategory> categories = new ArrayList<>(service.catalog().categories().values());
         for (int index = 0; index < Math.min(45, categories.size()); index++) {
             KitCategory category = categories.get(index);
-            Card card = Card.of(KitStyle.HEX).tag("Catégorie " + category.id()).blank();
+            Card card = Card.of(KitStyle.HEX).tag(Tr.t("Catégorie ") + category.id()).blank();
             category.description().forEach(card::line);
             card.blank()
-                    .count(Card.AMOUNT, "Kits", service.catalog().inCategory(category.id()).size())
-                    .stat(Card.SORT, "Ordre", category.order())
+                    .count(Card.AMOUNT, Tr.t("Kits"), service.catalog().inCategory(category.id()).size())
+                    .stat(Card.SORT, Tr.t("Ordre"), category.order())
                     .blank()
-                    .click("Clic gauche", "renommer")
-                    .click("Clic droit", "description")
-                    .click("Shift clic gauche", "icône depuis la main")
-                    .click("Shift clic droit", "supprimer");
+                    .click(Tr.t("Clic gauche"), Tr.t("renommer"))
+                    .click(Tr.t("Clic droit"), Tr.t("description"))
+                    .click(Tr.t("Shift clic gauche"), Tr.t("icône depuis la main"))
+                    .click(Tr.t("Shift clic droit"), Tr.t("supprimer"));
             gui.setItem(index, new GuiItem(KitStyle.decorate(new ItemStack(category.icon()), category.name(),
                     card.build(), false), event -> {
                 Player viewer = (Player) event.getWhoClicked();
@@ -192,7 +194,7 @@ public final class KitAdminMenu {
                     case SHIFT_RIGHT -> {
                         int moved = editor.deleteCategory(category.id());
                         Messages.send(viewer, "kits.saved", Mini.value("id", category.id() + " (" + moved
-                                + " kit(s) sans catégorie)"));
+                                + Tr.t(" kit(s) sans catégorie)")));
                         reopen.run();
                     }
                     case SHIFT_LEFT -> {
@@ -205,18 +207,18 @@ public final class KitAdminMenu {
                         }
                         reopen.run();
                     }
-                    case RIGHT -> KitListMenu.open(viewer, new KitListMenu.Spec("Description", List.of(
-                            "Texte affiché dans l'onglet."), "Ligne de texte", true,
+                    case RIGHT -> KitListMenu.open(viewer, new KitListMenu.Spec(Tr.t("Description"), List.of(
+                            Tr.t("Texte affiché dans l'onglet.")), Tr.t("Ligne de texte"), true,
                             () -> service.catalog().category(category.id()).map(KitCategory::description)
                                     .orElse(List.of()), lines -> editor.setCategoryDescription(category.id(), lines),
                             null, Material.PAPER), reopen);
-                    default -> KitPrompts.text(viewer, "Nom affiché", true,
+                    default -> KitPrompts.text(viewer, Tr.t("Nom affiché"), true,
                             typed -> editor.setCategoryName(category.id(), typed), reopen);
                 }
             }));
         }
-        gui.setItem(ROWS, 3, KitEditorMenu.action(Material.LIME_DYE, "Nouvelle catégorie", List.of(
-                        Palette.TEXT + "L'objet en main devient l'icône."), "pour créer",
+        gui.setItem(ROWS, 3, KitEditorMenu.action(Material.LIME_DYE, Tr.t("Nouvelle catégorie"), List.of(
+                        Palette.TEXT + Tr.t("L'objet en main devient l'icône.")), Tr.t("pour créer"),
                 viewer -> ChatPrompts.open(viewer, "l'identifiant", typed -> {
                     String slug = KitEditor.slug(typed == null ? "" : typed);
                     if (!KitLoader.ID.matcher(slug).matches()) {
@@ -229,9 +231,9 @@ public final class KitAdminMenu {
                     editor.createCategory(slug, held.getType().isAir() ? Material.CHEST : held.getType());
                     reopen.run();
                 })));
-        gui.setItem(ROWS, 7, KitEditorMenu.action(Material.COMPARATOR, "Réordonner", List.of(
-                        Palette.TEXT + "Écrivez l'identifiant puis la position,", Palette.TEXT + "ex debut 1."),
-                "pour réordonner", viewer -> ChatPrompts.open(viewer, "l'identifiant et la position", typed -> {
+        gui.setItem(ROWS, 7, KitEditorMenu.action(Material.COMPARATOR, Tr.t("Réordonner"), List.of(
+                        Palette.TEXT + Tr.t("Écrivez l'identifiant puis la position,"), Palette.TEXT + Tr.t("ex debut 1.")),
+                Tr.t("pour réordonner"), viewer -> ChatPrompts.open(viewer, Tr.t("l'identifiant et la position"), typed -> {
                     String[] parts = typed == null ? new String[0] : typed.trim().split("\\s+");
                     int order = parts.length == 2 ? Numbers.parseInt(parts[1], Integer.MIN_VALUE) : Integer.MIN_VALUE;
                     if (order == Integer.MIN_VALUE || service.catalog().category(parts[0]).isEmpty()) {
@@ -249,21 +251,21 @@ public final class KitAdminMenu {
     private void settings(Player player, Runnable back) {
         Runnable reopen = () -> settings(player, back);
         KitSettings settings = service.settings();
-        Gui gui = Gui.builder().rows(4).title(Mini.parse(Palette.smallTitle("Réglages des kits"))).create();
+        Gui gui = Gui.builder().rows(4).title(Mini.parse(Palette.smallTitle(Tr.t("Réglages des kits")))).create();
         Guis.fill(gui);
-        gui.setItem(2, 2, toggle("Kits verrouillés visibles", "Affiche les kits réservés avec leur indice",
+        gui.setItem(2, 2, toggle(Tr.t("Kits verrouillés visibles"), Tr.t("Affiche les kits réservés avec leur indice"),
                 settings.showLocked(), "show-locked", reopen));
-        gui.setItem(2, 3, toggle("Rappels", "Prévient quand un kit redevient disponible", settings.reminders(),
+        gui.setItem(2, 3, toggle(Tr.t("Rappels"), Tr.t("Prévient quand un kit redevient disponible"), settings.reminders(),
                 "reminders", reopen));
-        gui.setItem(2, 4, toggle("Résumé à la connexion", "Annonce le nombre de kits disponibles",
+        gui.setItem(2, 4, toggle(Tr.t("Résumé à la connexion"), Tr.t("Annonce le nombre de kits disponibles"),
                 settings.joinSummary(), "join-summary", reopen));
-        gui.setItem(2, 5, toggle("Animations", "Coffre holographique à la récupération", settings.animation(),
+        gui.setItem(2, 5, toggle(Tr.t("Animations"), Tr.t("Coffre holographique à la récupération"), settings.animation(),
                 "animation", reopen));
-        gui.setItem(2, 6, toggle("Annonces", "Autorise les kits à s'annoncer au serveur", settings.broadcasts(),
+        gui.setItem(2, 6, toggle(Tr.t("Annonces"), Tr.t("Autorise les kits à s'annoncer au serveur"), settings.broadcasts(),
                 "broadcasts", reopen));
-        gui.setItem(2, 8, KitEditorMenu.action(Material.CLOCK, "Fuseau horaire", List.of(Palette.TEXT
-                        + settings.zone().getId(), Palette.MUTED + "Utilisé pour les remises à zéro."), "pour changer",
-                viewer -> KitPrompts.text(viewer, "ex Europe/Paris", true, typed -> {
+        gui.setItem(2, 8, KitEditorMenu.action(Material.CLOCK, Tr.t("Fuseau horaire"), List.of(Palette.TEXT
+                        + settings.zone().getId(), Palette.MUTED + Tr.t("Utilisé pour les remises à zéro.")), Tr.t("pour changer"),
+                viewer -> KitPrompts.text(viewer, Tr.t("ex Europe/Paris"), true, typed -> {
                     try {
                         java.time.ZoneId.of(typed.trim());
                         editor.setSetting("timezone", typed.trim());
@@ -271,8 +273,8 @@ public final class KitAdminMenu {
                         KitPrompts.invalid(viewer, typed);
                     }
                 }, reopen)));
-        gui.setItem(3, 4, KitEditorMenu.action(settings.voucherMaterial(), "Objet des bons", List.of(Palette.TEXT
-                        + settings.voucherMaterial().name()), "pour utiliser l'objet en main",
+        gui.setItem(3, 4, KitEditorMenu.action(settings.voucherMaterial(), Tr.t("Objet des bons"), List.of(Palette.TEXT
+                        + settings.voucherMaterial().name()), Tr.t("pour utiliser l'objet en main"),
                 viewer -> {
                     ItemStack held = viewer.getInventory().getItemInMainHand();
                     if (held.getType().isAir()) {
@@ -283,9 +285,9 @@ public final class KitAdminMenu {
                     }
                     reopen.run();
                 }));
-        gui.setItem(3, 6, KitEditorMenu.action(Material.LEAD, "Mention invendable", List.of(Palette.TEXT
+        gui.setItem(3, 6, KitEditorMenu.action(Material.LEAD, Tr.t("Mention invendable"), List.of(Palette.TEXT
                         + KitListMenu.shorten(Mini.plain(Mini.label(settings.protectedLore())))),
-                "pour modifier", viewer -> KitPrompts.text(viewer, "Ligne ajoutée", true,
+                Tr.t("pour modifier"), viewer -> KitPrompts.text(viewer, Tr.t("Ligne ajoutée"), true,
                         typed -> editor.setSetting("protected-lore", typed), reopen)));
         gui.setItem(4, Guis.BACK_SLOT, Guis.backButton(back));
         gui.setItem(4, Guis.CLOSE_SLOT, Guis.closeButton());
@@ -293,13 +295,13 @@ public final class KitAdminMenu {
     }
 
     private GuiItem toggle(String title, String description, boolean enabled, String key, Runnable reopen) {
-        List<String> lore = Card.of(KitStyle.HEX).tag("Réglage").blank()
+        List<String> lore = Card.of(KitStyle.HEX).tag(Tr.t("Réglage")).blank()
                 .line(description)
                 .blank()
-                .option(enabled, "Activé")
-                .option(!enabled, "Désactivé")
+                .option(enabled, Tr.t("Activé"))
+                .option(!enabled, Tr.t("Désactivé"))
                 .blank()
-                .click(enabled ? "pour désactiver" : "pour activer")
+                .click(enabled ? Tr.t("pour désactiver") : Tr.t("pour activer"))
                 .build();
         return new GuiItem(KitStyle.decorate(new ItemStack(enabled ? Material.LIME_DYE : Material.GRAY_DYE),
                 (enabled ? Palette.SUCCESS : Palette.MUTED) + "<b>" + title + "</b>", lore, enabled), event -> {
@@ -316,18 +318,18 @@ public final class KitAdminMenu {
         Player online = Bukkit.getPlayer(target);
         PaginatedGui gui = PaginatedGui.builder()
                 .rows(ROWS)
-                .title(Mini.parse(Palette.smallTitle("Kits de " + name)))
+                .title(Mini.parse(Palette.smallTitle(Tr.t("Kits de ") + name)))
                 .create();
         Guis.paginationBar(gui, back);
         Map<String, KitClaim> claims = service.repository().claimsOf(target);
         long total = claims.values().stream().mapToLong(KitClaim::uses).sum();
         gui.setItem(ROWS, 5, new GuiItem(KitStyle.decorate(Heads.of(target), Palette.title(Mini.escape(name)),
-                Card.of(KitStyle.HEX).tag("Joueur").blank()
-                        .count(Card.AMOUNT, "Récupérations", total)
-                        .count(Card.CATEGORY, "Kits différents", claims.size())
-                        .stat(Card.PLAYER, "Connecté", online == null ? "non" : "oui")
+                Card.of(KitStyle.HEX).tag(Tr.t("Joueur")).blank()
+                        .count(Card.AMOUNT, Tr.t("Récupérations"), total)
+                        .count(Card.CATEGORY, Tr.t("Kits différents"), claims.size())
+                        .stat(Card.PLAYER, Tr.t("Connecté"), online == null ? Tr.t("non") : Tr.t("oui"))
                         .blank()
-                        .click("Shift clic", "pour tout remettre à zéro")
+                        .click(Tr.t("Shift clic"), Tr.t("pour tout remettre à zéro"))
                         .build(), false), event -> {
             Player viewer = (Player) event.getWhoClicked();
             if (event.isShiftClick()) {
@@ -347,14 +349,14 @@ public final class KitAdminMenu {
             if (viewer != null) {
                 card.raw(KitStyle.stateLine(service.status(viewer, kit, now), now));
             }
-            card.count(Card.AMOUNT, "Récupérations", claim == null ? 0 : claim.uses())
-                    .stat(Card.TIME, "Dernière", claim == null || claim.last() <= 0L ? "jamais"
+            card.count(Card.AMOUNT, Tr.t("Récupérations"), claim == null ? 0 : claim.uses())
+                    .stat(Card.TIME, Tr.t("Dernière"), claim == null || claim.last() <= 0L ? Tr.t("jamais")
                             : "il y a " + Numbers.duration(now - claim.last()))
                     .blank()
-                    .click("Clic gauche", "effacer ses récupérations")
-                    .click("Clic droit", "rendre une récupération")
-                    .click("Shift clic gauche", "lui donner le kit")
-                    .click("Shift clic droit", "lui donner un bon");
+                    .click(Tr.t("Clic gauche"), Tr.t("effacer ses récupérations"))
+                    .click(Tr.t("Clic droit"), Tr.t("rendre une récupération"))
+                    .click(Tr.t("Shift clic gauche"), Tr.t("lui donner le kit"))
+                    .click(Tr.t("Shift clic droit"), Tr.t("lui donner un bon"));
             return new GuiItem(KitStyle.decorate(KitStyle.icon(kit), kit.name(), card.build(), claim != null), event -> {
                 Player clicker = (Player) event.getWhoClicked();
                 Guis.click(clicker);

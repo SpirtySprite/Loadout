@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.kirugoldzzzz.loadout.common.effect.Particles;
 import com.kirugoldzzzz.loadout.common.item.Inventories;
 import com.kirugoldzzzz.loadout.common.item.ItemReturn;
@@ -354,7 +356,7 @@ public final class KitService {
                         KitRewards milestone = catalog.progression().streaks().milestones().get(streak);
                         if (milestone != null) {
                             milestoneRewards.add(milestone);
-                            milestoneLabels.add("série de " + streak);
+                            milestoneLabels.add(Tr.t("série de ") + streak);
                         }
                     }
                     repository.grantMilestone(id, KIT_MARK + kit.id());
@@ -363,7 +365,7 @@ public final class KitService {
                         if (collected >= entry.getKey()
                                 && repository.grantMilestone(id, COLLECTION_MARK + entry.getKey())) {
                             milestoneRewards.add(entry.getValue());
-                            milestoneLabels.add("collection de " + entry.getKey() + " kits");
+                            milestoneLabels.add(Tr.t("collection de ") + entry.getKey() + Tr.t(" kits"));
                         }
                     }
                 }
@@ -385,14 +387,14 @@ public final class KitService {
                     celebrate(player, milestoneRewards.get(index), milestoneLabels.get(index), kit);
                 }
             } catch (RuntimeException failure) {
-                NexusLog.warn(LogTopic.KITS, "Effets du kit " + kit.id() + " incomplets pour " + player.getName(), failure);
+                NexusLog.warn(LogTopic.KITS, Tr.t("Effets du kit ") + kit.id() + Tr.t(" incomplets pour ") + player.getName(), failure);
             }
             return new Outcome(Result.SUCCESS, kit, status, delivery.stashed(), delivery.items(), null,
                     roulette ? pulls : List.of());
         } catch (Refusal refusal) {
             return Outcome.of(Result.REFUSED, kit, status(player, kit), refusal.getMessage());
         } catch (RuntimeException failure) {
-            NexusLog.warn(LogTopic.KITS, "Remise du kit " + kit.id() + " impossible pour " + player.getName(), failure);
+            NexusLog.warn(LogTopic.KITS, Tr.t("Remise du kit ") + kit.id() + Tr.t(" impossible pour ") + player.getName(), failure);
             return Outcome.of(Result.FAILED, kit, null, "failed");
         } finally {
             claiming.remove(id);
@@ -413,7 +415,7 @@ public final class KitService {
     public void finishRoulette(Player player) {
         List<ItemStack> owed = ItemReturn.claim(player.getUniqueId());
         if (!owed.isEmpty()) {
-            ItemReturn.give(player, owed, "Roulette de kit");
+            ItemReturn.give(player, owed, Tr.t("Roulette de kit"));
         }
     }
 
@@ -488,13 +490,13 @@ public final class KitService {
             });
             Messages.send(player, "kits.mastery-bought", kitResolver(kit), Mini.value("tier", next.name()));
             tierUp(player, kit, next);
-            KitJournal.self("Kit récupéré", player, next.upgrade().money(), plain(kit)
-                    + " · amélioration au palier " + next.name());
+            KitJournal.self(Tr.t("Kit récupéré"), player, next.upgrade().money(), plain(kit)
+                    + Tr.t(" · amélioration au palier ") + next.name());
             return Outcome.of(Result.SUCCESS, kit, null, null);
         } catch (Refusal refusal) {
             return Outcome.of(Result.REFUSED, kit, null, refusal.getMessage());
         } catch (RuntimeException failure) {
-            NexusLog.warn(LogTopic.KITS, "Amélioration du kit " + kit.id() + " impossible", failure);
+            NexusLog.warn(LogTopic.KITS, Tr.t("Amélioration du kit ") + kit.id() + Tr.t(" impossible"), failure);
             return Outcome.of(Result.FAILED, kit, null, "failed");
         } finally {
             claiming.remove(id);
@@ -541,15 +543,15 @@ public final class KitService {
             });
             lastClaim.put(id, now);
             List<ItemStack> vouchers = KitItems.vouchers(kit, settings(), 1);
-            ItemReturn.give(receiver, vouchers, "Kit offert");
-            KitJournal.between("Kit offert", giver, receiver.getUniqueId(), receiver.getName(),
+            ItemReturn.give(receiver, vouchers, Tr.t("Kit offert"));
+            KitJournal.between(Tr.t("Kit offert"), giver, receiver.getUniqueId(), receiver.getName(),
                     cost.money(), plain(kit) + costDetail(cost, charge));
             planReminder(owner, id, kit);
             return new Outcome(Result.SUCCESS, kit, status, 0, vouchers, null, List.of());
         } catch (Refusal refusal) {
             return Outcome.of(Result.REFUSED, kit, status(giver, kit), refusal.getMessage());
         } catch (RuntimeException failure) {
-            NexusLog.warn(LogTopic.KITS, "Cadeau du kit " + kit.id() + " impossible pour " + giver.getName(), failure);
+            NexusLog.warn(LogTopic.KITS, Tr.t("Cadeau du kit ") + kit.id() + Tr.t(" impossible pour ") + giver.getName(), failure);
             return Outcome.of(Result.FAILED, kit, null, "failed");
         } finally {
             claiming.remove(id);
@@ -558,9 +560,9 @@ public final class KitService {
 
     public void giveVouchers(Player target, Kit kit, int amount, String actor) {
         List<ItemStack> vouchers = KitItems.vouchers(kit, settings(), amount);
-        ItemReturn.give(target, vouchers, "Bons de kit");
-        KitJournal.byConsole("Bons de kit remis", target.getUniqueId(), target.getName(), 0.0D,
-                amount + " bon(s) " + plain(kit) + " par " + actor);
+        ItemReturn.give(target, vouchers, Tr.t("Bons de kit"));
+        KitJournal.byConsole(Tr.t("Bons de kit remis"), target.getUniqueId(), target.getName(), 0.0D,
+                amount + Tr.t(" bon(s) ") + plain(kit) + Tr.t(" par ") + actor);
     }
 
     private void pay(Player player, KitCost cost) {
@@ -713,16 +715,16 @@ public final class KitService {
                 animator.accept(new Claimed(player, kit, List.copyOf(delivery.items().subList(0,
                         Math.min(PREVIEW_LIMIT, delivery.items().size()))), levelAfter));
             } catch (RuntimeException failure) {
-                NexusLog.warn(LogTopic.KITS, "Animation du kit " + kit.id() + " impossible", failure);
+                NexusLog.warn(LogTopic.KITS, Tr.t("Animation du kit ") + kit.id() + Tr.t(" impossible"), failure);
             }
         }
         String detail = plain(kit) + (source == Source.MENU || source == Source.COMMAND ? ""
                 : " · " + sourceLabel(source)) + costDetail(cost, charged) + " · " + delivery.items().size()
-                + " objet(s)" + (delivery.stashed() > 0 ? ", " + delivery.stashed() + " en réserve" : "")
-                + (streak > 1 ? " · série " + streak : "") + (bonus > 0 ? " · bonus " + bonus + "%" : "");
-        KitJournal.self("Kit récupéré", player, charged ? cost.money() : 0.0D, detail);
+                + Tr.t(" objet(s)") + (delivery.stashed() > 0 ? ", " + delivery.stashed() + Tr.t(" en réserve") : "")
+                + (streak > 1 ? Tr.t(" · série ") + streak : "") + (bonus > 0 ? " · bonus " + bonus + "%" : "");
+        KitJournal.self(Tr.t("Kit récupéré"), player, charged ? cost.money() : 0.0D, detail);
         if (kit.rewards().money() > 0.0D) {
-            KitJournal.self("Argent de kit", player, Numbers.round(kit.rewards().money() * (100 + bonus)
+            KitJournal.self(Tr.t("Argent de kit"), player, Numbers.round(kit.rewards().money() * (100 + bonus)
                     / 100.0D), plain(kit));
         }
         planReminder(ownerOf(player, kit), player.getUniqueId(), kit);
@@ -771,7 +773,7 @@ public final class KitService {
             player.playSound(player, Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.6F, 1.2F);
         }
         if (rewards.money() > 0.0D) {
-            KitJournal.self("Argent de kit", player, rewards.money(), "palier " + label);
+            KitJournal.self(Tr.t("Argent de kit"), player, rewards.money(), Tr.t("palier ") + label);
         }
     }
 
@@ -796,23 +798,23 @@ public final class KitService {
             parts.add(Numbers.money(cost.money()));
         }
         if (cost.shards() > 0L) {
-            parts.add(Numbers.count(cost.shards()) + " fragments");
+            parts.add(Numbers.count(cost.shards()) + Tr.t(" fragments"));
         }
         if (cost.levels() > 0) {
-            parts.add(cost.levels() + " niveaux");
+            parts.add(cost.levels() + Tr.t(" niveaux"));
         }
-        return " · payé " + String.join(", ", parts);
+        return Tr.t(" · payé ") + String.join(", ", parts);
     }
 
     static String sourceLabel(Source source) {
         return switch (source) {
-            case MENU, COMMAND -> "réclamé";
-            case VOUCHER -> "bon utilisé";
+            case MENU, COMMAND -> Tr.t("réclamé");
+            case VOUCHER -> Tr.t("bon utilisé");
             case GIFT -> "offert";
-            case FIRST_JOIN -> "première connexion";
-            case RESPAWN -> "réapparition";
-            case BULK -> "tout récupérer";
-            case ADMIN -> "donné par un admin";
+            case FIRST_JOIN -> Tr.t("première connexion");
+            case RESPAWN -> Tr.t("réapparition");
+            case BULK -> Tr.t("tout récupérer");
+            case ADMIN -> Tr.t("donné par un admin");
         };
     }
 

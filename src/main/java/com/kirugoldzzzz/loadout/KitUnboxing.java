@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.kirugoldzzzz.loadout.common.log.LogTopic;
 import com.kirugoldzzzz.loadout.common.log.NexusLog;
 import com.kirugoldzzzz.loadout.common.scheduler.Scheduling;
@@ -129,8 +131,8 @@ public final class KitUnboxing {
             ceremony.tick(stage, tick);
         } catch (RuntimeException failure) {
             failures++;
-            NexusLog.warn(LogTopic.KITS, "Cérémonie " + ceremony.getClass().getSimpleName() + " interrompue au tick "
-                    + tick + " pour " + player.getName(), failure);
+            NexusLog.warn(LogTopic.KITS, Tr.t("Cérémonie ") + ceremony.getClass().getSimpleName() + Tr.t(" interrompue au tick ")
+                    + tick + Tr.t(" pour ") + player.getName(), failure);
             if (failures >= FAILURE_LIMIT) {
                 finish();
                 return;

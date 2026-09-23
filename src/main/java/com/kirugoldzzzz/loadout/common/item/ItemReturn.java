@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout.common.item;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.kirugoldzzzz.loadout.common.log.LogTopic;
 import com.kirugoldzzzz.loadout.common.log.NexusLog;
 import com.kirugoldzzzz.loadout.common.scheduler.Scheduling;
@@ -15,7 +17,7 @@ import java.util.UUID;
 
 public final class ItemReturn {
 
-    public static final String DEFAULT_SOURCE = "Inventaire plein";
+    public static final String DEFAULT_SOURCE = Tr.t("Inventaire plein");
 
     private static volatile RecoveryRepository recovery;
     private static volatile Overflow overflow;
@@ -80,8 +82,8 @@ public final class ItemReturn {
                 sink.store(player, leftovers, source == null || source.isBlank() ? DEFAULT_SOURCE : source);
                 return;
             } catch (RuntimeException failure) {
-                NexusLog.warn(LogTopic.STORAGE, "Réserve indisponible pour " + player.getName()
-                        + ", objets mis de côté jusqu'à la prochaine connexion", failure);
+                NexusLog.warn(LogTopic.STORAGE, Tr.t("Réserve indisponible pour ") + player.getName()
+                        + Tr.t(", objets mis de côté jusqu'à la prochaine connexion"), failure);
             }
         }
         park(player.getUniqueId(), leftovers);

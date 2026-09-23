@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.kirugoldzzzz.loadout.common.config.ConfigFile;
 import com.kirugoldzzzz.loadout.common.config.Sections;
 import com.kirugoldzzzz.loadout.common.item.ItemSpec;
@@ -69,13 +71,13 @@ public final class KitEditor {
         ConfigurationSection section = child(config.get(), root).createSection(key);
         section.set("name", name);
         section.set("claims", Math.max(1, claims));
-        apply(null, "palier de maîtrise " + key);
+        apply(null, Tr.t("palier de maîtrise ") + key);
         return key;
     }
 
     public void setTierValue(String root, String key, String field, Object value) {
         child(child(config.get(), root), key).set(field, value);
-        apply(null, "palier " + key + " " + field);
+        apply(null, Tr.t("palier ") + key + " " + field);
     }
 
     public void removeTier(String root, String key) {
@@ -83,19 +85,19 @@ public final class KitEditor {
         if (child(config.get(), root).getKeys(false).isEmpty()) {
             config.get().set(root, null);
         }
-        apply(null, "retrait du palier " + key);
+        apply(null, Tr.t("retrait du palier ") + key);
     }
 
     public void addTierItem(String root, String key, ItemStack item) {
         ConfigurationSection items = child(child(child(config.get(), root), key), "items");
         String entry = uniqueId(root + "." + key + ".items", item.getType().name().toLowerCase(Locale.ROOT));
         ItemSpec.write(items.createSection(entry), item);
-        apply(null, "objet bonus du palier " + key);
+        apply(null, Tr.t("objet bonus du palier ") + key);
     }
 
     public void clearTierItems(String root, String key) {
         child(child(config.get(), root), key).set("items", null);
-        apply(null, "objets bonus du palier " + key);
+        apply(null, Tr.t("objets bonus du palier ") + key);
     }
 
     public void copyTemplate(String kit) {
@@ -105,12 +107,12 @@ public final class KitEditor {
         if (template != null) {
             Sections.copy(template, config.get().createSection(target));
         }
-        apply(kit, "maîtrise personnalisée");
+        apply(kit, Tr.t("maîtrise personnalisée"));
     }
 
     public void clearMastery(String kit) {
         config.get().set(masteryRoot(kit), null);
-        apply(kit, "maîtrise par défaut");
+        apply(kit, Tr.t("maîtrise par défaut"));
     }
 
     public String addMilestone(String root, int count) {
@@ -119,7 +121,7 @@ public final class KitEditor {
         if (!section.contains("money")) {
             section.set("money", 0);
         }
-        apply(null, "palier " + root + " " + key);
+        apply(null, Tr.t("palier ") + root + " " + key);
         return key;
     }
 
@@ -128,11 +130,11 @@ public final class KitEditor {
     }
 
     public void setLifetime(String id, long millis) {
-        set(id, "item-lifetime", millis <= 0L ? null : KitDurations.write(millis), "durée de vie des objets");
+        set(id, "item-lifetime", millis <= 0L ? null : KitDurations.write(millis), Tr.t("durée de vie des objets"));
     }
 
     public void setStatistics(String id, List<String> lines) {
-        set(id, "requirements.statistics", listOrNull(lines), "défis");
+        set(id, "requirements.statistics", listOrNull(lines), Tr.t("défis"));
     }
 
     public boolean exists(String id) {
@@ -144,7 +146,7 @@ public final class KitEditor {
         ConfigurationSection section = kits().createSection(id);
         String title = Character.toUpperCase(id.charAt(0)) + id.substring(1).replace('_', ' ');
         section.set("name", "<#A78BFA><b>Kit " + title + "</b>");
-        section.set("description", new ArrayList<>(List.of("Un nouveau kit à personnaliser.")));
+        section.set("description", new ArrayList<>(List.of(Tr.t("Un nouveau kit à personnaliser."))));
         section.set("order", kits().getKeys(false).size());
         section.set("cooldown", "1j");
         if (icon != null && !icon.getType().isAir()) {
@@ -154,7 +156,7 @@ public final class KitEditor {
         } else {
             section.set("icon.material", Material.CHEST.name());
         }
-        apply(id, "création");
+        apply(id, Tr.t("création"));
         return id;
     }
 
@@ -164,13 +166,13 @@ public final class KitEditor {
         ConfigurationSection target = kits().createSection(copy);
         Sections.copy(source, target);
         target.set("name", source.getString("name", id) + " <#6E7681>(copie)");
-        apply(copy, "copie de " + id);
+        apply(copy, Tr.t("copie de ") + id);
         return copy;
     }
 
     public void delete(String id) {
         kits().set(normalize(id), null);
-        apply(null, "suppression de " + id);
+        apply(null, Tr.t("suppression de ") + id);
     }
 
     public void setName(String id, String name) {
@@ -182,7 +184,7 @@ public final class KitEditor {
     }
 
     public void setHint(String id, List<String> lines) {
-        set(id, "hint", listOrNull(lines), "indice de déblocage");
+        set(id, "hint", listOrNull(lines), Tr.t("indice de déblocage"));
     }
 
     public void setIcon(String id, ItemStack icon) {
@@ -191,15 +193,15 @@ public final class KitEditor {
         ItemStack single = icon.clone();
         single.setAmount(1);
         ItemSpec.write(section.createSection("icon"), single);
-        apply(id, "icône");
+        apply(id, Tr.t("icône"));
     }
 
     public void setCategory(String id, String category) {
-        set(id, "category", blankToNull(category), "catégorie");
+        set(id, "category", blankToNull(category), Tr.t("catégorie"));
     }
 
     public void setOrder(String id, int order) {
-        set(id, "order", order, "ordre");
+        set(id, "order", order, Tr.t("ordre"));
     }
 
     public void setPermission(String id, String permission) {
@@ -207,27 +209,27 @@ public final class KitEditor {
     }
 
     public void setHideLocked(String id, boolean hide) {
-        set(id, "hide-locked", hide ? Boolean.TRUE : null, "masquage");
+        set(id, "hide-locked", hide ? Boolean.TRUE : null, Tr.t("masquage"));
     }
 
     public void setCooldown(String id, long millis) {
-        set(id, "cooldown", millis <= 0L ? null : KitDurations.write(millis), "recharge");
+        set(id, "cooldown", millis <= 0L ? null : KitDurations.write(millis), Tr.t("recharge"));
     }
 
     public void setReset(String id, KitReset reset) {
-        set(id, "reset", reset == KitReset.NONE ? null : reset.id(), "réinitialisation");
+        set(id, "reset", reset == KitReset.NONE ? null : reset.id(), Tr.t("réinitialisation"));
     }
 
     public void setResetTime(String id, LocalTime time) {
-        set(id, "reset-time", time == null ? null : KitSchedule.TIME.format(time), "heure de réinitialisation");
+        set(id, "reset-time", time == null ? null : KitSchedule.TIME.format(time), Tr.t("heure de réinitialisation"));
     }
 
     public void setResetDay(String id, DayOfWeek day) {
-        set(id, "reset-day", day == null ? null : KitSchedule.dayName(day), "jour de réinitialisation");
+        set(id, "reset-day", day == null ? null : KitSchedule.dayName(day), Tr.t("jour de réinitialisation"));
     }
 
     public void setMaxUses(String id, int uses) {
-        set(id, "max-uses", uses <= 0 ? null : uses, "utilisations maximum");
+        set(id, "max-uses", uses <= 0 ? null : uses, Tr.t("utilisations maximum"));
     }
 
     public void setStock(String id, int stock) {
@@ -235,35 +237,35 @@ public final class KitEditor {
     }
 
     public void setCostMoney(String id, double money) {
-        set(id, "cost.money", money <= 0.0D ? null : Numbers.round(money), "prix en argent");
+        set(id, "cost.money", money <= 0.0D ? null : Numbers.round(money), Tr.t("prix en argent"));
     }
 
     public void setCostShards(String id, long shards) {
-        set(id, "cost.shards", shards <= 0L ? null : shards, "prix en fragments");
+        set(id, "cost.shards", shards <= 0L ? null : shards, Tr.t("prix en fragments"));
     }
 
     public void setCostLevels(String id, int levels) {
-        set(id, "cost.levels", levels <= 0 ? null : levels, "prix en niveaux");
+        set(id, "cost.levels", levels <= 0 ? null : levels, Tr.t("prix en niveaux"));
     }
 
     public void setPlaytime(String id, long millis) {
-        set(id, "requirements.playtime", millis <= 0L ? null : KitDurations.write(millis), "temps de jeu requis");
+        set(id, "requirements.playtime", millis <= 0L ? null : KitDurations.write(millis), Tr.t("temps de jeu requis"));
     }
 
     public void setRequiredKits(String id, List<String> kits) {
-        set(id, "requirements.kits", listOrNull(kits), "kits requis");
+        set(id, "requirements.kits", listOrNull(kits), Tr.t("kits requis"));
     }
 
     public void setWorlds(String id, List<String> worlds) {
-        set(id, "requirements.worlds", listOrNull(worlds), "mondes");
+        set(id, "requirements.worlds", listOrNull(worlds), Tr.t("mondes"));
     }
 
     public void setMinimumBalance(String id, double balance) {
-        set(id, "requirements.balance", balance <= 0.0D ? null : Numbers.round(balance), "solde minimum");
+        set(id, "requirements.balance", balance <= 0.0D ? null : Numbers.round(balance), Tr.t("solde minimum"));
     }
 
     public void setMinimumLevel(String id, int level) {
-        set(id, "requirements.level", level <= 0 ? null : level, "niveau minimum");
+        set(id, "requirements.level", level <= 0 ? null : level, Tr.t("niveau minimum"));
     }
 
     public void setFrom(String id, long at, ZoneId zone) {
@@ -271,7 +273,7 @@ public final class KitEditor {
     }
 
     public void setUntil(String id, long at, ZoneId zone) {
-        set(id, "requirements.until", at <= 0L ? null : KitSchedule.writeDate(at, zone), "date de fermeture");
+        set(id, "requirements.until", at <= 0L ? null : KitSchedule.writeDate(at, zone), Tr.t("date de fermeture"));
     }
 
     public void setDays(String id, Set<DayOfWeek> days) {
@@ -287,7 +289,7 @@ public final class KitEditor {
     public void setHours(String id, LocalTime opens, LocalTime closes) {
         String value = opens == null || closes == null ? null
                 : KitSchedule.TIME.format(opens) + "-" + KitSchedule.TIME.format(closes);
-        set(id, "requirements.hours", value, "plage horaire");
+        set(id, "requirements.hours", value, Tr.t("plage horaire"));
     }
 
     public void setReductions(String id, Map<String, Integer> reductions) {
@@ -297,7 +299,7 @@ public final class KitEditor {
                 lines.add(permission.trim() + ":" + Math.min(100, percent));
             }
         });
-        set(id, "cooldown-reductions", lines.isEmpty() ? null : lines, "réductions de recharge");
+        set(id, "cooldown-reductions", lines.isEmpty() ? null : lines, Tr.t("réductions de recharge"));
     }
 
     public void setOption(String id, KitOptions.Flag flag, boolean value) {
@@ -315,15 +317,15 @@ public final class KitEditor {
                 }
             });
         }
-        apply(id, "contenu");
+        apply(id, Tr.t("contenu"));
     }
 
     public void setPoolRolls(String id, int rolls) {
-        set(id, "pool.rolls", Math.max(0, Math.min(KitPool.MAXIMUM_ROLLS, rolls)), "tirages aléatoires");
+        set(id, "pool.rolls", Math.max(0, Math.min(KitPool.MAXIMUM_ROLLS, rolls)), Tr.t("tirages aléatoires"));
     }
 
     public void setPoolUnique(String id, boolean unique) {
-        set(id, "pool.unique", unique ? null : Boolean.FALSE, "tirages sans doublon");
+        set(id, "pool.unique", unique ? null : Boolean.FALSE, Tr.t("tirages sans doublon"));
     }
 
     public String addPoolEntry(String id, ItemStack item) {
@@ -337,12 +339,12 @@ public final class KitEditor {
         if (!kit(id).isSet("pool.rolls")) {
             kit(id).set("pool.rolls", 1);
         }
-        apply(id, "entrée aléatoire " + entry);
+        apply(id, Tr.t("entrée aléatoire ") + entry);
         return entry;
     }
 
     public void setPoolWeight(String id, String entry, int weight) {
-        set(id, "pool.entries." + entry + ".weight", Math.max(1, weight), "poids de " + entry);
+        set(id, "pool.entries." + entry + ".weight", Math.max(1, weight), Tr.t("poids de ") + entry);
     }
 
     public void setPoolAmounts(String id, String entry, int minimum, int maximum) {
@@ -350,23 +352,23 @@ public final class KitEditor {
         int low = Math.max(1, minimum);
         section.set("min-amount", low);
         section.set("max-amount", Math.max(low, maximum));
-        apply(id, "quantités de " + entry);
+        apply(id, Tr.t("quantités de ") + entry);
     }
 
     public void removePoolEntry(String id, String entry) {
-        set(id, "pool.entries." + entry, null, "retrait de " + entry);
+        set(id, "pool.entries." + entry, null, Tr.t("retrait de ") + entry);
     }
 
     public void setRewardMoney(String id, double money) {
-        set(id, "rewards.money", money <= 0.0D ? null : Numbers.round(money), "argent offert");
+        set(id, "rewards.money", money <= 0.0D ? null : Numbers.round(money), Tr.t("argent offert"));
     }
 
     public void setRewardShards(String id, long shards) {
-        set(id, "rewards.shards", shards <= 0L ? null : shards, "fragments offerts");
+        set(id, "rewards.shards", shards <= 0L ? null : shards, Tr.t("fragments offerts"));
     }
 
     public void setRewardLevels(String id, int levels) {
-        set(id, "rewards.levels", levels <= 0 ? null : levels, "niveaux offerts");
+        set(id, "rewards.levels", levels <= 0 ? null : levels, Tr.t("niveaux offerts"));
     }
 
     public void setRewardKeys(String id, String crate, int amount) {
@@ -375,16 +377,16 @@ public final class KitEditor {
         if (section.getKeys(false).isEmpty()) {
             kit(id).set("rewards.keys", null);
         }
-        apply(id, "clés offertes " + crate);
+        apply(id, Tr.t("clés offertes ") + crate);
     }
 
     public void setRewardList(String id, String list, List<String> values) {
-        set(id, "rewards." + list, listOrNull(values), "liste " + list);
+        set(id, "rewards." + list, listOrNull(values), Tr.t("liste ") + list);
     }
 
     public void setSetting(String key, Object value) {
         child(config.get(), "settings").set(key, value);
-        apply(null, "réglage " + key);
+        apply(null, Tr.t("réglage ") + key);
     }
 
     public String createCategory(String requested, Material icon) {
@@ -396,28 +398,28 @@ public final class KitEditor {
         section.set("name", "<#22D3EE><b>" + Character.toUpperCase(id.charAt(0)) + id.substring(1) + "</b>");
         section.set("icon", (icon == null ? Material.CHEST : icon).name());
         section.set("order", categories().getKeys(false).size());
-        apply(null, "catégorie " + id);
+        apply(null, Tr.t("catégorie ") + id);
         return id;
     }
 
     public void setCategoryName(String id, String name) {
         child(categories(), normalize(id)).set("name", blankToNull(name));
-        apply(null, "nom de catégorie " + id);
+        apply(null, Tr.t("nom de catégorie ") + id);
     }
 
     public void setCategoryIcon(String id, Material icon) {
         child(categories(), normalize(id)).set("icon", icon.name());
-        apply(null, "icône de catégorie " + id);
+        apply(null, Tr.t("icône de catégorie ") + id);
     }
 
     public void setCategoryOrder(String id, int order) {
         child(categories(), normalize(id)).set("order", order);
-        apply(null, "ordre de catégorie " + id);
+        apply(null, Tr.t("ordre de catégorie ") + id);
     }
 
     public void setCategoryDescription(String id, List<String> lines) {
         child(categories(), normalize(id)).set("description", listOrNull(lines));
-        apply(null, "description de catégorie " + id);
+        apply(null, Tr.t("description de catégorie ") + id);
     }
 
     public int deleteCategory(String id) {
@@ -431,7 +433,7 @@ public final class KitEditor {
                 moved++;
             }
         }
-        apply(null, "suppression de la catégorie " + id);
+        apply(null, Tr.t("suppression de la catégorie ") + id);
         return moved;
     }
 
@@ -463,11 +465,11 @@ public final class KitEditor {
         boolean saved = saver.get();
         reload.accept(config.get());
         if (!saved && change != null) {
-            NexusLog.warn(LogTopic.KITS, "kits.yml n'a pas pu être enregistré : " + change);
-            StaffAlert.warning(LogTopic.KITS, "Configuration des kits non enregistrée")
-                    .summary("kits.yml n'a pas pu être écrit, le changement sera perdu au redémarrage")
-                    .detail(Card.CATEGORY, "Kit", id == null ? "Général" : id)
-                    .detail(Card.SEARCH, "Changement", change)
+            NexusLog.warn(LogTopic.KITS, Tr.t("kits.yml n'a pas pu être enregistré : ") + change);
+            StaffAlert.warning(LogTopic.KITS, Tr.t("Configuration des kits non enregistrée"))
+                    .summary(Tr.t("kits.yml n'a pas pu être écrit, le changement sera perdu au redémarrage"))
+                    .detail(Card.CATEGORY, Tr.t("Kit"), id == null ? Tr.t("Général") : id)
+                    .detail(Card.SEARCH, Tr.t("Changement"), change)
                     .send();
         }
         return saved;

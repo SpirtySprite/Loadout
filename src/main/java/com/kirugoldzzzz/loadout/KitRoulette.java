@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.kirugoldzzzz.loadout.common.effect.Particles;
 import com.foliagui.animation.GuiAnimation;
 import com.foliagui.gui.Gui;
@@ -64,7 +66,7 @@ public final class KitRoulette {
         }
         Gui gui = Gui.builder()
                 .rows(5)
-                .title(Mini.parse(Palette.smallTitle("Roulette mystère")))
+                .title(Mini.parse(Palette.smallTitle(Tr.t("Roulette mystère"))))
                 .create();
         Guis.fill(gui);
         AtomicBoolean finished = new AtomicBoolean();
@@ -150,8 +152,8 @@ public final class KitRoulette {
                 won.add(display(landed));
                 ItemStack center = display(landed);
                 gui.updateItem(Guis.slot(3, 1 + CENTER), new GuiItem(KitStyle.decorate(center,
-                        Palette.SUCCESS + "<b>" + Card.small("Gagné") + "</b>", Card.of(KitStyle.HEX).blank()
-                                .stat(Card.AMOUNT, "Quantité", landed.amount()).build(), true),
+                        Palette.SUCCESS + "<b>" + Card.small(Tr.t("Gagné")) + "</b>", Card.of(KitStyle.HEX).blank()
+                                .stat(Card.AMOUNT, Tr.t("Quantité"), landed.amount()).build(), true),
                         event -> event.setCancelled(true)));
                 player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 0.6F, 1.5F + pull[0] * 0.1F);
                 holdUntil[0] = now + HOLD;
@@ -210,9 +212,9 @@ public final class KitRoulette {
         for (int index = 0; index < shown; index++) {
             ItemStack item = display(pulls.get(index));
             gui.updateItem(Guis.slot(3, start + index), new GuiItem(KitStyle.decorate(item,
-                    Palette.SUCCESS + "<b>" + Card.small("Obtenu") + "</b>", Card.of(KitStyle.HEX).blank()
-                            .stat(Card.AMOUNT, "Quantité", pulls.get(index).amount())
-                            .line("Déjà dans votre inventaire")
+                    Palette.SUCCESS + "<b>" + Card.small(Tr.t("Obtenu")) + "</b>", Card.of(KitStyle.HEX).blank()
+                            .stat(Card.AMOUNT, Tr.t("Quantité"), pulls.get(index).amount())
+                            .line(Tr.t("Déjà dans votre inventaire"))
                             .build(), true), event -> event.setCancelled(true)));
         }
         won.clear();
@@ -238,11 +240,11 @@ public final class KitRoulette {
     }
 
     private static GuiItem header(Kit kit, int done, int total) {
-        return new GuiItem(KitStyle.decorate(KitStyle.icon(kit), kit.name(), Card.of(KitStyle.HEX).tag("Roulette")
+        return new GuiItem(KitStyle.decorate(KitStyle.icon(kit), kit.name(), Card.of(KitStyle.HEX).tag(Tr.t("Roulette"))
                 .blank()
-                .stat(Card.CHANCE, "Tirages", done + " / " + total)
-                .line("Fermer le menu vous donne")
-                .line("immédiatement les objets.")
+                .stat(Card.CHANCE, Tr.t("Tirages"), done + " / " + total)
+                .line(Tr.t("Fermer le menu vous donne"))
+                .line(Tr.t("immédiatement les objets."))
                 .build(), true), event -> event.setCancelled(true));
     }
 }

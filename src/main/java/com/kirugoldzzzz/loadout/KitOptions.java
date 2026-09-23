@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 public record KitOptions(boolean autoEquip, boolean protectItems, boolean announce, boolean animation,
                          boolean firstJoin, boolean respawn, boolean giftable, boolean voucher,
                          boolean voucherIgnoresLimits, boolean confirm, boolean roulette, boolean team,
@@ -9,20 +11,20 @@ public record KitOptions(boolean autoEquip, boolean protectItems, boolean announ
             true, true, false, false, true, true);
 
     public enum Flag {
-        AUTO_EQUIP("auto-equip", "Équipement automatique", "Enfile armure et bouclier si les emplacements sont libres"),
-        PROTECT_ITEMS("protect-items", "Objets invendables", "Les objets du kit ne passent ni au /sell ni aux enchères"),
-        ANNOUNCE("announce", "Annonce publique", "Tout le serveur voit qui récupère ce kit"),
-        ANIMATION("animation", "Animation d'ouverture", "Coffre holographique et objets qui volent vers le joueur"),
-        FIRST_JOIN("first-join", "Première connexion", "Donné automatiquement à la toute première connexion"),
-        RESPAWN("respawn", "À la réapparition", "Redonné après une mort dès qu'il est disponible"),
-        GIFTABLE("giftable", "Peut être offert", "Un joueur peut payer ce kit pour un autre"),
-        VOUCHER("voucher", "Bons physiques", "Le kit existe aussi sous forme de bon à utiliser"),
-        VOUCHER_IGNORES_LIMITS("voucher-ignores-limits", "Bons sans délai", "Un bon ignore recharge, limites et conditions"),
-        CONFIRM("confirm", "Confirmation d'achat", "Demande une confirmation quand le kit coûte quelque chose"),
-        ROULETTE("roulette", "Roulette mystère", "Le tirage aléatoire se révèle dans une roulette animée"),
-        TEAM("team", "Kit d'équipe", "Une seule recharge partagée par toute l'équipe"),
-        STREAKS("streaks", "Séries", "Récupérer à chaque remise à zéro fait grimper un bonus"),
-        MASTERY("mastery", "Maîtrise", "Le kit monte en palier à force d'être récupéré");
+        AUTO_EQUIP("auto-equip", Tr.t("Équipement automatique"), Tr.t("Enfile armure et bouclier si les emplacements sont libres")),
+        PROTECT_ITEMS("protect-items", Tr.t("Objets invendables"), Tr.t("Les objets du kit ne passent ni au /sell ni aux enchères")),
+        ANNOUNCE("announce", Tr.t("Annonce publique"), Tr.t("Tout le serveur voit qui récupère ce kit")),
+        ANIMATION("animation", Tr.t("Animation d'ouverture"), Tr.t("Coffre holographique et objets qui volent vers le joueur")),
+        FIRST_JOIN("first-join", Tr.t("Première connexion"), Tr.t("Donné automatiquement à la toute première connexion")),
+        RESPAWN("respawn", Tr.t("À la réapparition"), Tr.t("Redonné après une mort dès qu'il est disponible")),
+        GIFTABLE("giftable", Tr.t("Peut être offert"), Tr.t("Un joueur peut payer ce kit pour un autre")),
+        VOUCHER("voucher", Tr.t("Bons physiques"), Tr.t("Le kit existe aussi sous forme de bon à utiliser")),
+        VOUCHER_IGNORES_LIMITS("voucher-ignores-limits", Tr.t("Bons sans délai"), Tr.t("Un bon ignore recharge, limites et conditions")),
+        CONFIRM("confirm", Tr.t("Confirmation d'achat"), Tr.t("Demande une confirmation quand le kit coûte quelque chose")),
+        ROULETTE("roulette", Tr.t("Roulette mystère"), Tr.t("Le tirage aléatoire se révèle dans une roulette animée")),
+        TEAM("team", Tr.t("Kit d'équipe"), Tr.t("Une seule recharge partagée par toute l'équipe")),
+        STREAKS("streaks", Tr.t("Séries"), Tr.t("Récupérer à chaque remise à zéro fait grimper un bonus")),
+        MASTERY("mastery", Tr.t("Maîtrise"), Tr.t("Le kit monte en palier à force d'être récupéré"));
 
         private final String key;
         private final String label;

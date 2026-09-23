@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.kirugoldzzzz.loadout.common.gui.Guis;
 import com.kirugoldzzzz.loadout.common.scheduler.Scheduling;
 import com.kirugoldzzzz.loadout.common.text.Card;
@@ -43,7 +45,7 @@ public final class KitContentsEditor implements InventoryHolder {
         this.editor = editor;
         this.kit = kit.id();
         this.back = back;
-        this.inventory = Bukkit.createInventory(this, SIZE, Mini.parse(Palette.smallTitle("Contenu du kit")));
+        this.inventory = Bukkit.createInventory(this, SIZE, Mini.parse(Palette.smallTitle(Tr.t("Contenu du kit"))));
         kit.contents().forEach((slot, item) -> {
             int editorSlot = KitSlots.editorSlot(slot);
             if (editorSlot >= 0) {
@@ -68,36 +70,36 @@ public final class KitContentsEditor implements InventoryHolder {
             inventory.setItem(slot, pane);
         }
         inventory.setItem(CAPTURE, KitStyle.decorate(new ItemStack(Material.ARMOR_STAND),
-                Palette.heading("Copier mon inventaire"), Card.of(KitStyle.HEX).blank()
-                        .line("Remplace le contenu par une copie")
-                        .line("exacte de votre inventaire, armure")
-                        .line("et main secondaire comprises.")
-                        .blank().click("pour copier").build(), false));
+                Palette.heading(Tr.t("Copier mon inventaire")), Card.of(KitStyle.HEX).blank()
+                        .line(Tr.t("Remplace le contenu par une copie"))
+                        .line(Tr.t("exacte de votre inventaire, armure"))
+                        .line(Tr.t("et main secondaire comprises."))
+                        .blank().click(Tr.t("pour copier")).build(), false));
         inventory.setItem(CLEAR, KitStyle.decorate(new ItemStack(Material.LAVA_BUCKET),
-                Palette.ERROR + "<b>Tout vider</b>", Card.of(Palette.ERROR_HEX).blank()
-                        .line("Retire tous les objets du kit.")
-                        .blank().click("Shift clic", "pour vider").build(), false));
+                Palette.ERROR + Tr.t("<b>Tout vider</b>"), Card.of(Palette.ERROR_HEX).blank()
+                        .line(Tr.t("Retire tous les objets du kit."))
+                        .blank().click(Tr.t("Shift clic"), Tr.t("pour vider")).build(), false));
         inventory.setItem(CANCEL, KitStyle.decorate(new ItemStack(Material.BARRIER),
                 Palette.ERROR + "<b>Annuler</b>", Card.of(Palette.ERROR_HEX).blank()
-                        .line("Ferme sans enregistrer.")
-                        .blank().click("pour annuler").build(), false));
-        inventory.setItem(INFO, KitStyle.decorate(new ItemStack(Material.BOOK), Palette.heading("Disposition"),
+                        .line(Tr.t("Ferme sans enregistrer."))
+                        .blank().click(Tr.t("pour annuler")).build(), false));
+        inventory.setItem(INFO, KitStyle.decorate(new ItemStack(Material.BOOK), Palette.heading(Tr.t("Disposition")),
                 Card.of(KitStyle.HEX).blank()
-                        .line("Lignes 1 à 3 : inventaire")
-                        .line("Ligne 4 : barre rapide")
-                        .line("Ligne 5 : casque, plastron,")
-                        .line("jambières, bottes, main secondaire")
+                        .line(Tr.t("Lignes 1 à 3 : inventaire"))
+                        .line(Tr.t("Ligne 4 : barre rapide"))
+                        .line(Tr.t("Ligne 5 : casque, plastron,"))
+                        .line(Tr.t("jambières, bottes, main secondaire"))
                         .blank()
-                        .line("Chaque objet est remis au même")
-                        .line("emplacement s'il est libre.")
+                        .line(Tr.t("Chaque objet est remis au même"))
+                        .line(Tr.t("emplacement s'il est libre."))
                         .blank()
-                        .line("Fermer le menu enregistre.")
+                        .line(Tr.t("Fermer le menu enregistre."))
                         .build(), false));
         inventory.setItem(SAVE, KitStyle.decorate(new ItemStack(Material.LIME_CONCRETE),
                 Palette.SUCCESS + "<b>Enregistrer</b>", Card.of(Palette.SUCCESS_HEX).blank()
-                        .line("Enregistre le contenu et revient")
-                        .line("à l'éditeur du kit.")
-                        .blank().click("pour enregistrer").build(), true));
+                        .line(Tr.t("Enregistre le contenu et revient"))
+                        .line(Tr.t("à l'éditeur du kit."))
+                        .blank().click(Tr.t("pour enregistrer")).build(), true));
     }
 
     void click(InventoryClickEvent event) {

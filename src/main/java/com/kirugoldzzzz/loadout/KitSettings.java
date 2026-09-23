@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import org.bukkit.Material;
 
 import java.time.ZoneId;
@@ -10,13 +12,13 @@ public record KitSettings(ZoneId zone, boolean showLocked, boolean reminders, bo
                           List<String> voucherLore, long firstJoinDelayTicks, long claimSpacingMillis) {
 
     public static final String DEFAULT_ZONE = "Europe/Paris";
-    public static final String DEFAULT_PROTECTED_LORE = "<#6E7681>⛓ Objet de kit, invendable";
-    public static final String DEFAULT_VOUCHER_NAME = "<#A78BFA><b>Bon de kit</b> <#6E7681>▸</#6E7681> <kit>";
+    public static final String DEFAULT_PROTECTED_LORE = Tr.t("<#6E7681>⛓ Objet de kit, invendable");
+    public static final String DEFAULT_VOUCHER_NAME = Tr.t("<#A78BFA><b>Bon de kit</b> <#6E7681>▸</#6E7681> <kit>");
     public static final List<String> DEFAULT_VOUCHER_LORE = List.of(
             "<#6E7681>[ʙᴏɴ ᴅᴇ ᴋɪᴛ]",
             "",
-            "<#C9D1D9>Ce bon contient le kit <kit><#C9D1D9>.",
-            "<#C9D1D9>Il se garde, s'échange et s'offre.",
+            Tr.t("<#C9D1D9>Ce bon contient le kit <kit><#C9D1D9>."),
+            Tr.t("<#C9D1D9>Il se garde, s'échange et s'offre."),
             "",
             "<#FBBF24>ᐅ <b>ᴄʟɪᴄ ᴅʀᴏɪᴛ</b> <#C9D1D9>pour l'ouvrir");
 

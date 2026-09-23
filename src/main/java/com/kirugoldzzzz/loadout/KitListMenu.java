@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.foliagui.gui.Gui;
 import com.foliagui.item.GuiItem;
 import com.kirugoldzzzz.loadout.common.gui.Guis;
@@ -41,7 +43,7 @@ final class KitListMenu {
             gui.setItem(index, entry(spec, values, index, reopen));
         }
         gui.setItem(ROWS, 3, Guis.button(Material.LIME_DYE, Palette.SUCCESS + "<b>Ajouter</b>",
-                Card.of(KitStyle.HEX).blank().line(spec.prompt()).blank().click("pour écrire une ligne").build(),
+                Card.of(KitStyle.HEX).blank().line(spec.prompt()).blank().click(Tr.t("pour écrire une ligne")).build(),
                 viewer -> {
                     if (values.size() >= LIMIT) {
                         Guis.deny(viewer);
@@ -61,14 +63,14 @@ final class KitListMenu {
         Card help = Card.of(KitStyle.HEX).tag(spec.title()).blank();
         spec.help().forEach(help::line);
         help.blank()
-                .line("Clic gauche sur une ligne : modifier")
-                .line("Clic droit : remonter")
-                .line("Shift clic droit : supprimer");
+                .line(Tr.t("Clic gauche sur une ligne : modifier"))
+                .line(Tr.t("Clic droit : remonter"))
+                .line(Tr.t("Shift clic droit : supprimer"));
         gui.setItem(ROWS, 5, Guis.display(Material.BOOK, Palette.heading(spec.title()), help.build()));
         gui.setItem(ROWS, 7, new GuiItem(KitStyle.decorate(new ItemStack(Material.LAVA_BUCKET),
-                Palette.ERROR + "<b>Tout effacer</b>", Card.of(Palette.ERROR_HEX).blank()
-                        .count(Card.AMOUNT, "Lignes", values.size()).blank()
-                        .click("Shift clic", "pour tout effacer").build(), false), event -> {
+                Palette.ERROR + Tr.t("<b>Tout effacer</b>"), Card.of(Palette.ERROR_HEX).blank()
+                        .count(Card.AMOUNT, Tr.t("Lignes"), values.size()).blank()
+                        .click(Tr.t("Shift clic"), Tr.t("pour tout effacer")).build(), false), event -> {
             Player viewer = (Player) event.getWhoClicked();
             if (!event.isShiftClick()) {
                 Guis.deny(viewer);
@@ -87,12 +89,12 @@ final class KitListMenu {
 
     private static GuiItem entry(Spec spec, List<String> values, int index, Runnable reopen) {
         String value = values.get(index);
-        List<String> lore = Card.of(KitStyle.HEX).tag("Ligne " + (index + 1)).blank()
+        List<String> lore = Card.of(KitStyle.HEX).tag(Tr.t("Ligne ") + (index + 1)).blank()
                 .line(Mini.escape(value))
                 .blank()
-                .click("Clic gauche", "modifier")
-                .click("Clic droit", "remonter")
-                .click("Shift clic droit", "supprimer")
+                .click(Tr.t("Clic gauche"), Tr.t("modifier"))
+                .click(Tr.t("Clic droit"), Tr.t("remonter"))
+                .click(Tr.t("Shift clic droit"), Tr.t("supprimer"))
                 .build();
         return new GuiItem(KitStyle.decorate(new ItemStack(spec.icon()), Palette.TEXT + "#" + (index + 1) + " "
                 + Palette.MUTED + Mini.escape(shorten(value)), lore, false), event -> {

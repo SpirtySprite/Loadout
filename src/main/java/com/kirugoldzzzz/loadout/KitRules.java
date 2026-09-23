@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.kirugoldzzzz.loadout.common.text.Numbers;
 
 import java.time.ZoneId;
@@ -65,19 +67,19 @@ public final class KitRules {
         boolean permitted = kit.permission() == null || viewer.has(kit.permission())
                 || viewer.has(KitViewer.BYPASS_PERMISSION);
         if (kit.permission() != null) {
-            checks.add(new KitStatus.Check(KitStatus.Kind.PERMISSION, permitted, "Accès",
-                    permitted ? "autorisé" : "réservé"));
+            checks.add(new KitStatus.Check(KitStatus.Kind.PERMISSION, permitted, Tr.t("Accès"),
+                    permitted ? Tr.t("autorisé") : Tr.t("réservé")));
         }
         KitRequirements requirements = kit.requirements();
         KitSchedule schedule = requirements.schedule();
         boolean open = bypassRequirements || schedule.open(now, zone);
         if (!schedule.always()) {
-            checks.add(new KitStatus.Check(KitStatus.Kind.SCHEDULE, open, "Période", scheduleDetail(schedule, now,
+            checks.add(new KitStatus.Check(KitStatus.Kind.SCHEDULE, open, Tr.t("Période"), scheduleDetail(schedule, now,
                     zone, open)));
         }
         if (requirements.playtime() > 0L) {
             boolean met = bypassRequirements || viewer.playtime() >= requirements.playtime();
-            checks.add(new KitStatus.Check(KitStatus.Kind.PLAYTIME, met, "Temps de jeu",
+            checks.add(new KitStatus.Check(KitStatus.Kind.PLAYTIME, met, Tr.t("Temps de jeu"),
                     Numbers.duration(Math.min(viewer.playtime(), requirements.playtime())) + " / "
                             + Numbers.duration(requirements.playtime())));
         }
@@ -86,22 +88,22 @@ public final class KitRules {
             boolean met = bypassRequirements || (previous != null && previous.uses() > 0);
             String name = names.apply(required);
             checks.add(new KitStatus.Check(KitStatus.Kind.KITS, met, "Kit " + (name == null ? required : name),
-                    met ? "déjà récupéré" : "à récupérer avant"));
+                    met ? Tr.t("déjà récupéré") : Tr.t("à récupérer avant")));
         }
         if (!requirements.worlds().isEmpty()) {
             boolean met = bypassRequirements || (viewer.world() != null
                     && requirements.worlds().contains(viewer.world().toLowerCase(Locale.ROOT)));
-            checks.add(new KitStatus.Check(KitStatus.Kind.WORLD, met, "Monde",
+            checks.add(new KitStatus.Check(KitStatus.Kind.WORLD, met, Tr.t("Monde"),
                     String.join(", ", requirements.worlds())));
         }
         if (requirements.balance() > 0.0D) {
             boolean met = bypassRequirements || viewer.balance() >= requirements.balance();
-            checks.add(new KitStatus.Check(KitStatus.Kind.BALANCE, met, "Solde minimum",
+            checks.add(new KitStatus.Check(KitStatus.Kind.BALANCE, met, Tr.t("Solde minimum"),
                     Numbers.money(requirements.balance())));
         }
         if (requirements.level() > 0) {
             boolean met = bypassRequirements || viewer.level() >= requirements.level();
-            checks.add(new KitStatus.Check(KitStatus.Kind.LEVEL, met, "Niveau",
+            checks.add(new KitStatus.Check(KitStatus.Kind.LEVEL, met, Tr.t("Niveau"),
                     Math.min(viewer.level(), requirements.level()) + " / " + requirements.level()));
         }
         for (KitStatistic statistic : requirements.statistics()) {
@@ -112,19 +114,19 @@ public final class KitRules {
         }
         if (kit.options().team()) {
             boolean met = bypassRequirements || viewer.team() != null;
-            checks.add(new KitStatus.Check(KitStatus.Kind.TEAM, met, "Équipe", viewer.team() != null ? "membre" : "rejoindre une équipe"));
+            checks.add(new KitStatus.Check(KitStatus.Kind.TEAM, met, Tr.t("Équipe"), viewer.team() != null ? "membre" : Tr.t("rejoindre une équipe")));
         }
         if (cost.money() > 0.0D) {
             boolean met = bypassCost || viewer.balance() >= cost.money();
-            checks.add(new KitStatus.Check(KitStatus.Kind.MONEY, met, "Prix", Numbers.money(cost.money())));
+            checks.add(new KitStatus.Check(KitStatus.Kind.MONEY, met, Tr.t("Prix"), Numbers.money(cost.money())));
         }
         if (cost.shards() > 0L) {
             boolean met = bypassCost || viewer.shards() >= cost.shards();
-            checks.add(new KitStatus.Check(KitStatus.Kind.SHARDS, met, "Fragments", Numbers.count(cost.shards())));
+            checks.add(new KitStatus.Check(KitStatus.Kind.SHARDS, met, Tr.t("Fragments"), Numbers.count(cost.shards())));
         }
         if (cost.levels() > 0) {
             boolean met = bypassCost || viewer.level() >= cost.levels();
-            checks.add(new KitStatus.Check(KitStatus.Kind.LEVELS, met, "Niveaux d'expérience",
+            checks.add(new KitStatus.Check(KitStatus.Kind.LEVELS, met, Tr.t("Niveaux d'expérience"),
                     String.valueOf(cost.levels())));
         }
 
@@ -176,12 +178,12 @@ public final class KitRules {
 
     static String scheduleDetail(KitSchedule schedule, long now, ZoneId zone, boolean open) {
         if (open) {
-            return "ouvert";
+            return Tr.t("ouvert");
         }
         if (schedule.expired(now)) {
-            return "terminé";
+            return Tr.t("terminé");
         }
         long next = schedule.nextOpening(now, zone);
-        return next <= 0L ? "fermé" : "ouvre dans " + Numbers.duration(next - now);
+        return next <= 0L ? Tr.t("fermé") : Tr.t("ouvre dans ") + Numbers.duration(next - now);
     }
 }

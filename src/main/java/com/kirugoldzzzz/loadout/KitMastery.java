@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ public record KitMastery(List<Tier> tiers) {
                        List<ItemStack> items) {
 
         public Tier {
-            name = name == null || name.isBlank() ? "Palier" : name;
+            name = name == null || name.isBlank() ? Tr.t("Palier") : name;
             claims = Math.max(1, claims);
             upgrade = upgrade == null ? KitCost.FREE : upgrade;
             cooldownReduction = Math.max(0, Math.min(MAXIMUM_REDUCTION, cooldownReduction));

@@ -8,6 +8,7 @@ import com.kirugoldzzzz.loadout.common.scheduler.Scheduling;
 import com.kirugoldzzzz.loadout.common.storage.Database;
 import com.kirugoldzzzz.loadout.common.storage.StorageManager;
 import com.kirugoldzzzz.loadout.common.text.Messages;
+import com.kirugoldzzzz.loadout.common.text.Tr;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,9 +25,13 @@ public final class Loadout extends JavaPlugin {
     @Override
     public void onEnable() {
         Scheduling.bind(this);
+        ConfigFile settings = new ConfigFile(this, "config.yml").load();
+        Tr.configure(this, settings.get().getString("language", "en"));
         FoliaGUI.init(this);
         Guis.installTheme();
-        Messages.load(new ConfigFile(this, "messages.yml").load().get());
+        new ConfigFile(this, "lang/messages_fr.yml").load();
+        Messages.load(new ConfigFile(this, Tr.messagesFile(this)).load().get());
+        Tr.seedLocalized(this, "kits.yml");
         ConfigFile kits = new ConfigFile(this, "kits.yml", "kits", "categories", "progression").load();
         kits.seed("progression");
 
@@ -34,7 +39,7 @@ public final class Loadout extends JavaPlugin {
         try {
             database.open();
         } catch (Exception failure) {
-            getLogger().severe("Base de données inaccessible, désactivation : " + failure.getMessage());
+            getLogger().severe(Tr.t("Base de données inaccessible, désactivation : ") + failure.getMessage());
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -76,7 +81,7 @@ public final class Loadout extends JavaPlugin {
         storage.start(SAVE_INTERVAL_SECONDS);
         service.start();
         if (!wallet.available()) {
-            getLogger().info("Vault est absent : les kits payants et les récompenses en argent sont inactifs.");
+            getLogger().info(Tr.t("Vault est absent : les kits payants et les récompenses en argent sont inactifs."));
         }
     }
 
@@ -97,7 +102,7 @@ public final class Loadout extends JavaPlugin {
     private void bind(String name, NexusCommand executor) {
         PluginCommand command = getCommand(name);
         if (command == null) {
-            getLogger().warning("La commande " + name + " est absente du plugin.yml");
+            getLogger().warning(Tr.t("La commande ") + name + Tr.t(" est absente du plugin.yml"));
             return;
         }
         command.setExecutor(executor);

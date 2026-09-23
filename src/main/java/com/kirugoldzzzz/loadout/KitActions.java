@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.kirugoldzzzz.loadout.common.gui.ConfirmMenu;
 import com.kirugoldzzzz.loadout.common.gui.Guis;
 import com.kirugoldzzzz.loadout.common.gui.ChatPrompts;
@@ -76,10 +78,10 @@ public final class KitActions {
         }
         KitCost cost = service.cost(kit, System.currentTimeMillis());
         if (kit.options().confirm() && !cost.free() && !player.hasPermission(KitViewer.BYPASS_COST)) {
-            ConfirmMenu.create("Acheter un kit")
+            ConfirmMenu.create(Tr.t("Acheter un kit"))
                     .subject(KitStyle.decorate(KitStyle.icon(kit), kit.name(), List.of(), true))
-                    .question("Récupérer ce kit ?")
-                    .confirmLabel("Payer et récupérer")
+                    .question(Tr.t("Récupérer ce kit ?"))
+                    .confirmLabel(Tr.t("Payer et récupérer"))
                     .details(costLines(cost))
                     .onConfirm(viewer -> {
                         viewer.closeInventory();
@@ -107,13 +109,13 @@ public final class KitActions {
     private static List<String> costLines(KitCost cost) {
         Card card = Card.of(KitStyle.HEX).blank();
         if (cost.money() > 0.0D) {
-            card.money("Prix", cost.money());
+            card.money(Tr.t("Prix"), cost.money());
         }
         if (cost.shards() > 0L) {
-            card.stat(Card.STAR, "Fragments", Numbers.count(cost.shards()));
+            card.stat(Card.STAR, Tr.t("Fragments"), Numbers.count(cost.shards()));
         }
         if (cost.levels() > 0) {
-            card.stat(Card.STAR, "Niveaux", String.valueOf(cost.levels()));
+            card.stat(Card.STAR, Tr.t("Niveaux"), String.valueOf(cost.levels()));
         }
         return card.build();
     }
@@ -195,7 +197,7 @@ public final class KitActions {
             return;
         }
         Messages.send(player, "kits.gift-prompt", KitService.kitResolver(kit));
-        ChatPrompts.open(player, "le pseudo du joueur", typed -> {
+        ChatPrompts.open(player, Tr.t("le pseudo du joueur"), typed -> {
             Player receiver = typed.isBlank() ? null : Bukkit.getPlayerExact(typed.trim());
             if (receiver == null) {
                 Guis.deny(player);
@@ -211,15 +213,15 @@ public final class KitActions {
 
     private void confirmGift(Player player, Player receiver, Kit kit, Runnable back) {
         List<String> details = new ArrayList<>(Card.of(KitStyle.HEX).blank()
-                .stat(Card.PLAYER, "Destinataire", receiver.getName())
-                .line("Il recevra un bon à ouvrir quand il veut.")
-                .line("Votre propre recharge démarre maintenant.")
+                .stat(Card.PLAYER, Tr.t("Destinataire"), receiver.getName())
+                .line(Tr.t("Il recevra un bon à ouvrir quand il veut."))
+                .line(Tr.t("Votre propre recharge démarre maintenant."))
                 .build());
         details.addAll(costLines(service.cost(kit, System.currentTimeMillis())));
-        ConfirmMenu.create("Offrir un kit")
+        ConfirmMenu.create(Tr.t("Offrir un kit"))
                 .subject(KitStyle.decorate(KitStyle.icon(kit), kit.name(), List.of(), true))
-                .question("Offrir ce kit à " + receiver.getName() + " ?")
-                .confirmLabel("Offrir")
+                .question(Tr.t("Offrir ce kit à ") + receiver.getName() + " ?")
+                .confirmLabel(Tr.t("Offrir"))
                 .details(details)
                 .onConfirm(viewer -> {
                     viewer.closeInventory();
@@ -292,7 +294,7 @@ public final class KitActions {
         ItemStack held = player.getInventory().getItemInMainHand();
         ItemStack icon = held.getType().isAir() ? new ItemStack(Material.CHEST) : held.clone();
         icon.setAmount(1);
-        return new Kit("apercu", "<#A78BFA><b>Cérémonie " + show.name() + "</b>", List.of(), icon, null, 0, null, 0L,
+        return new Kit("apercu", Tr.t("<#A78BFA><b>Cérémonie ") + show.name() + "</b>", List.of(), icon, null, 0, null, 0L,
                 KitReset.NONE, LocalTime.MIDNIGHT, DayOfWeek.MONDAY, 0, 0, KitCost.FREE, KitRequirements.NONE,
                 Map.of(), KitOptions.DEFAULTS, Map.of(), KitPool.EMPTY, KitRewards.NONE, false, List.of(),
                 KitMastery.NONE, 0L, show.level());

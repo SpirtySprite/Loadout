@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
@@ -16,15 +18,15 @@ public record KitShow(int level, String name, Color primary, Color accent, Mater
     public static KitShow of(int level) {
         int safe = Math.max(0, Math.min(MAXIMUM, level));
         return switch (safe) {
-            case 0 -> new KitShow(0, "Ouverture", Color.fromRGB(0xC9D1D9), Color.fromRGB(0xA78BFA),
+            case 0 -> new KitShow(0, Tr.t("Ouverture"), Color.fromRGB(0xC9D1D9), Color.fromRGB(0xA78BFA),
                     Material.SMOOTH_STONE, 6);
-            case 1 -> new KitShow(1, "Éclat", Color.fromRGB(0xA78BFA), Color.fromRGB(0xF0ABFC),
+            case 1 -> new KitShow(1, Tr.t("Éclat"), Color.fromRGB(0xA78BFA), Color.fromRGB(0xF0ABFC),
                     Material.AMETHYST_BLOCK, 8);
-            case 2 -> new KitShow(2, "Rituel", Color.fromRGB(0x22D3EE), Color.fromRGB(0x67E8F9),
+            case 2 -> new KitShow(2, Tr.t("Rituel"), Color.fromRGB(0x22D3EE), Color.fromRGB(0x67E8F9),
                     Material.SEA_LANTERN, 10);
-            case 3 -> new KitShow(3, "Tempête", Color.fromRGB(0xFBBF24), Color.fromRGB(0xFDE68A),
+            case 3 -> new KitShow(3, Tr.t("Tempête"), Color.fromRGB(0xFBBF24), Color.fromRGB(0xFDE68A),
                     Material.GOLD_BLOCK, 12);
-            default -> new KitShow(4, "Apothéose", Color.fromRGB(0xF87171), Color.fromRGB(0xFBBF24),
+            default -> new KitShow(4, Tr.t("Apothéose"), Color.fromRGB(0xF87171), Color.fromRGB(0xFBBF24),
                     Material.NETHERITE_BLOCK, 14);
         };
     }

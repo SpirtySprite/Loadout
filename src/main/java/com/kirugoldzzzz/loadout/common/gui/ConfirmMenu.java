@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout.common.gui;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.foliagui.builder.item.ItemBuilder;
 import com.kirugoldzzzz.loadout.common.gui.Guis;
 import com.foliagui.gui.Gui;
@@ -24,8 +26,8 @@ public final class ConfirmMenu {
     private final String title;
 
     private ItemStack subject = new ItemStack(Material.PAPER);
-    private String question = "Confirmer cette action ?";
-    private String confirmLabel = "Confirmer";
+    private String question = Tr.t("Confirmer cette action ?");
+    private String confirmLabel = Tr.t("Confirmer");
     private List<String> details = List.of();
     private Consumer<Player> onConfirm = viewer -> {
     };
@@ -104,7 +106,7 @@ public final class ConfirmMenu {
                 Palette.DANGER + "<b>Annuler</b>",
                 Lore.create()
                         .blank()
-                        .text("Revenir sans rien changer.")
+                        .text(Tr.t("Revenir sans rien changer."))
                         .build(),
                 event -> {
                     Player viewer = (Player) event.getWhoClicked();
@@ -121,7 +123,7 @@ public final class ConfirmMenu {
                 Palette.SUCCESS + "<b>" + confirmLabel + "</b>",
                 Lore.create()
                         .blank()
-                        .action("Cliquer pour confirmer")
+                        .action(Tr.t("Cliquer pour confirmer"))
                         .build(),
                 event -> {
                     Player viewer = (Player) event.getWhoClicked();

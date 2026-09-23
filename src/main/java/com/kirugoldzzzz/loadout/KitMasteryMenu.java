@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.foliagui.gui.Gui;
 import com.foliagui.item.GuiItem;
 import com.kirugoldzzzz.loadout.common.gui.ConfirmMenu;
@@ -43,12 +45,12 @@ public final class KitMasteryMenu {
         KitService.Progress progress = service.progress(viewer, current, System.currentTimeMillis());
         KitMastery mastery = progress.mastery();
         Runnable reopen = () -> open(player, current, back);
-        Gui gui = Gui.builder().rows(ROWS).title(Mini.parse(Palette.smallTitle("Maîtrise du kit"))).create();
+        Gui gui = Gui.builder().rows(ROWS).title(Mini.parse(Palette.smallTitle(Tr.t("Maîtrise du kit")))).create();
         Guis.fill(gui);
         gui.setItem(1, 5, header(current, progress));
         if (!mastery.enabled()) {
-            gui.setItem(3, 5, Guis.display(Material.BARRIER, Palette.MUTED + "<b>Pas de maîtrise</b>",
-                    Card.of(KitStyle.HEX).blank().line("Ce kit ne monte pas en palier.").build()));
+            gui.setItem(3, 5, Guis.display(Material.BARRIER, Palette.MUTED + Tr.t("<b>Pas de maîtrise</b>"),
+                    Card.of(KitStyle.HEX).blank().line(Tr.t("Ce kit ne monte pas en palier.")).build()));
         }
         List<KitMastery.Tier> tiers = mastery.tiers();
         int[] columns = columns(tiers.size());
@@ -64,15 +66,15 @@ public final class KitMasteryMenu {
     }
 
     private GuiItem header(Kit kit, KitService.Progress progress) {
-        Card card = Card.of(KitStyle.HEX).tag("Maîtrise").blank()
-                .line("Chaque récupération rapproche le kit")
-                .line("du palier suivant. Un palier atteint")
-                .line("reste acquis pour toujours.")
+        Card card = Card.of(KitStyle.HEX).tag(Tr.t("Maîtrise")).blank()
+                .line(Tr.t("Chaque récupération rapproche le kit"))
+                .line(Tr.t("du palier suivant. Un palier atteint"))
+                .line(Tr.t("reste acquis pour toujours."))
                 .blank()
-                .count(Card.AMOUNT, "Récupérations", progress.uses())
-                .stat(Card.STAR, "Palier actuel", progress.level() + " / " + progress.mastery().tiers().size());
+                .count(Card.AMOUNT, Tr.t("Récupérations"), progress.uses())
+                .stat(Card.STAR, Tr.t("Palier actuel"), progress.level() + " / " + progress.mastery().tiers().size());
         if (progress.bonus() > 0) {
-            card.stat(Palette.SUCCESS, "✚", "Bonus actuel", "+" + progress.bonus() + "%");
+            card.stat(Palette.SUCCESS, "✚", Tr.t("Bonus actuel"), "+" + progress.bonus() + "%");
         }
         return new GuiItem(KitStyle.decorate(KitStyle.icon(kit), kit.name(), card.build(), true),
                 event -> event.setCancelled(true));
@@ -82,47 +84,47 @@ public final class KitMasteryMenu {
                          KitService.Progress progress, Runnable reopen) {
         boolean reached = progress.level() >= level;
         boolean next = progress.level() + 1 == level;
-        Card card = Card.of(KitStyle.HEX).tag("Palier " + level).blank();
+        Card card = Card.of(KitStyle.HEX).tag(Tr.t("Palier ") + level).blank();
         if (reached) {
-            card.raw(Card.noteLine(Palette.SUCCESS, Palette.CHECK, "Atteint"));
+            card.raw(Card.noteLine(Palette.SUCCESS, Palette.CHECK, Tr.t("Atteint")));
         } else if (next) {
-            card.raw(Card.noteLine(Palette.WARNING, Card.TIME, "Prochain palier"));
+            card.raw(Card.noteLine(Palette.WARNING, Card.TIME, Tr.t("Prochain palier")));
             card.raw(KitStyle.progress(mastery.progress(progress.uses(), progress.level())));
         } else {
-            card.raw(Card.noteLine(Palette.MUTED, Palette.CROSS, "Verrouillé"));
+            card.raw(Card.noteLine(Palette.MUTED, Palette.CROSS, Tr.t("Verrouillé")));
         }
-        card.section("Pour l'atteindre")
-                .stat(Card.AMOUNT, "Récupérations", Math.min(progress.uses(), tier.claims()) + " / " + tier.claims());
-        card.section("Avantages");
+        card.section(Tr.t("Pour l'atteindre"))
+                .stat(Card.AMOUNT, Tr.t("Récupérations"), Math.min(progress.uses(), tier.claims()) + " / " + tier.claims());
+        card.section(Tr.t("Avantages"));
         if (tier.cooldownReduction() > 0) {
-            card.stat(Card.TIME, "Recharge", "-" + tier.cooldownReduction() + "%");
+            card.stat(Card.TIME, Tr.t("Recharge"), "-" + tier.cooldownReduction() + "%");
         }
         if (tier.bonus() > 0) {
-            card.stat(Card.MONEY, "Argent, fragments, niveaux", "+" + tier.bonus() + "%");
+            card.stat(Card.MONEY, Tr.t("Argent, fragments, niveaux"), "+" + tier.bonus() + "%");
         }
         if (tier.extraRolls() > 0) {
-            card.stat(Card.CHANCE, "Tirages aléatoires", "+" + tier.extraRolls());
+            card.stat(Card.CHANCE, Tr.t("Tirages aléatoires"), "+" + tier.extraRolls());
         }
         KitShow ceremony = KitShow.of(KitShow.levelFor(kit, level));
-        card.stat(Palette.WARNING, "✦", "Cérémonie", ceremony.name());
+        card.stat(Palette.WARNING, "✦", Tr.t("Cérémonie"), ceremony.name());
         if (!tier.items().isEmpty()) {
-            card.stat(Card.AMOUNT, "Objets bonus", tier.items().size() + " à chaque récupération");
+            card.stat(Card.AMOUNT, Tr.t("Objets bonus"), tier.items().size() + Tr.t(" à chaque récupération"));
             for (ItemStack item : tier.items()) {
                 card.raw(Palette.MUTED + "  " + item.getAmount() + "x " + KitStatistic.name(item.getType().name()));
             }
         }
         if (next && tier.purchasable()) {
-            card.section("Débloquer maintenant");
+            card.section(Tr.t("Débloquer maintenant"));
             if (tier.upgrade().money() > 0.0D) {
-                card.money("Prix", tier.upgrade().money());
+                card.money(Tr.t("Prix"), tier.upgrade().money());
             }
             if (tier.upgrade().shards() > 0L) {
-                card.stat(Card.STAR, "Fragments", Numbers.count(tier.upgrade().shards()));
+                card.stat(Card.STAR, Tr.t("Fragments"), Numbers.count(tier.upgrade().shards()));
             }
             if (tier.upgrade().levels() > 0) {
-                card.stat(Card.STAR, "Niveaux", String.valueOf(tier.upgrade().levels()));
+                card.stat(Card.STAR, Tr.t("Niveaux"), String.valueOf(tier.upgrade().levels()));
             }
-            card.blank().click("pour acheter ce palier");
+            card.blank().click(Tr.t("pour acheter ce palier"));
         }
         Material icon = TIER_ICONS[Math.min(TIER_ICONS.length - 1, level - 1)];
         String name = (reached ? Palette.SUCCESS : next ? Palette.WARNING : Palette.MUTED) + "<b>" + tier.name() + "</b>";
@@ -134,10 +136,10 @@ public final class KitMasteryMenu {
                 return;
             }
             Guis.click(viewer);
-            ConfirmMenu.create("Acheter un palier")
+            ConfirmMenu.create(Tr.t("Acheter un palier"))
                     .subject(KitStyle.decorate(new ItemStack(icon), name, List.of(), true))
-                    .question("Passer le kit au palier " + tier.name() + " ?")
-                    .confirmLabel("Acheter")
+                    .question(Tr.t("Passer le kit au palier ") + tier.name() + " ?")
+                    .confirmLabel(Tr.t("Acheter"))
                     .details(card.build())
                     .onConfirm(confirmer -> {
                         actions.report(confirmer, actions.service().upgrade(confirmer, kit));

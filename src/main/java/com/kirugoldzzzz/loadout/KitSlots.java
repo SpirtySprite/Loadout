@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 public final class KitSlots {
 
     public static final int HOTBAR = 9;
@@ -28,12 +30,12 @@ public final class KitSlots {
 
     public static String label(int slot) {
         return switch (slot) {
-            case BOOTS -> "Bottes";
-            case LEGGINGS -> "Jambières";
-            case CHESTPLATE -> "Plastron";
-            case HELMET -> "Casque";
-            case OFFHAND -> "Main secondaire";
-            default -> slot < HOTBAR ? "Barre rapide " + (slot + 1) : "Inventaire " + (slot - HOTBAR + 1);
+            case BOOTS -> Tr.t("Bottes");
+            case LEGGINGS -> Tr.t("Jambières");
+            case CHESTPLATE -> Tr.t("Plastron");
+            case HELMET -> Tr.t("Casque");
+            case OFFHAND -> Tr.t("Main secondaire");
+            default -> slot < HOTBAR ? Tr.t("Barre rapide ") + (slot + 1) : Tr.t("Inventaire ") + (slot - HOTBAR + 1);
         };
     }
 

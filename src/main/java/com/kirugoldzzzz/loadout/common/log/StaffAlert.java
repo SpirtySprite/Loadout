@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout.common.log;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.kirugoldzzzz.loadout.common.text.Card;
 import com.kirugoldzzzz.loadout.common.text.Messages;
 import com.kirugoldzzzz.loadout.common.text.Mini;
@@ -24,9 +26,9 @@ public final class StaffAlert {
     private static final int WRAP = 38;
 
     public enum Severity {
-        INFO(Palette.SECONDARY_HEX, "ℹ", "Info", Level.INFO),
-        WARNING(Palette.WARNING_HEX, "⚠", "Attention", Level.WARNING),
-        CRITICAL(Palette.ERROR_HEX, "✖", "Critique", Level.SEVERE);
+        INFO(Palette.SECONDARY_HEX, "ℹ", Tr.t("Info"), Level.INFO),
+        WARNING(Palette.WARNING_HEX, "⚠", Tr.t("Attention"), Level.WARNING),
+        CRITICAL(Palette.ERROR_HEX, "✖", Tr.t("Critique"), Level.SEVERE);
 
         private final String hex;
         private final String icon;
@@ -91,7 +93,7 @@ public final class StaffAlert {
     }
 
     public StaffAlert player(String label, String name) {
-        return row(details, Palette.SECONDARY, Card.PLAYER, label, name == null || name.isBlank() ? "Inconnu" : name);
+        return row(details, Palette.SECONDARY, Card.PLAYER, label, name == null || name.isBlank() ? Tr.t("Inconnu") : name);
     }
 
     public StaffAlert money(String label, double amount) {
@@ -111,7 +113,7 @@ public final class StaffAlert {
     }
 
     public StaffAlert location(String description) {
-        return detail(Card.ZONE, "Position", description);
+        return detail(Card.ZONE, Tr.t("Position"), description);
     }
 
     public StaffAlert error(Throwable failure) {
@@ -120,7 +122,7 @@ public final class StaffAlert {
         }
         cause = failure;
         String message = failure.getMessage();
-        return row(details, Palette.ERROR, Palette.CROSS, "Erreur", failure.getClass().getSimpleName()
+        return row(details, Palette.ERROR, Palette.CROSS, Tr.t("Erreur"), failure.getClass().getSimpleName()
                 + (message == null || message.isBlank() ? "" : " : " + message));
     }
 
@@ -217,16 +219,16 @@ public final class StaffAlert {
             }
         }
         if (!details.isEmpty()) {
-            card.section("Détails");
+            card.section(Tr.t("Détails"));
             details.stream().filter(row -> row.visible(allowed)).forEach(row -> write(card, row));
         }
-        card.section("Traçabilité");
+        card.section(Tr.t("Traçabilité"));
         trace.stream().filter(row -> row.visible(allowed)).forEach(row -> write(card, row));
-        write(card, new Row(Palette.MUTED, Card.TIME, "Heure", STAMP.format(Instant.ofEpochMilli(at)
+        write(card, new Row(Palette.MUTED, Card.TIME, Tr.t("Heure"), STAMP.format(Instant.ofEpochMilli(at)
                 .atZone(ZoneId.systemDefault())), null));
         if (command != null) {
             card.blank();
-            card.click("Clic", Mini.escape(hint));
+            card.click(Tr.t("Clic"), Mini.escape(hint));
         }
         return card.build();
     }

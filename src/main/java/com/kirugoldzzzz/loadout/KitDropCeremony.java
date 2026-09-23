@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.kirugoldzzzz.loadout.common.anim.Ease;
 import com.kirugoldzzzz.loadout.common.text.Card;
 import com.kirugoldzzzz.loadout.common.text.Palette;
@@ -36,7 +38,7 @@ public final class KitDropCeremony implements KitCeremony {
             stage.particle(Particle.CLOUD, 0.0D, -0.3D, 0.0D, 8, 0.25D, 0.03D);
         }
         if (tick == OPEN) {
-            stage.claimTitle(Card.noteLine(Palette.SUCCESS, Palette.CHECK, "Kit récupéré"), 24);
+            stage.claimTitle(Card.noteLine(Palette.SUCCESS, Palette.CHECK, Tr.t("Kit récupéré")), 24);
             stage.sound(Sound.BLOCK_AMETHYST_BLOCK_CHIME, 0.8F, 1.5F);
             stage.particle(Particle.FIREWORK, 0.0D, REST, 0.0D, 18, 0.12D, 0.16D);
         }

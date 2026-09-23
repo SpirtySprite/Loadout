@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout.common.gui;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.foliagui.builder.item.ItemBuilder;
 import com.foliagui.gui.BaseGui;
 import com.foliagui.gui.PaginatedGui;
@@ -211,12 +213,12 @@ public final class Guis {
 
     private static GuiItem pageButton(PaginatedGui gui, boolean previous, Runnable after) {
         return new GuiItem(skin(Material.ARROW, Card.title(Palette.PRIMARY_HEX, Palette.SECONDARY_HEX,
-                        Card.small(previous ? "Page précédente" : "Page suivante")),
-                Card.of(Palette.PRIMARY_HEX).tag("Navigation")
-                        .stat(Card.FLAG, "Page actuelle", gui.getCurrentPage())
-                        .stat(Card.AMOUNT, "Pages au total", gui.getPagesCount())
+                        Card.small(previous ? Tr.t("Page précédente") : Tr.t("Page suivante"))),
+                Card.of(Palette.PRIMARY_HEX).tag(Tr.t("Navigation"))
+                        .stat(Card.FLAG, Tr.t("Page actuelle"), gui.getCurrentPage())
+                        .stat(Card.AMOUNT, Tr.t("Pages au total"), gui.getPagesCount())
                         .blank()
-                        .click(previous ? "pour reculer d'une page" : "pour avancer d'une page")
+                        .click(previous ? Tr.t("pour reculer d'une page") : Tr.t("pour avancer d'une page"))
                         .build(), false),
                 event -> {
                     Player player = (Player) event.getWhoClicked();
@@ -232,11 +234,11 @@ public final class Guis {
     public static GuiItem pageIndicator(PaginatedGui gui) {
         return new GuiItem(skin(Material.PAPER,
                 Card.title(Palette.PRIMARY_HEX, Palette.SECONDARY_HEX,
-                        Card.small("Page " + gui.getCurrentPage() + " sur " + gui.getPagesCount())),
-                Card.of(Palette.PRIMARY_HEX).tag("Navigation")
-                        .count(Card.AMOUNT, "Entrées affichées", gui.getPageItemsCount())
+                        Card.small(Tr.t("Page ") + gui.getCurrentPage() + Tr.t(" sur ") + gui.getPagesCount())),
+                Card.of(Palette.PRIMARY_HEX).tag(Tr.t("Navigation"))
+                        .count(Card.AMOUNT, Tr.t("Entrées affichées"), gui.getPageItemsCount())
                         .blank()
-                        .click("pour choisir une page")
+                        .click(Tr.t("pour choisir une page"))
                         .build(), false),
                 event -> {
                     Player player = (Player) event.getWhoClicked();
@@ -247,9 +249,9 @@ public final class Guis {
 
     public static GuiItem backButton(Runnable back) {
         return new GuiItem(skin(Material.ARROW,
-                Card.title(Palette.PRIMARY_HEX, Palette.SECONDARY_HEX, Card.small("Retour")),
-                Card.of(Palette.PRIMARY_HEX).tag("Navigation")
-                        .click("pour revenir au menu précédent").build(), false),
+                Card.title(Palette.PRIMARY_HEX, Palette.SECONDARY_HEX, Card.small(Tr.t("Retour"))),
+                Card.of(Palette.PRIMARY_HEX).tag(Tr.t("Navigation"))
+                        .click(Tr.t("pour revenir au menu précédent")).build(), false),
                 event -> {
                     click((Player) event.getWhoClicked());
                     back.run();
@@ -331,10 +333,10 @@ public final class Guis {
                 .asGuiItem();
 
         static final GuiItem CLOSE = ItemBuilder.of(Material.BARRIER)
-                .name(Mini.label(Card.title(Palette.ERROR_HEX, "#FCA5A5", Card.small("Fermer"))))
+                .name(Mini.label(Card.title(Palette.ERROR_HEX, "#FCA5A5", Card.small(Tr.t("Fermer")))))
                 .loreComponents(Mini.labels(Card.of(Palette.ERROR_HEX)
-                        .tag("Navigation")
-                        .click("pour fermer ce menu")
+                        .tag(Tr.t("Navigation"))
+                        .click(Tr.t("pour fermer ce menu"))
                         .build()))
                 .asGuiItem(event -> {
                     Player player = (Player) event.getWhoClicked();

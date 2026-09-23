@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout.common.log;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -89,7 +91,7 @@ public final class NexusAlerts {
                 player.sendMessage(rendered.computeIfAbsent(key.toString(), ignored -> alert.render(player::hasPermission)));
             }
         } catch (RuntimeException failure) {
-            NexusLog.warn(LogTopic.GENERAL, "Diffusion d'une alerte impossible", failure);
+            NexusLog.warn(LogTopic.GENERAL, Tr.t("Diffusion d'une alerte impossible"), failure);
         }
     }
 }

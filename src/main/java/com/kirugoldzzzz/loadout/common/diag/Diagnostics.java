@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout.common.diag;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -9,13 +11,13 @@ import java.util.function.Supplier;
 
 public final class Diagnostics {
 
-    public static final String STORAGE_FLUSH = "Sauvegarde périodique";
-    public static final String STORAGE_LOAD = "Chargement au démarrage";
-    public static final String BACKUP_CAPTURE = "Capture de sauvegarde";
-    public static final String BACKUP_RESTORE = "Restauration";
-    public static final String ORDER_PURGE = "Purge des ordres expirés";
-    public static final String RTP_SEARCH = "Recherche de position sûre";
-    public static final String MENU_OPEN = "Ouverture de menu";
+    public static final String STORAGE_FLUSH = Tr.t("Sauvegarde périodique");
+    public static final String STORAGE_LOAD = Tr.t("Chargement au démarrage");
+    public static final String BACKUP_CAPTURE = Tr.t("Capture de sauvegarde");
+    public static final String BACKUP_RESTORE = Tr.t("Restauration");
+    public static final String ORDER_PURGE = Tr.t("Purge des ordres expirés");
+    public static final String RTP_SEARCH = Tr.t("Recherche de position sûre");
+    public static final String MENU_OPEN = Tr.t("Ouverture de menu");
 
     private static final int WARMUP = 3;
 

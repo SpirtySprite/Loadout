@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.foliagui.builder.item.ItemBuilder;
 import com.kirugoldzzzz.loadout.common.text.Mini;
 import net.kyori.adventure.text.Component;
@@ -24,13 +26,13 @@ public final class KitItems {
     public static final NamespacedKey KIT_ITEM = key("kit_item");
     public static final NamespacedKey VOUCHER = key("kit_voucher");
     public static final NamespacedKey EXPIRES = key("kit_expires");
-    private static final DateTimeFormatter EXPIRY = DateTimeFormatter.ofPattern("dd/MM à HH:mm");
+    private static final DateTimeFormatter EXPIRY = DateTimeFormatter.ofPattern(Tr.t("dd/MM à HH:mm"));
 
     private KitItems() {
     }
 
     private static NamespacedKey key(String value) {
-        return Objects.requireNonNull(NamespacedKey.fromString("loadout:" + value), "clé de données invalide: " + value);
+        return Objects.requireNonNull(NamespacedKey.fromString("loadout:" + value), Tr.t("clé de données invalide: ") + value);
     }
 
     public static ItemStack protect(ItemStack item, Kit kit, String loreLine) {
@@ -57,7 +59,7 @@ public final class KitItems {
         }
         meta.getPersistentDataContainer().set(EXPIRES, PersistentDataType.LONG, expiresAt);
         List<Component> lore = meta.lore() == null ? new ArrayList<>() : new ArrayList<>(meta.lore());
-        lore.add(Mini.label("<#FBBF24>⌛ <#C9D1D9>Disparaît le <#FBBF24>"
+        lore.add(Mini.label(Tr.t("<#FBBF24>⌛ <#C9D1D9>Disparaît le <#FBBF24>")
                 + EXPIRY.format(Instant.ofEpochMilli(expiresAt).atZone(zone))));
         meta.lore(lore);
         copy.setItemMeta(meta);

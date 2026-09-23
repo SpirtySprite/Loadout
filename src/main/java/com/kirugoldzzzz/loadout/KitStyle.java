@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.kirugoldzzzz.loadout.common.text.Card;
 import com.kirugoldzzzz.loadout.common.text.Mini;
 import com.kirugoldzzzz.loadout.common.text.Numbers;
@@ -45,15 +47,15 @@ public final class KitStyle {
 
     public static String stateLine(KitStatus status, long now) {
         return switch (status.state()) {
-            case AVAILABLE -> Card.noteLine(Palette.SUCCESS, Palette.CHECK, "Disponible maintenant");
-            case COOLDOWN -> Card.noteLine(Palette.WARNING, Card.TIME, "Prêt dans " + Palette.WARNING
+            case AVAILABLE -> Card.noteLine(Palette.SUCCESS, Palette.CHECK, Tr.t("Disponible maintenant"));
+            case COOLDOWN -> Card.noteLine(Palette.WARNING, Card.TIME, Tr.t("Prêt dans ") + Palette.WARNING
                     + Numbers.duration(status.remaining()));
-            case EXHAUSTED -> Card.noteLine(Palette.MUTED, Palette.CHECK, "Déjà récupéré, plus d'utilisation");
-            case SOLD_OUT -> Card.noteLine(Palette.ERROR, Palette.CROSS, "Rupture de stock");
-            case LOCKED -> Card.noteLine(Palette.ERROR, Palette.CROSS, "Verrouillé");
-            case CLOSED -> Card.noteLine(Palette.WARNING, Card.TIME, "Hors période");
-            case REQUIREMENTS -> Card.noteLine(Palette.ERROR, Palette.CROSS, "Conditions non remplies");
-            case UNAFFORDABLE -> Card.noteLine(Palette.ERROR, Card.MONEY, "Moyens insuffisants");
+            case EXHAUSTED -> Card.noteLine(Palette.MUTED, Palette.CHECK, Tr.t("Déjà récupéré, plus d'utilisation"));
+            case SOLD_OUT -> Card.noteLine(Palette.ERROR, Palette.CROSS, Tr.t("Rupture de stock"));
+            case LOCKED -> Card.noteLine(Palette.ERROR, Palette.CROSS, Tr.t("Verrouillé"));
+            case CLOSED -> Card.noteLine(Palette.WARNING, Card.TIME, Tr.t("Hors période"));
+            case REQUIREMENTS -> Card.noteLine(Palette.ERROR, Palette.CROSS, Tr.t("Conditions non remplies"));
+            case UNAFFORDABLE -> Card.noteLine(Palette.ERROR, Card.MONEY, Tr.t("Moyens insuffisants"));
         };
     }
 
@@ -76,19 +78,19 @@ public final class KitStyle {
 
     public static List<String> card(Kit kit, KitStatus status, KitCatalog catalog, long now, long lastClaim,
                                     Function<String, String> crateNames, boolean clicks, Extras extras) {
-        String tag = kit.category() == null ? "Kit"
+        String tag = kit.category() == null ? Tr.t("Kit")
                 : "Kit · " + catalog.category(kit.category()).map(category -> Mini.plain(Mini.label(category.name())))
                 .orElse(kit.category());
-        Card card = Card.of(HEX).tag(tag + (extras.favorite() ? " · ★ favori" : "") + (extras.team() ? " · équipe" : ""));
+        Card card = Card.of(HEX).tag(tag + (extras.favorite() ? " · ★ favori" : "") + (extras.team() ? Tr.t(" · équipe") : ""));
         if (extras.discount() > 0) {
-            card.raw(Palette.WARNING + "⚡ <b>" + Card.small("Kit du jour") + "</b> " + Palette.SUCCESS + "-"
-                    + extras.discount() + "% " + Palette.TEXT + "aujourd'hui");
+            card.raw(Palette.WARNING + "⚡ <b>" + Card.small(Tr.t("Kit du jour")) + "</b> " + Palette.SUCCESS + "-"
+                    + extras.discount() + "% " + Palette.TEXT + Tr.t("aujourd'hui"));
         }
         if (!kit.description().isEmpty()) {
             card.blank();
             kit.description().forEach(line -> card.raw(Palette.TEXT + line));
         }
-        card.section("Statut");
+        card.section(Tr.t("Statut"));
         card.raw(stateLine(status, now));
         if (status.state() == KitStatus.State.COOLDOWN && lastClaim > 0L && status.readyAt() > lastClaim) {
             long total = status.readyAt() - lastClaim;
@@ -104,13 +106,13 @@ public final class KitStyle {
         if (clicks) {
             card.blank();
             if (status.available()) {
-                card.click("Clic gauche", kit.cost().free() ? "pour récupérer" : "pour acheter et récupérer");
+                card.click(Tr.t("Clic gauche"), kit.cost().free() ? Tr.t("pour récupérer") : Tr.t("pour acheter et récupérer"));
             }
-            card.click("Clic droit", "pour voir le contenu");
+            card.click(Tr.t("Clic droit"), Tr.t("pour voir le contenu"));
             if (kit.options().giftable()) {
-                card.click("Shift clic gauche", "pour offrir à un joueur");
+                card.click(Tr.t("Shift clic gauche"), Tr.t("pour offrir à un joueur"));
             }
-            card.click("Shift clic droit", extras.favorite() ? "pour retirer des favoris" : "pour ajouter aux favoris");
+            card.click(Tr.t("Shift clic droit"), extras.favorite() ? Tr.t("pour retirer des favoris") : Tr.t("pour ajouter aux favoris"));
         }
         return card.build();
     }
@@ -124,36 +126,36 @@ public final class KitStyle {
         if (!mastery && !streaks && progress.bonus() <= 0) {
             return;
         }
-        card.section("Progression");
+        card.section(Tr.t("Progression"));
         if (mastery) {
             KitMastery.Tier tier = progress.mastery().tier(progress.level());
             KitMastery.Tier next = progress.mastery().next(progress.level());
-            card.stat(Card.STAR, "Maîtrise", tier == null ? "aucun palier" : tier.name() + Palette.MUTED + " (palier "
+            card.stat(Card.STAR, Tr.t("Maîtrise"), tier == null ? Tr.t("aucun palier") : tier.name() + Palette.MUTED + " (palier "
                     + progress.level() + "/" + progress.mastery().tiers().size() + ")");
             if (next != null) {
                 card.raw(progress(progress.mastery().progress(progress.uses(), progress.level())) + Palette.MUTED
-                        + " vers " + next.name() + " (" + progress.uses() + "/" + next.claims() + ")");
+                        + Tr.t(" vers ") + next.name() + " (" + progress.uses() + "/" + next.claims() + ")");
             } else {
-                card.raw(Palette.SUCCESS + "✦ Maîtrise complète");
+                card.raw(Palette.SUCCESS + Tr.t("✦ Maîtrise complète"));
             }
         }
         if (progress.streak() > 0) {
             Integer milestone = catalog.progression().streaks().nextMilestone(progress.streak());
-            card.stat(Palette.WARNING, "✹", "Série", progress.streak() + Palette.MUTED + " (record " + progress.best()
-                    + ")" + (milestone == null ? "" : Palette.MUTED + ", palier à " + milestone));
+            card.stat(Palette.WARNING, "✹", Tr.t("Série"), progress.streak() + Palette.MUTED + " (record " + progress.best()
+                    + ")" + (milestone == null ? "" : Palette.MUTED + Tr.t(", palier à ") + milestone));
         } else if (progress.best() > 1) {
-            card.stat(Palette.MUTED, "✹", "Série", "0" + Palette.MUTED + " (record " + progress.best() + ")");
+            card.stat(Palette.MUTED, "✹", Tr.t("Série"), "0" + Palette.MUTED + " (record " + progress.best() + ")");
         }
         if (progress.bonus() > 0) {
-            card.stat(Palette.SUCCESS, "✚", "Bonus de récompenses", "+" + progress.bonus() + "%");
+            card.stat(Palette.SUCCESS, "✚", Tr.t("Bonus de récompenses"), "+" + progress.bonus() + "%");
         }
         KitShow show = KitShow.of(KitShow.levelFor(progress.kit(), progress.level()));
-        card.stat(Palette.WARNING, "✦", "Cérémonie", show.name() + Palette.MUTED + " (niveau " + show.level() + "/"
+        card.stat(Palette.WARNING, "✦", Tr.t("Cérémonie"), show.name() + Palette.MUTED + " (niveau " + show.level() + "/"
                 + KitShow.MAXIMUM + ")");
     }
 
     static void contents(Card card, Kit kit, Function<String, String> crateNames) {
-        card.section("Contenu");
+        card.section(Tr.t("Contenu"));
         int armour = 0;
         for (Integer slot : kit.contents().keySet()) {
             if (KitSlots.armour(slot)) {
@@ -162,33 +164,33 @@ public final class KitStyle {
         }
         int items = kit.contents().size();
         if (items > 0) {
-            card.stat(Card.AMOUNT, "Objets", items + (armour > 0 ? Palette.MUTED + " dont " + armour + " pièce(s) d'armure" : ""));
+            card.stat(Card.AMOUNT, Tr.t("Objets"), items + (armour > 0 ? Palette.MUTED + Tr.t(" dont ") + armour + Tr.t(" pièce(s) d'armure") : ""));
         }
         if (!kit.pool().empty()) {
-            card.stat(Card.CHANCE, "Tirage", kit.pool().effectiveRolls() + " parmi " + kit.pool().entries().size()
-                    + " possibilités");
+            card.stat(Card.CHANCE, Tr.t("Tirage"), kit.pool().effectiveRolls() + Tr.t(" parmi ") + kit.pool().entries().size()
+                    + Tr.t(" possibilités"));
         }
         KitRewards rewards = kit.rewards();
         if (rewards.money() > 0.0D) {
-            card.money("Argent", rewards.money());
+            card.money(Tr.t("Argent"), rewards.money());
         }
         if (rewards.shards() > 0L) {
-            card.stat(Card.STAR, "Fragments", Numbers.count(rewards.shards()));
+            card.stat(Card.STAR, Tr.t("Fragments"), Numbers.count(rewards.shards()));
         }
         if (rewards.levels() > 0) {
-            card.stat(Card.STAR, "Niveaux", "+" + rewards.levels());
+            card.stat(Card.STAR, Tr.t("Niveaux"), "+" + rewards.levels());
         }
         for (Map.Entry<String, Integer> key : rewards.keys().entrySet()) {
-            card.stat(Card.FLAG, "Clés", key.getValue() + "x " + crateNames.apply(key.getKey()));
+            card.stat(Card.FLAG, Tr.t("Clés"), key.getValue() + "x " + crateNames.apply(key.getKey()));
         }
         for (KitEffect effect : rewards.effects()) {
-            card.stat(Card.ZONE, "Effet", effect.label() + Palette.MUTED + " " + Numbers.duration(effect.seconds() * 1_000L));
+            card.stat(Card.ZONE, Tr.t("Effet"), effect.label() + Palette.MUTED + " " + Numbers.duration(effect.seconds() * 1_000L));
         }
         for (String line : rewards.lines()) {
-            card.stat(Card.CALL, "Bonus", line);
+            card.stat(Card.CALL, Tr.t("Bonus"), line);
         }
         if (kit.empty()) {
-            card.line(Palette.MUTED + "Rien pour le moment");
+            card.line(Palette.MUTED + Tr.t("Rien pour le moment"));
         }
     }
 
@@ -204,7 +206,7 @@ public final class KitStyle {
         if (shown.isEmpty() && schedule.isEmpty()) {
             return;
         }
-        card.section("Conditions");
+        card.section(Tr.t("Conditions"));
         for (KitStatus.Check check : shown) {
             card.raw(check(check));
         }
@@ -224,7 +226,7 @@ public final class KitStyle {
         if (!any) {
             return;
         }
-        card.section("Règles");
+        card.section(Tr.t("Règles"));
         for (KitStatus.Check check : status.checks()) {
             if (check.kind() == KitStatus.Kind.MONEY || check.kind() == KitStatus.Kind.SHARDS
                     || check.kind() == KitStatus.Kind.LEVELS) {
@@ -233,17 +235,17 @@ public final class KitStyle {
         }
         if (kit.cooldown() > 0L) {
             long effective = KitRules.cooldown(kit, status.reduction());
-            String bonus = status.reduction() > 0 ? Palette.SUCCESS + " (-" + status.reduction() + "% grâce à votre grade)" : "";
-            card.stat(Card.TIME, "Recharge", Numbers.duration(effective) + bonus);
+            String bonus = status.reduction() > 0 ? Palette.SUCCESS + " (-" + status.reduction() + Tr.t("% grâce à votre grade)") : "";
+            card.stat(Card.TIME, Tr.t("Recharge"), Numbers.duration(effective) + bonus);
         }
         if (kit.reset() != KitReset.NONE) {
-            card.stat(Card.TIME, "Remise à zéro", resetLabel(kit));
+            card.stat(Card.TIME, Tr.t("Remise à zéro"), resetLabel(kit));
         }
         if (kit.limitedUses()) {
-            card.stat(Card.FLAG, "Utilisations", status.usesLeft() + " / " + kit.maxUses() + " restantes");
+            card.stat(Card.FLAG, Tr.t("Utilisations"), status.usesLeft() + " / " + kit.maxUses() + Tr.t(" restantes"));
         }
         if (kit.limitedStock()) {
-            card.stat(Card.ZONE, "Stock serveur", status.stockLeft() + " / " + kit.stock() + " restants");
+            card.stat(Card.ZONE, Tr.t("Stock serveur"), status.stockLeft() + " / " + kit.stock() + Tr.t(" restants"));
         }
     }
 
@@ -251,9 +253,9 @@ public final class KitStyle {
         String time = KitSchedule.TIME.format(kit.resetTime());
         return switch (kit.reset()) {
             case NONE -> "aucune";
-            case DAILY -> "chaque jour à " + time;
-            case WEEKLY -> "chaque " + KitSchedule.dayName(kit.resetDay()) + " à " + time;
-            case MONTHLY -> "le 1er du mois à " + time;
+            case DAILY -> Tr.t("chaque jour à ") + time;
+            case WEEKLY -> Tr.t("chaque ") + KitSchedule.dayName(kit.resetDay()) + Tr.t(" à ") + time;
+            case MONTHLY -> Tr.t("le 1er du mois à ") + time;
         };
     }
 }

@@ -129,7 +129,7 @@ public final class Card {
     }
 
     public static String clickLine(String action) {
-        return clickLine("Cliquez", action);
+        return clickLine(Tr.t("Cliquez"), action);
     }
 
     public static String clickLine(String button, String action) {

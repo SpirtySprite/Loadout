@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -84,16 +86,16 @@ public record KitSchedule(long from, long until, Set<DayOfWeek> days, LocalTime 
     public List<String> describe(ZoneId zone) {
         List<String> lines = new ArrayList<>();
         if (from > 0L) {
-            lines.add("À partir du " + DATE.format(Instant.ofEpochMilli(from).atZone(zone)));
+            lines.add(Tr.t("À partir du ") + DATE.format(Instant.ofEpochMilli(from).atZone(zone)));
         }
         if (until > 0L) {
-            lines.add("Jusqu'au " + DATE.format(Instant.ofEpochMilli(until).atZone(zone)));
+            lines.add(Tr.t("Jusqu'au ") + DATE.format(Instant.ofEpochMilli(until).atZone(zone)));
         }
         if (!days.isEmpty()) {
-            lines.add("Le " + dayList(days));
+            lines.add(Tr.t("Le ") + dayList(days));
         }
         if (opens != null) {
-            lines.add("De " + TIME.format(opens) + " à " + TIME.format(closes));
+            lines.add(Tr.t("De ") + TIME.format(opens) + Tr.t(" à ") + TIME.format(closes));
         }
         return lines;
     }

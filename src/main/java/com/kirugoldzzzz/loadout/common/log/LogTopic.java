@@ -1,23 +1,25 @@
 package com.kirugoldzzzz.loadout.common.log;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 public enum LogTopic {
 
-    GENERAL("general", "Général"),
-    STORAGE("stockage", "Stockage"),
-    CONFIG("configuration", "Configuration"),
-    ECONOMY("economie", "Économie"),
-    SENTINEL("sentinelle", "Sentinelle"),
-    SPAWNERS("generateurs", "Générateurs"),
-    CRATES("caisses", "Caisses"),
-    KITS("kits", "Kits"),
-    JOBS("metiers", "Métiers"),
-    BACKUPS("sauvegardes", "Sauvegardes"),
+    GENERAL("general", Tr.t("Général")),
+    STORAGE("stockage", Tr.t("Stockage")),
+    CONFIG("configuration", Tr.t("Configuration")),
+    ECONOMY("economie", Tr.t("Économie")),
+    SENTINEL("sentinelle", Tr.t("Sentinelle")),
+    SPAWNERS("generateurs", Tr.t("Générateurs")),
+    CRATES("caisses", Tr.t("Caisses")),
+    KITS("kits", Tr.t("Kits")),
+    JOBS("metiers", Tr.t("Métiers")),
+    BACKUPS("sauvegardes", Tr.t("Sauvegardes")),
     NPC("pnj", "PNJ"),
-    REGIONS("regions", "Régions"),
-    ITEMS("objets", "Objets"),
-    MENUS("menus", "Menus"),
-    HOLOGRAMS("hologrammes", "Hologrammes"),
-    STAFF("moderation", "Modération");
+    REGIONS("regions", Tr.t("Régions")),
+    ITEMS("objets", Tr.t("Objets")),
+    MENUS("menus", Tr.t("Menus")),
+    HOLOGRAMS("hologrammes", Tr.t("Hologrammes")),
+    STAFF("moderation", Tr.t("Modération"));
 
     private final String id;
     private final String label;

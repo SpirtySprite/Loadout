@@ -1,11 +1,13 @@
 package com.kirugoldzzzz.loadout.common.log;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public final class NexusLog {
 
-    public static final String NAME = "Nexus Logs";
+    public static final String NAME = Tr.t("Nexus Logs");
 
     private static final Logger LOGGER = Logger.getLogger(NAME);
 

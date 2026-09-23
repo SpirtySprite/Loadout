@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout.common.item;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
@@ -33,7 +35,7 @@ public final class ItemCodec {
         try {
             return BINARY_PREFIX + Base64.getEncoder().encodeToString(ItemStack.serializeItemsAsBytes(present));
         } catch (RuntimeException exception) {
-            throw new IllegalStateException("Impossible d'encoder les objets", exception);
+            throw new IllegalStateException(Tr.t("Impossible d'encoder les objets"), exception);
         }
     }
 
@@ -86,7 +88,7 @@ public final class ItemCodec {
                 : Material.getMaterial(encoded.substring(PLAIN_PREFIX.length(), separator));
         int amount = material == null ? -1 : plainAmount(encoded, material);
         if (material == null || amount < 0 || !material.isItem() || material.isAir()) {
-            throw new IllegalStateException("Objets encodés invalides");
+            throw new IllegalStateException(Tr.t("Objets encodés invalides"));
         }
         return Inventories.split(new ItemStack(material), amount);
     }
@@ -95,7 +97,7 @@ public final class ItemCodec {
         try {
             ItemStack[] decoded = ItemStack.deserializeItemsFromBytes(Base64.getDecoder().decode(payload));
             if (decoded.length > MAX_ITEMS) {
-                throw new IllegalStateException("Nombre d'objets encodés invalide");
+                throw new IllegalStateException(Tr.t("Nombre d'objets encodés invalide"));
             }
             List<ItemStack> items = new ArrayList<>(decoded.length);
             for (ItemStack item : decoded) {
@@ -107,7 +109,7 @@ public final class ItemCodec {
         } catch (IllegalStateException exception) {
             throw exception;
         } catch (RuntimeException exception) {
-            throw new IllegalStateException("Impossible de décoder les objets", exception);
+            throw new IllegalStateException(Tr.t("Impossible de décoder les objets"), exception);
         }
     }
 
@@ -116,7 +118,7 @@ public final class ItemCodec {
              BukkitObjectInputStream stream = new BukkitObjectInputStream(buffer)) {
             int size = stream.readInt();
             if (size < 0 || size > MAX_ITEMS) {
-                throw new IllegalStateException("Nombre d'objets encodés invalide");
+                throw new IllegalStateException(Tr.t("Nombre d'objets encodés invalide"));
             }
             List<ItemStack> items = new ArrayList<>(size);
             for (int index = 0; index < size; index++) {
@@ -129,7 +131,7 @@ public final class ItemCodec {
         } catch (IllegalStateException exception) {
             throw exception;
         } catch (Exception exception) {
-            throw new IllegalStateException("Impossible de décoder les objets", exception);
+            throw new IllegalStateException(Tr.t("Impossible de décoder les objets"), exception);
         }
     }
 }

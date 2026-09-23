@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -11,10 +13,10 @@ import java.util.Locale;
 
 public enum KitReset {
 
-    NONE("aucune", "Aucune"),
-    DAILY("quotidienne", "Chaque jour"),
-    WEEKLY("hebdomadaire", "Chaque semaine"),
-    MONTHLY("mensuelle", "Chaque mois");
+    NONE("aucune", Tr.t("Aucune")),
+    DAILY("quotidienne", Tr.t("Chaque jour")),
+    WEEKLY("hebdomadaire", Tr.t("Chaque semaine")),
+    MONTHLY("mensuelle", Tr.t("Chaque mois"));
 
     private final String id;
     private final String label;

@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.foliagui.gui.Gui;
 import com.kirugoldzzzz.loadout.common.gui.Guis;
 import com.kirugoldzzzz.loadout.common.scheduler.Scheduling;
@@ -37,7 +39,7 @@ public final class KitHistoryMenu {
         }
         boolean more = loaded.size() > PAGE;
         List<KitJournal.Entry> entries = more ? loaded.subList(0, PAGE) : loaded;
-        Gui gui = Gui.builder().rows(ROWS).title(Mini.parse(Palette.smallTitle("Historique des kits"))).create();
+        Gui gui = Gui.builder().rows(ROWS).title(Mini.parse(Palette.smallTitle(Tr.t("Historique des kits")))).create();
         Guis.bottomBar(gui);
         for (int index = 0; index < entries.size(); index++) {
             KitJournal.Entry entry = entries.get(index);
@@ -48,13 +50,13 @@ public final class KitHistoryMenu {
                 default -> Material.CHEST_MINECART;
             };
             Card card = Card.of(KitStyle.HEX).tag(entry.action()).blank()
-                    .stat(Card.TIME, "Quand", entry.formattedDate() + Palette.MUTED + ", il y a "
+                    .stat(Card.TIME, Tr.t("Quand"), entry.formattedDate() + Palette.MUTED + ", il y a "
                             + Numbers.duration(entry.age()));
             if (entry.hasAmount()) {
-                card.money("Montant", Math.abs(entry.amount()));
+                card.money(Tr.t("Montant"), Math.abs(entry.amount()));
             }
             if (entry.involvesTwoParties()) {
-                card.stat(Card.PLAYER, player.getUniqueId().equals(entry.actor()) ? "Pour" : "De",
+                card.stat(Card.PLAYER, player.getUniqueId().equals(entry.actor()) ? Tr.t("Pour") : "De",
                         Mini.escape(player.getUniqueId().equals(entry.actor()) ? entry.subjectName() : entry.actorName()));
             }
             for (String line : detail(entry.detail())) {
@@ -63,18 +65,18 @@ public final class KitHistoryMenu {
             gui.setItem(index, Guis.display(icon, Palette.heading(entry.action()), card.build()));
         }
         if (entries.isEmpty()) {
-            gui.setItem(3, 5, Guis.display(Material.COBWEB, Palette.MUTED + "<b>Aucun historique</b>",
-                    Card.of(KitStyle.HEX).blank().line("Vos récupérations de kits").line("apparaîtront ici.").build()));
+            gui.setItem(3, 5, Guis.display(Material.COBWEB, Palette.MUTED + Tr.t("<b>Aucun historique</b>"),
+                    Card.of(KitStyle.HEX).blank().line(Tr.t("Vos récupérations de kits")).line(Tr.t("apparaîtront ici.")).build()));
         }
         if (back != null) {
             gui.setItem(ROWS, Guis.BACK_SLOT, Guis.backButton(back));
         }
         if (page > 0) {
             gui.setItem(ROWS, Guis.PREVIOUS_SLOT, Guis.button(Material.ARROW, Palette.ACCENT + Palette.BACK
-                    + " Page précédente", List.of(), viewer -> open(viewer, page - 1, back)));
+                    + Tr.t(" Page précédente"), List.of(), viewer -> open(viewer, page - 1, back)));
         }
         if (more) {
-            gui.setItem(ROWS, Guis.NEXT_SLOT, Guis.button(Material.ARROW, Palette.ACCENT + "Page suivante "
+            gui.setItem(ROWS, Guis.NEXT_SLOT, Guis.button(Material.ARROW, Palette.ACCENT + Tr.t("Page suivante ")
                     + Palette.POINTER, List.of(), viewer -> open(viewer, page + 1, back)));
         }
         gui.setItem(ROWS, Guis.CLOSE_SLOT, Guis.closeButton());

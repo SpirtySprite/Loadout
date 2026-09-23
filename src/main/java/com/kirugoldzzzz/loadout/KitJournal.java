@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.kirugoldzzzz.loadout.common.scheduler.Scheduling;
 import com.kirugoldzzzz.loadout.common.storage.Database;
 import org.bukkit.entity.Player;
@@ -47,7 +49,7 @@ public final class KitJournal {
     }
 
     public static void byConsole(String action, UUID subject, String subjectName, double amount, String detail) {
-        record(action, null, "Console", subject, subjectName, amount, detail);
+        record(action, null, Tr.t("Console"), subject, subjectName, amount, detail);
     }
 
     private static void record(String action, UUID actor, String actorName, UUID subject, String subjectName,

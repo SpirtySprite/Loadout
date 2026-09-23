@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.foliagui.gui.Gui;
 import com.foliagui.item.GuiItem;
 import com.kirugoldzzzz.loadout.common.gui.Guis;
@@ -40,7 +42,7 @@ public final class KitCollectionMenu {
         Set<String> marks = service.repository().milestones(player.getUniqueId());
         KitViewer viewer = service.viewer(player);
         long now = System.currentTimeMillis();
-        Gui gui = Gui.builder().rows(ROWS).title(Mini.parse(Palette.smallTitle("Collection de kits"))).create();
+        Gui gui = Gui.builder().rows(ROWS).title(Mini.parse(Palette.smallTitle(Tr.t("Collection de kits")))).create();
         Guis.fill(gui);
         List<Kit> kits = new ArrayList<>(catalog.kits().values());
         int pages = Math.max(1, (kits.size() + PAGE - 1) / PAGE);
@@ -60,14 +62,14 @@ public final class KitCollectionMenu {
             }
             bestStreak = Math.max(bestStreak, progress.best());
         }
-        Card summary = Card.of(KitStyle.HEX).tag("Collection").blank()
-                .stat(Card.CATEGORY, "Kits découverts", owned + " / " + total)
+        Card summary = Card.of(KitStyle.HEX).tag(Tr.t("Collection")).blank()
+                .stat(Card.CATEGORY, Tr.t("Kits découverts"), owned + " / " + total)
                 .raw(KitStyle.progress(total == 0 ? 0.0D : owned / (double) total))
                 .blank()
-                .count(Card.STAR, "Kits maîtrisés", masteredCount)
-                .count("✹", "Meilleure série", bestStreak);
+                .count(Card.STAR, Tr.t("Kits maîtrisés"), masteredCount)
+                .count("✹", Tr.t("Meilleure série"), bestStreak);
         gui.setItem(5, 5, new GuiItem(KitStyle.decorate(new ItemStack(Material.KNOWLEDGE_BOOK),
-                Palette.title("Votre collection"), summary.build(), owned == total && total > 0),
+                Palette.title(Tr.t("Votre collection")), summary.build(), owned == total && total > 0),
                 event -> event.setCancelled(true)));
         Map<Integer, KitRewards> milestones = catalog.progression().collection();
         int column = 1;
@@ -86,10 +88,10 @@ public final class KitCollectionMenu {
         }
         if (safe > 0) {
             gui.setItem(ROWS, Guis.PREVIOUS_SLOT, Guis.button(Material.ARROW, Palette.ACCENT + Palette.BACK
-                    + " Page précédente", List.of(), viewer2 -> open(viewer2, safe - 1, back)));
+                    + Tr.t(" Page précédente"), List.of(), viewer2 -> open(viewer2, safe - 1, back)));
         }
         if (safe < pages - 1) {
-            gui.setItem(ROWS, Guis.NEXT_SLOT, Guis.button(Material.ARROW, Palette.ACCENT + "Page suivante "
+            gui.setItem(ROWS, Guis.NEXT_SLOT, Guis.button(Material.ARROW, Palette.ACCENT + Tr.t("Page suivante ")
                     + Palette.POINTER, List.of(), viewer2 -> open(viewer2, safe + 1, back)));
         }
         gui.setItem(ROWS, Guis.CLOSE_SLOT, Guis.closeButton());
@@ -100,21 +102,21 @@ public final class KitCollectionMenu {
                           int page) {
         KitService service = actions.service();
         KitService.Progress progress = service.progress(viewer, kit, now);
-        Card card = Card.of(KitStyle.HEX).tag(collected ? "Découvert" : "À découvrir").blank();
+        Card card = Card.of(KitStyle.HEX).tag(collected ? Tr.t("Découvert") : Tr.t("À découvrir")).blank();
         if (collected) {
-            card.count(Card.AMOUNT, "Récupérations", progress.uses());
+            card.count(Card.AMOUNT, Tr.t("Récupérations"), progress.uses());
             if (progress.mastery().enabled()) {
                 KitMastery.Tier tier = progress.mastery().tier(progress.level());
-                card.stat(Card.STAR, "Maîtrise", tier == null ? "aucun palier" : tier.name());
+                card.stat(Card.STAR, Tr.t("Maîtrise"), tier == null ? Tr.t("aucun palier") : tier.name());
             }
             if (progress.best() > 0) {
-                card.count("✹", "Meilleure série", progress.best());
+                card.count("✹", Tr.t("Meilleure série"), progress.best());
             }
         } else {
-            card.line("Récupérez ce kit une fois pour")
-                    .line("l'ajouter à votre collection.");
+            card.line(Tr.t("Récupérez ce kit une fois pour"))
+                    .line(Tr.t("l'ajouter à votre collection."));
         }
-        card.blank().click("pour voir le kit");
+        card.blank().click(Tr.t("pour voir le kit"));
         ItemStack icon = collected ? KitStyle.icon(kit) : new ItemStack(Material.GRAY_DYE);
         String name;
         if (collected) {
@@ -131,20 +133,20 @@ public final class KitCollectionMenu {
     }
 
     private GuiItem milestone(int count, KitRewards rewards, int owned, boolean claimed) {
-        Card card = Card.of(KitStyle.HEX).tag("Palier de collection").blank()
-                .stat(Card.CATEGORY, "Kits à découvrir", Math.min(owned, count) + " / " + count);
+        Card card = Card.of(KitStyle.HEX).tag(Tr.t("Palier de collection")).blank()
+                .stat(Card.CATEGORY, Tr.t("Kits à découvrir"), Math.min(owned, count) + " / " + count);
         if (rewards.money() > 0.0D) {
-            card.money("Argent", rewards.money());
+            card.money(Tr.t("Argent"), rewards.money());
         }
         if (rewards.shards() > 0L) {
-            card.stat(Card.STAR, "Fragments", Numbers.count(rewards.shards()));
+            card.stat(Card.STAR, Tr.t("Fragments"), Numbers.count(rewards.shards()));
         }
         if (rewards.levels() > 0) {
-            card.stat(Card.STAR, "Niveaux", "+" + rewards.levels());
+            card.stat(Card.STAR, Tr.t("Niveaux"), "+" + rewards.levels());
         }
-        rewards.lines().forEach(line -> card.stat(Card.CALL, "Bonus", line));
-        card.blank().raw(claimed ? Card.noteLine(Palette.SUCCESS, Palette.CHECK, "Récompense obtenue")
-                : Card.noteLine(Palette.MUTED, Card.TIME, "Obtenue automatiquement"));
+        rewards.lines().forEach(line -> card.stat(Card.CALL, Tr.t("Bonus"), line));
+        card.blank().raw(claimed ? Card.noteLine(Palette.SUCCESS, Palette.CHECK, Tr.t("Récompense obtenue"))
+                : Card.noteLine(Palette.MUTED, Card.TIME, Tr.t("Obtenue automatiquement")));
         Material icon = claimed ? Material.LIME_CANDLE : owned >= count ? Material.YELLOW_CANDLE : Material.GRAY_CANDLE;
         return Guis.display(icon, (claimed ? Palette.SUCCESS : Palette.WARNING) + "<b>" + count + " kits</b>",
                 card.build());

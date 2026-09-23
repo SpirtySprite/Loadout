@@ -1,5 +1,7 @@
 package com.kirugoldzzzz.loadout;
 
+import com.kirugoldzzzz.loadout.common.text.Tr;
+
 import com.kirugoldzzzz.loadout.common.item.ItemSpec;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -44,7 +46,7 @@ public final class KitLoader {
                 ConfigurationSection section = categorySection.getConfigurationSection(key);
                 String id = key.toLowerCase(Locale.ROOT);
                 if (section == null || !ID.matcher(id).matches() || id.equals(KitCategory.ALL)) {
-                    problems.add("Catégorie ignorée : " + key);
+                    problems.add(Tr.t("Catégorie ignorée : ") + key);
                     continue;
                 }
                 categories.put(id, new KitCategory(id, section.getString("name", key),
@@ -59,17 +61,17 @@ public final class KitLoader {
                 ConfigurationSection section = kitSection.getConfigurationSection(key);
                 String id = key.toLowerCase(Locale.ROOT);
                 if (section == null || !ID.matcher(id).matches()) {
-                    problems.add("Kit ignoré, identifiant invalide : " + key);
+                    problems.add(Tr.t("Kit ignoré, identifiant invalide : ") + key);
                     continue;
                 }
                 try {
                     Kit kit = kit(id, section, settings.zone(), items, problems);
                     if (kit.category() != null && !categories.containsKey(kit.category())) {
-                        problems.add("Kit " + id + " : catégorie inconnue " + kit.category());
+                        problems.add("Kit " + id + Tr.t(" : catégorie inconnue ") + kit.category());
                     }
                     kits.put(id, kit);
                 } catch (RuntimeException failure) {
-                    problems.add("Kit ignoré, lecture impossible : " + key + " (" + failure.getMessage() + ")");
+                    problems.add(Tr.t("Kit ignoré, lecture impossible : ") + key + " (" + failure.getMessage() + ")");
                 }
             }
         }
@@ -83,14 +85,14 @@ public final class KitLoader {
         if (section == null) {
             return KitProgression.NONE;
         }
-        KitMastery mastery = mastery(section.getConfigurationSection("mastery"), "modèle", items, problems);
+        KitMastery mastery = mastery(section.getConfigurationSection("mastery"), Tr.t("modèle"), items, problems);
         ConfigurationSection streakSection = section.getConfigurationSection("streaks");
         KitProgression.Streaks streaks = KitProgression.Streaks.NONE;
         if (streakSection != null) {
             streaks = new KitProgression.Streaks(streakSection.getBoolean("enabled", true),
                     streakSection.getInt("bonus-per-claim", 5), streakSection.getInt("maximum-bonus", 50),
-                    duration(streakSection.getString("warning"), "séries", "alerte", problems),
-                    milestones(streakSection.getConfigurationSection("milestones"), "séries", problems));
+                    duration(streakSection.getString("warning"), Tr.t("séries"), "alerte", problems),
+                    milestones(streakSection.getConfigurationSection("milestones"), Tr.t("séries"), problems));
         }
         Map<Integer, KitRewards> collection = milestones(section.getConfigurationSection("collection"), "collection",
                 problems);
@@ -103,7 +105,7 @@ public final class KitLoader {
                 if (kits.contains(id)) {
                     listed.add(id);
                 } else {
-                    problems.add("Kit du jour : kit inconnu " + kit);
+                    problems.add(Tr.t("Kit du jour : kit inconnu ") + kit);
                 }
             }
             LocalTime rotation = KitSchedule.parseTime(featuredSection.getString("rotation", "00:00"));
@@ -123,7 +125,7 @@ public final class KitLoader {
             int at = parseInt(key, -1);
             ConfigurationSection rewards = section.getConfigurationSection(key);
             if (at <= 0 || rewards == null) {
-                problems.add("Palier de " + label + " invalide : " + key);
+                problems.add(Tr.t("Palier de ") + label + Tr.t(" invalide : ") + key);
                 continue;
             }
             milestones.put(at, rewards(rewards, label + " " + key, problems));
@@ -140,7 +142,7 @@ public final class KitLoader {
         try {
             zone = ZoneId.of(zoneName);
         } catch (DateTimeException invalid) {
-            problems.add("Fuseau horaire inconnu : " + zoneName);
+            problems.add(Tr.t("Fuseau horaire inconnu : ") + zoneName);
         }
         ConfigurationSection voucher = section.getConfigurationSection("voucher");
         List<String> lore = voucher == null || !voucher.contains("lore") ? KitSettings.DEFAULT_VOUCHER_LORE
@@ -180,7 +182,7 @@ public final class KitLoader {
                 int slot = parseInt(key, -1);
                 ConfigurationSection itemSection = contentSection.getConfigurationSection(key);
                 if (!KitSlots.valid(slot) || itemSection == null) {
-                    problems.add("Kit " + id + " : emplacement invalide " + key);
+                    problems.add("Kit " + id + Tr.t(" : emplacement invalide ") + key);
                     continue;
                 }
                 ItemStack item = items.apply(itemSection);
@@ -216,7 +218,7 @@ public final class KitLoader {
                 section.getBoolean("hide-locked", false),
                 section.getStringList("hint"),
                 mastery(section.getConfigurationSection("mastery"), id, items, problems),
-                duration(section.getString("item-lifetime"), id, "durée de vie des objets", problems),
+                duration(section.getString("item-lifetime"), id, Tr.t("durée de vie des objets"), problems),
                 animationLevel(section, id, problems));
     }
 
@@ -228,11 +230,11 @@ public final class KitLoader {
         long from = KitSchedule.parseDate(section.getString("from"), zone);
         long until = KitSchedule.parseDate(section.getString("until"), zone);
         if (from < 0L || until < 0L) {
-            problems.add("Kit " + id + " : date invalide, format jj/mm/aaaa hh:mm");
+            problems.add("Kit " + id + Tr.t(" : date invalide, format jj/mm/aaaa hh:mm"));
         }
         LocalTime[] hours = KitSchedule.parseHours(section.getString("hours"));
         if (hours == null && !section.getString("hours", "").isBlank()) {
-            problems.add("Kit " + id + " : plage horaire invalide, format 18:00-23:00");
+            problems.add("Kit " + id + Tr.t(" : plage horaire invalide, format 18:00-23:00"));
         }
         KitSchedule schedule = new KitSchedule(Math.max(0L, from), Math.max(0L, until),
                 KitSchedule.parseDays(section.getStringList("days")),
@@ -241,12 +243,12 @@ public final class KitLoader {
         for (String raw : section.getStringList("statistics")) {
             KitStatistic statistic = KitStatistic.parse(raw);
             if (statistic == null) {
-                problems.add("Kit " + id + " : statistique invalide " + raw + ", format mob_kills:100");
+                problems.add("Kit " + id + Tr.t(" : statistique invalide ") + raw + Tr.t(", format mob_kills:100"));
             } else {
                 statistics.add(statistic);
             }
         }
-        return new KitRequirements(duration(section.getString("playtime"), id, "temps de jeu", problems),
+        return new KitRequirements(duration(section.getString("playtime"), id, Tr.t("temps de jeu"), problems),
                 section.getStringList("kits"),
                 Set.copyOf(section.getStringList("worlds")),
                 section.getDouble("balance", 0.0D),
@@ -261,7 +263,7 @@ public final class KitLoader {
             int split = line == null ? -1 : line.lastIndexOf(':');
             int percent = split <= 0 ? -1 : parseInt(line.substring(split + 1).replace("%", ""), -1);
             if (percent <= 0) {
-                problems.add("Kit " + id + " : réduction invalide " + line + ", format permission:pourcentage");
+                problems.add("Kit " + id + Tr.t(" : réduction invalide ") + line + Tr.t(", format permission:pourcentage"));
                 continue;
             }
             reductions.put(line.substring(0, split).trim(), Math.min(100, percent));
@@ -279,7 +281,7 @@ public final class KitLoader {
         }
         int level = parseInt(raw, Integer.MIN_VALUE);
         if (level < 0 || level > KitShow.MAXIMUM) {
-            problems.add("Kit " + id + " : niveau d'animation invalide " + raw + ", attendu auto ou 0 à "
+            problems.add("Kit " + id + Tr.t(" : niveau d'animation invalide ") + raw + Tr.t(", attendu auto ou 0 à ")
                     + KitShow.MAXIMUM);
             return Kit.AUTOMATIC;
         }
@@ -298,7 +300,7 @@ public final class KitLoader {
                 continue;
             }
             if (tier.getInt("claims", 0) <= 0) {
-                problems.add("Maîtrise " + id + " : palier " + key + " sans nombre de récupérations");
+                problems.add(Tr.t("Maîtrise ") + id + " : palier " + key + Tr.t(" sans nombre de récupérations"));
                 continue;
             }
             List<ItemStack> bonusItems = new ArrayList<>();
@@ -384,7 +386,7 @@ public final class KitLoader {
         for (String raw : section.getStringList("effects")) {
             KitEffect effect = KitEffect.parse(raw);
             if (effect == null) {
-                problems.add("Kit " + id + " : effet invalide " + raw);
+                problems.add("Kit " + id + Tr.t(" : effet invalide ") + raw);
             } else {
                 effects.add(effect);
             }
@@ -400,7 +402,7 @@ public final class KitLoader {
         }
         OptionalLong parsed = KitDurations.parse(raw);
         if (parsed.isEmpty()) {
-            problems.add("Kit " + id + " : " + label + " invalide " + raw);
+            problems.add("Kit " + id + " : " + label + Tr.t(" invalide ") + raw);
             return 0L;
         }
         return parsed.getAsLong();
