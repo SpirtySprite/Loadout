@@ -30,6 +30,7 @@ conditions), Lootrift or any other crate plugin (keys as rewards).
 | `/kit preview <kit>` | contents preview |
 | `/kit tryon <kit>` | tries the gear on before claiming it |
 | `/kit gift <player> <kit>` | gifts a kit |
+| `/kit share <kit>` | posts a clickable preview of the kit in chat, once every 30 seconds |
 | `/kit all` | claims every available kit |
 | `/kit collection`, `/kit mastery`, `/kit history` | progression and history |
 | `/kit admin` | admin menu |

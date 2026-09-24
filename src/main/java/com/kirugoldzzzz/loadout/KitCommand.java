@@ -16,23 +16,26 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class KitCommand extends CommandBase {
 
     public static final String ADMIN = "loadout.admin.kits";
     static final String GIFT = "loadout.kit.gift";
     private static final List<String> PLAYER_ACTIONS_FR = List.of("apercu", "offrir", "aide", "collection",
-            "historique", "tout", "maitrise", "essayer");
+            "historique", "tout", "maitrise", "essayer", "partager");
     private static final List<String> ADMIN_ACTIONS_FR = List.of("admin", "creer", "editer", "capturer", "supprimer",
             "donner", "bon", "reset", "joueur", "stock", "recharger", "liste", "ceremonie", "importer");
     private static final List<String> PLAYER_ACTIONS_EN = List.of("preview", "gift", "help", "collection",
-            "history", "all", "mastery", "tryon");
+            "history", "all", "mastery", "tryon", "share");
     private static final List<String> ADMIN_ACTIONS_EN = List.of("admin", "create", "edit", "capture", "delete",
             "give", "voucher", "reset", "player", "stock", "reload", "list", "ceremony", "import");
     private static final List<String> CEREMONY_LEVELS = List.of("0", "1", "2", "3", "4");
     private static final int VOUCHER_LIMIT = 256;
+    private static final long SHARE_COOLDOWN = 30_000L;
 
     private final KitActions actions;
     private final KitMenu menu;
@@ -40,6 +43,7 @@ public final class KitCommand extends CommandBase {
     private final KitAdminMenu admin;
     private final KitEditor editor;
     private final Wallet economy;
+    private final Map<UUID, Long> shared = new ConcurrentHashMap<>();
     private KitImporter importer;
     private KitCollectionMenu collection;
     private KitHistoryMenu history;
@@ -103,6 +107,23 @@ public final class KitCommand extends CommandBase {
         this.economy = economy;
     }
 
+    private void share(Player player, Kit kit) {
+        if (!service().visible(service().status(player, kit), kit)) {
+            Messages.send(player, "kits.unknown", Mini.value("id", kit.id()));
+            return;
+        }
+        long now = System.currentTimeMillis();
+        Long last = shared.get(player.getUniqueId());
+        if (last != null && now - last < SHARE_COOLDOWN) {
+            Messages.send(player, "kits.share-cooldown",
+                    Mini.value("time", Numbers.duration(SHARE_COOLDOWN - (now - last))));
+            return;
+        }
+        shared.put(player.getUniqueId(), now);
+        Messages.broadcast("kits.shared", Mini.value("player", player.getName()), KitService.kitResolver(kit),
+                Mini.value("id", kit.id()));
+    }
+
     private KitService service() {
         return actions.service();
     }
@@ -151,6 +172,11 @@ public final class KitCommand extends CommandBase {
             case "essayer", "tryon" -> {
                 if (requirePlayer(sender, player)) {
                     withKit(sender, args, 1, kit -> KitTryOn.show(player, kit));
+                }
+            }
+            case "partager", "share" -> {
+                if (requirePlayer(sender, player)) {
+                    withKit(sender, args, 1, kit -> share(player, kit));
                 }
             }
             case "admin", "creer", "create", "editer", "edit", "capturer", "capture", "supprimer", "delete", "donner",
@@ -453,7 +479,7 @@ public final class KitCommand extends CommandBase {
         List<String> online = Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
         if (args.length == 2) {
             return switch (action) {
-                case "apercu", "preview", "voir", "maitrise", "mastery", "essayer", "tryon" ->
+                case "apercu", "preview", "voir", "maitrise", "mastery", "essayer", "tryon", "partager", "share" ->
                         match(visibleKits(sender), args[1]);
                 case "import", "importer" -> admin
                         ? match(KitSource.ALL.stream().map(KitSource::id).toList(), args[1]) : List.of();
