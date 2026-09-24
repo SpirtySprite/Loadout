@@ -247,13 +247,25 @@ public final class KitLoader {
                 statistics.add(statistic);
             }
         }
+        List<KitCondition> conditions = new ArrayList<>();
+        for (Object raw : section.getList("placeholders", List.of())) {
+            String expression = raw instanceof java.util.Map<?, ?> map ? String.valueOf(map.get("check")) : String.valueOf(raw);
+            String label = raw instanceof java.util.Map<?, ?> map && map.get("label") != null ? String.valueOf(map.get("label")) : null;
+            KitCondition condition = KitCondition.parse(expression, label);
+            if (condition == null) {
+                problems.add("Kit " + id + Tr.t(" : condition invalide ") + expression + Tr.t(", format %placeholder% >= 10"));
+            } else {
+                conditions.add(condition);
+            }
+        }
         return new KitRequirements(duration(section.getString("playtime"), id, Tr.t("temps de jeu"), problems),
                 section.getStringList("kits"),
                 Set.copyOf(section.getStringList("worlds")),
                 section.getDouble("balance", 0.0D),
                 section.getInt("level", 0),
                 schedule,
-                statistics);
+                statistics,
+                conditions);
     }
 
     static Map<String, Integer> reductions(List<String> lines, String id, List<String> problems) {

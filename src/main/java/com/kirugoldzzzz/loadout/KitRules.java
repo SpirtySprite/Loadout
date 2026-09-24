@@ -111,9 +111,13 @@ public final class KitRules {
             checks.add(new KitStatus.Check(KitStatus.Kind.STATISTIC, met, statistic.label(),
                     Numbers.count(Math.min(value, statistic.amount())) + " / " + Numbers.count(statistic.amount())));
         }
+        for (KitCondition condition : requirements.conditions()) {
+            boolean met = bypassRequirements || condition.test(viewer.placeholders().apply(condition.placeholder()));
+            checks.add(new KitStatus.Check(KitStatus.Kind.CONDITION, met, condition.label(), condition.describe()));
+        }
         if (kit.options().team()) {
             boolean met = bypassRequirements || viewer.team() != null;
-            checks.add(new KitStatus.Check(KitStatus.Kind.TEAM, met, Tr.t("Équipe"), viewer.team() != null ? "membre" : Tr.t("rejoindre une équipe")));
+            checks.add(new KitStatus.Check(KitStatus.Kind.TEAM, met, Tr.t("Équipe"), viewer.team() != null ? Tr.t("membre") : Tr.t("rejoindre une équipe")));
         }
         if (cost.money() > 0.0D) {
             boolean met = bypassCost || viewer.balance() >= cost.money();
@@ -121,7 +125,7 @@ public final class KitRules {
         }
         if (cost.shards() > 0L) {
             boolean met = bypassCost || viewer.shards() >= cost.shards();
-            checks.add(new KitStatus.Check(KitStatus.Kind.SHARDS, met, Tr.t("Fragments"), Numbers.count(cost.shards())));
+            checks.add(new KitStatus.Check(KitStatus.Kind.SHARDS, met, KitPoints.label(), Numbers.count(cost.shards())));
         }
         if (cost.levels() > 0) {
             boolean met = bypassCost || viewer.level() >= cost.levels();
@@ -148,7 +152,8 @@ public final class KitRules {
         } else if (remaining > 0L && !viewer.has(KitViewer.BYPASS_COOLDOWN)) {
             state = KitStatus.State.COOLDOWN;
         } else if (unmet(checks, KitStatus.Kind.PLAYTIME, KitStatus.Kind.KITS, KitStatus.Kind.WORLD,
-                KitStatus.Kind.BALANCE, KitStatus.Kind.LEVEL, KitStatus.Kind.STATISTIC, KitStatus.Kind.TEAM)) {
+                KitStatus.Kind.BALANCE, KitStatus.Kind.LEVEL, KitStatus.Kind.STATISTIC, KitStatus.Kind.CONDITION,
+                KitStatus.Kind.TEAM)) {
             state = KitStatus.State.REQUIREMENTS;
         } else if (unmet(checks, KitStatus.Kind.MONEY, KitStatus.Kind.SHARDS, KitStatus.Kind.LEVELS)) {
             state = KitStatus.State.UNAFFORDABLE;

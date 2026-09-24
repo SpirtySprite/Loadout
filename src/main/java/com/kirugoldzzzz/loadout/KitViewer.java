@@ -1,11 +1,13 @@
 package com.kirugoldzzzz.loadout;
 
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToLongFunction;
 
 public record KitViewer(UUID id, Predicate<String> permissions, long playtime, double balance, long shards, int level,
-                        String world, UUID team, ToLongFunction<KitStatistic> statistics) {
+                        String world, UUID team, ToLongFunction<KitStatistic> statistics,
+                        Function<String, String> placeholders) {
 
     public static final String BYPASS_COOLDOWN = "loadout.kit.bypass.cooldown";
     public static final String BYPASS_COST = "loadout.kit.bypass.cost";
@@ -15,6 +17,12 @@ public record KitViewer(UUID id, Predicate<String> permissions, long playtime, d
     public KitViewer {
         permissions = permissions == null ? ignored -> false : permissions;
         statistics = statistics == null ? ignored -> 0L : statistics;
+        placeholders = placeholders == null ? raw -> raw : placeholders;
+    }
+
+    public KitViewer(UUID id, Predicate<String> permissions, long playtime, double balance, long shards, int level,
+                     String world, UUID team, ToLongFunction<KitStatistic> statistics) {
+        this(id, permissions, playtime, balance, shards, level, world, team, statistics, null);
     }
 
     public KitViewer(UUID id, Predicate<String> permissions, long playtime, double balance, long shards, int level,
