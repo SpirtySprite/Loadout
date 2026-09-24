@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class NexusCommand implements TabExecutor {
+public abstract class CommandBase implements TabExecutor {
 
     private final String permission;
     private final boolean playerOnly;
 
-    protected NexusCommand(String permission, boolean playerOnly) {
+    protected CommandBase(String permission, boolean playerOnly) {
         this.permission = permission;
         this.playerOnly = playerOnly;
     }

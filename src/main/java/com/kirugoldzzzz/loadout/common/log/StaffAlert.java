@@ -151,7 +151,7 @@ public final class StaffAlert {
     }
 
     public void send() {
-        NexusAlerts.dispatch(this);
+        Alerts.dispatch(this);
     }
 
     LogTopic topic() {

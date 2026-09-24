@@ -5,13 +5,13 @@ import com.kirugoldzzzz.loadout.common.text.Tr;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public final class NexusLog {
+public final class PluginLog {
 
-    public static final String NAME = Tr.t("Nexus Logs");
+    public static final String NAME = "Loadout";
 
     private static final Logger LOGGER = Logger.getLogger(NAME);
 
-    private NexusLog() {
+    private PluginLog() {
     }
 
     public static void info(LogTopic topic, String message) {

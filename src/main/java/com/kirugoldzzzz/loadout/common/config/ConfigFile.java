@@ -1,7 +1,7 @@
 package com.kirugoldzzzz.loadout.common.config;
 
 import com.kirugoldzzzz.loadout.common.log.LogTopic;
-import com.kirugoldzzzz.loadout.common.log.NexusLog;
+import com.kirugoldzzzz.loadout.common.log.PluginLog;
 import com.kirugoldzzzz.loadout.common.text.Tr;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -53,7 +53,7 @@ public final class ConfigFile {
             configuration.setDefaults(bundled);
             configuration.options().copyDefaults(true);
         } catch (Exception exception) {
-            NexusLog.warn(LogTopic.CONFIG, Tr.t("Impossible de lire les valeurs par défaut de ") + name + " : " + exception.getMessage());
+            PluginLog.warn(LogTopic.CONFIG, Tr.t("Impossible de lire les valeurs par défaut de ") + name + " : " + exception.getMessage());
         }
     }
 
@@ -74,7 +74,7 @@ public final class ConfigFile {
             Sections.copy(source, configuration.createSection(path));
             return save();
         } catch (Exception exception) {
-            NexusLog.warn(LogTopic.CONFIG, Tr.t("Impossible de compléter ") + name + " : " + exception.getMessage());
+            PluginLog.warn(LogTopic.CONFIG, Tr.t("Impossible de compléter ") + name + " : " + exception.getMessage());
             return false;
         }
     }
@@ -94,7 +94,7 @@ public final class ConfigFile {
             configuration.save(file);
             return true;
         } catch (Exception exception) {
-            NexusLog.error(LogTopic.CONFIG, Tr.t("Impossible de sauvegarder ") + name + " : " + exception.getMessage());
+            PluginLog.error(LogTopic.CONFIG, Tr.t("Impossible de sauvegarder ") + name + " : " + exception.getMessage());
             return false;
         }
     }
@@ -112,7 +112,7 @@ public final class ConfigFile {
             load();
             return true;
         } catch (Exception exception) {
-            NexusLog.error(LogTopic.CONFIG, Tr.t("Impossible de mettre à niveau ") + name + " : " + exception.getMessage());
+            PluginLog.error(LogTopic.CONFIG, Tr.t("Impossible de mettre à niveau ") + name + " : " + exception.getMessage());
             return false;
         }
     }

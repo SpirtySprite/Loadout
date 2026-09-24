@@ -2,7 +2,7 @@ package com.kirugoldzzzz.loadout;
 
 import com.foliagui.FoliaGUI;
 import com.kirugoldzzzz.loadout.api.LoadoutApi;
-import com.kirugoldzzzz.loadout.common.command.NexusCommand;
+import com.kirugoldzzzz.loadout.common.command.CommandBase;
 import com.kirugoldzzzz.loadout.common.config.ConfigFile;
 import com.kirugoldzzzz.loadout.common.gui.Guis;
 import com.kirugoldzzzz.loadout.common.platform.Telemetry;
@@ -11,6 +11,7 @@ import com.kirugoldzzzz.loadout.common.scheduler.Scheduling;
 import com.kirugoldzzzz.loadout.common.storage.Database;
 import com.kirugoldzzzz.loadout.common.storage.StorageManager;
 import com.kirugoldzzzz.loadout.common.text.Messages;
+import com.kirugoldzzzz.loadout.common.text.Palette;
 import com.kirugoldzzzz.loadout.common.text.Tr;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.ServicePriority;
@@ -103,6 +104,7 @@ public final class Loadout extends JavaPlugin {
     private ConfigFile loadSettings() {
         ConfigFile settings = new ConfigFile(this, "config.yml").load();
         Tr.configure(this, settings.get().getString("language", "en"));
+        Palette.apply(settings.get().getConfigurationSection("theme"));
         new ConfigFile(this, "lang/messages_fr.yml").load();
         Messages.load(new ConfigFile(this, Tr.messagesFile(this)).load().get());
         return settings;
@@ -124,7 +126,7 @@ public final class Loadout extends JavaPlugin {
         FoliaGUI.shutdown();
     }
 
-    private void bind(String name, NexusCommand executor) {
+    private void bind(String name, CommandBase executor) {
         PluginCommand command = getCommand(name);
         if (command == null) {
             getLogger().warning(Tr.t("La commande ") + name + Tr.t(" est absente du plugin.yml"));

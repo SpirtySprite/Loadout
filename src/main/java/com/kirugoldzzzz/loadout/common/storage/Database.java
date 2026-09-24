@@ -1,7 +1,7 @@
 package com.kirugoldzzzz.loadout.common.storage;
 
 import com.kirugoldzzzz.loadout.common.log.LogTopic;
-import com.kirugoldzzzz.loadout.common.log.NexusLog;
+import com.kirugoldzzzz.loadout.common.log.PluginLog;
 import com.kirugoldzzzz.loadout.common.log.StaffAlert;
 import com.kirugoldzzzz.loadout.common.text.Card;
 import org.bukkit.plugin.Plugin;
@@ -84,7 +84,7 @@ public final class Database {
                 try {
                     notification.run();
                 } catch (RuntimeException failure) {
-                    NexusLog.warn(LogTopic.STORAGE, "Notification impossible après validation", failure);
+                    PluginLog.warn(LogTopic.STORAGE, "Notification impossible après validation", failure);
                 }
             }
             return result;
@@ -112,7 +112,7 @@ public final class Database {
         this.file = new File(plugin.getDataFolder(), fileName);
         File parent = file.getParentFile();
         if (parent != null && !parent.exists() && !parent.mkdirs()) {
-            NexusLog.warn(LogTopic.STORAGE, "Impossible de créer le dossier de données " + parent.getPath());
+            PluginLog.warn(LogTopic.STORAGE, "Impossible de créer le dossier de données " + parent.getPath());
         }
     }
 
@@ -158,7 +158,7 @@ public final class Database {
             try {
                 connection.close();
             } catch (SQLException exception) {
-                NexusLog.warn(LogTopic.STORAGE, "Fermeture de la base de données impossible", exception);
+                PluginLog.warn(LogTopic.STORAGE, "Fermeture de la base de données impossible", exception);
             }
             connection = null;
         }
@@ -219,7 +219,7 @@ public final class Database {
                 }
                 return true;
             } catch (Throwable failure) {
-                NexusLog.warn(LogTopic.STORAGE, "Lecture en base impossible", failure);
+                PluginLog.warn(LogTopic.STORAGE, "Lecture en base impossible", failure);
                 if (failure instanceof Error error) {
                     throw error;
                 }
@@ -260,7 +260,7 @@ public final class Database {
                 statement.execute(sql);
                 return true;
             } catch (SQLException exception) {
-                NexusLog.warn(LogTopic.STORAGE, "Instruction refusée : " + sql, exception);
+                PluginLog.warn(LogTopic.STORAGE, "Instruction refusée : " + sql, exception);
                 return false;
             }
         }
@@ -277,7 +277,7 @@ public final class Database {
                 return result.next() && result.getInt(1) == 0;
             }
         } catch (SQLException exception) {
-            NexusLog.warn(LogTopic.STORAGE, "Point de contrôle du journal impossible", exception);
+            PluginLog.warn(LogTopic.STORAGE, "Point de contrôle du journal impossible", exception);
             return false;
         }
     }
@@ -289,7 +289,7 @@ public final class Database {
             statement.execute("VACUUM INTO '" + target.toAbsolutePath().toString().replace("'", "''") + "'");
             return true;
         } catch (SQLException exception) {
-            NexusLog.warn(LogTopic.STORAGE, "Copie de la base impossible vers " + target, exception);
+            PluginLog.warn(LogTopic.STORAGE, "Copie de la base impossible vers " + target, exception);
             return false;
         }
     }
@@ -378,7 +378,7 @@ public final class Database {
         try {
             connection.rollback();
         } catch (SQLException exception) {
-            NexusLog.error(LogTopic.STORAGE, "Retour arrière impossible", exception);
+            PluginLog.error(LogTopic.STORAGE, "Retour arrière impossible", exception);
         }
     }
 
@@ -386,7 +386,7 @@ public final class Database {
         try {
             connection.setAutoCommit(true);
         } catch (SQLException exception) {
-            NexusLog.warn(LogTopic.STORAGE, "Mode auto-commit non restauré", exception);
+            PluginLog.warn(LogTopic.STORAGE, "Mode auto-commit non restauré", exception);
         }
     }
 

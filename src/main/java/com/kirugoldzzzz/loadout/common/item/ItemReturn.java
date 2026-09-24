@@ -1,7 +1,7 @@
 package com.kirugoldzzzz.loadout.common.item;
 
 import com.kirugoldzzzz.loadout.common.log.LogTopic;
-import com.kirugoldzzzz.loadout.common.log.NexusLog;
+import com.kirugoldzzzz.loadout.common.log.PluginLog;
 import com.kirugoldzzzz.loadout.common.scheduler.Scheduling;
 import com.kirugoldzzzz.loadout.common.storage.RecoveryRepository;
 import com.kirugoldzzzz.loadout.common.text.Tr;
@@ -81,7 +81,7 @@ public final class ItemReturn {
                 sink.store(player, leftovers, source == null || source.isBlank() ? DEFAULT_SOURCE : source);
                 return;
             } catch (RuntimeException failure) {
-                NexusLog.warn(LogTopic.STORAGE, Tr.t("Réserve indisponible pour ") + player.getName()
+                PluginLog.warn(LogTopic.STORAGE, Tr.t("Réserve indisponible pour ") + player.getName()
                         + Tr.t(", objets mis de côté jusqu'à la prochaine connexion"), failure);
             }
         }

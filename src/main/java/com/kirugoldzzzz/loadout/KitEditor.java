@@ -4,7 +4,7 @@ import com.kirugoldzzzz.loadout.common.config.ConfigFile;
 import com.kirugoldzzzz.loadout.common.config.Sections;
 import com.kirugoldzzzz.loadout.common.item.ItemSpec;
 import com.kirugoldzzzz.loadout.common.log.LogTopic;
-import com.kirugoldzzzz.loadout.common.log.NexusLog;
+import com.kirugoldzzzz.loadout.common.log.PluginLog;
 import com.kirugoldzzzz.loadout.common.log.StaffAlert;
 import com.kirugoldzzzz.loadout.common.text.Card;
 import com.kirugoldzzzz.loadout.common.text.Numbers;
@@ -544,7 +544,7 @@ public final class KitEditor {
         boolean saved = saver.get();
         reload.accept(config.get());
         if (!saved && change != null) {
-            NexusLog.warn(LogTopic.KITS, Tr.t("kits.yml n'a pas pu être enregistré : ") + change);
+            PluginLog.warn(LogTopic.KITS, Tr.t("kits.yml n'a pas pu être enregistré : ") + change);
             StaffAlert.warning(LogTopic.KITS, Tr.t("Configuration des kits non enregistrée"))
                     .summary(Tr.t("kits.yml n'a pas pu être écrit, le changement sera perdu au redémarrage"))
                     .detail(Card.CATEGORY, Tr.t("Kit"), id == null ? Tr.t("Général") : id)

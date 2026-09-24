@@ -2,7 +2,7 @@ package com.kirugoldzzzz.loadout;
 
 import com.kirugoldzzzz.loadout.common.effect.Particles;
 import com.kirugoldzzzz.loadout.common.log.LogTopic;
-import com.kirugoldzzzz.loadout.common.log.NexusLog;
+import com.kirugoldzzzz.loadout.common.log.PluginLog;
 import com.kirugoldzzzz.loadout.common.scheduler.Scheduling;
 import com.kirugoldzzzz.loadout.common.text.Mini;
 import com.kirugoldzzzz.loadout.common.text.Tr;
@@ -260,7 +260,7 @@ public final class KitStage {
 
     private void unsupported(Particle particle) {
         if (WARNED.add(particle)) {
-            NexusLog.warn(LogTopic.KITS, Tr.t("Particule ignorée dans les cérémonies : ") + particle.name() + Tr.t(", données ")
+            PluginLog.warn(LogTopic.KITS, Tr.t("Particule ignorée dans les cérémonies : ") + particle.name() + Tr.t(", données ")
                     + particle.getDataType().getSimpleName() + Tr.t(" non gérées"));
         }
     }
@@ -269,7 +269,7 @@ public final class KitStage {
         try {
             player.playSound(anchor, sound, volume, Math.max(0.5F, Math.min(2.0F, pitch)));
         } catch (RuntimeException unavailable) {
-            NexusLog.warn(LogTopic.KITS, Tr.t("Son indisponible dans les cérémonies"), unavailable);
+            PluginLog.warn(LogTopic.KITS, Tr.t("Son indisponible dans les cérémonies"), unavailable);
         }
     }
 
@@ -279,7 +279,7 @@ public final class KitStage {
                     Title.Times.times(Duration.ofMillis(fadeIn * 50L), Duration.ofMillis(stay * 50L),
                             Duration.ofMillis(fadeOut * 50L))));
         } catch (RuntimeException failure) {
-            NexusLog.warn(LogTopic.KITS, Tr.t("Titre de cérémonie non affiché"), failure);
+            PluginLog.warn(LogTopic.KITS, Tr.t("Titre de cérémonie non affiché"), failure);
         }
     }
 

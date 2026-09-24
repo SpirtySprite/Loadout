@@ -1,2 +1,5 @@
 language: en
 update-checker: true
+theme:
+  primary: "#8FBF7F"
+  secondary: "#E5C07B"

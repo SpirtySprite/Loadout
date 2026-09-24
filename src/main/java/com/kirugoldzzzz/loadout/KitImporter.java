@@ -2,7 +2,7 @@ package com.kirugoldzzzz.loadout;
 
 import com.kirugoldzzzz.loadout.common.item.ItemSpec;
 import com.kirugoldzzzz.loadout.common.log.LogTopic;
-import com.kirugoldzzzz.loadout.common.log.NexusLog;
+import com.kirugoldzzzz.loadout.common.log.PluginLog;
 import com.kirugoldzzzz.loadout.common.text.Tr;
 import com.kirugoldzzzz.loadout.importer.Imported;
 import com.kirugoldzzzz.loadout.importer.KitSource;
@@ -55,7 +55,7 @@ final class KitImporter {
             }
         }
         for (String warning : warnings) {
-            NexusLog.warn(LogTopic.KITS, "[" + result.source() + "] " + warning);
+            PluginLog.warn(LogTopic.KITS, "[" + result.source() + "] " + warning);
         }
         return new Summary(written.size(), items, claims, List.copyOf(warnings));
     }

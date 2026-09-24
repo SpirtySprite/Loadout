@@ -1,6 +1,6 @@
 package com.kirugoldzzzz.loadout;
 
-import com.kirugoldzzzz.loadout.common.command.NexusCommand;
+import com.kirugoldzzzz.loadout.common.command.CommandBase;
 import com.kirugoldzzzz.loadout.common.scheduler.Scheduling;
 import com.kirugoldzzzz.loadout.common.text.Messages;
 import com.kirugoldzzzz.loadout.common.text.Mini;
@@ -19,7 +19,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
-public final class KitCommand extends NexusCommand {
+public final class KitCommand extends CommandBase {
 
     public static final String ADMIN = "loadout.admin.kits";
     static final String GIFT = "loadout.kit.gift";

@@ -6,7 +6,7 @@ import com.kirugoldzzzz.loadout.common.effect.Particles;
 import com.kirugoldzzzz.loadout.common.item.Inventories;
 import com.kirugoldzzzz.loadout.common.item.ItemReturn;
 import com.kirugoldzzzz.loadout.common.log.LogTopic;
-import com.kirugoldzzzz.loadout.common.log.NexusLog;
+import com.kirugoldzzzz.loadout.common.log.PluginLog;
 import com.kirugoldzzzz.loadout.common.scheduler.Scheduling;
 import com.kirugoldzzzz.loadout.common.text.Messages;
 import com.kirugoldzzzz.loadout.common.text.Mini;
@@ -128,7 +128,7 @@ public final class KitService {
         crates.configure(root == null ? null : root.getConfigurationSection("crate-keys"));
         KitCatalog loaded = KitLoader.read(root);
         for (String problem : loaded.problems()) {
-            NexusLog.warn(LogTopic.KITS, problem);
+            PluginLog.warn(LogTopic.KITS, problem);
         }
         catalog = loaded;
     }
@@ -398,14 +398,14 @@ public final class KitService {
                     celebrate(player, milestoneRewards.get(index), milestoneLabels.get(index), kit);
                 }
             } catch (RuntimeException failure) {
-                NexusLog.warn(LogTopic.KITS, Tr.t("Effets du kit ") + kit.id() + Tr.t(" incomplets pour ") + player.getName(), failure);
+                PluginLog.warn(LogTopic.KITS, Tr.t("Effets du kit ") + kit.id() + Tr.t(" incomplets pour ") + player.getName(), failure);
             }
             return new Outcome(Result.SUCCESS, kit, status, delivery.stashed(), delivery.items(), null,
                     roulette ? pulls : List.of());
         } catch (Refusal refusal) {
             return Outcome.of(Result.REFUSED, kit, status(player, kit), refusal.getMessage());
         } catch (RuntimeException failure) {
-            NexusLog.warn(LogTopic.KITS, Tr.t("Remise du kit ") + kit.id() + Tr.t(" impossible pour ") + player.getName(), failure);
+            PluginLog.warn(LogTopic.KITS, Tr.t("Remise du kit ") + kit.id() + Tr.t(" impossible pour ") + player.getName(), failure);
             return Outcome.of(Result.FAILED, kit, null, "failed");
         } finally {
             claiming.remove(id);
@@ -516,7 +516,7 @@ public final class KitService {
         } catch (Refusal refusal) {
             return Outcome.of(Result.REFUSED, kit, null, refusal.getMessage());
         } catch (RuntimeException failure) {
-            NexusLog.warn(LogTopic.KITS, Tr.t("Amélioration du kit ") + kit.id() + Tr.t(" impossible"), failure);
+            PluginLog.warn(LogTopic.KITS, Tr.t("Amélioration du kit ") + kit.id() + Tr.t(" impossible"), failure);
             return Outcome.of(Result.FAILED, kit, null, "failed");
         } finally {
             claiming.remove(id);
@@ -571,7 +571,7 @@ public final class KitService {
         } catch (Refusal refusal) {
             return Outcome.of(Result.REFUSED, kit, status(giver, kit), refusal.getMessage());
         } catch (RuntimeException failure) {
-            NexusLog.warn(LogTopic.KITS, Tr.t("Cadeau du kit ") + kit.id() + Tr.t(" impossible pour ") + giver.getName(), failure);
+            PluginLog.warn(LogTopic.KITS, Tr.t("Cadeau du kit ") + kit.id() + Tr.t(" impossible pour ") + giver.getName(), failure);
             return Outcome.of(Result.FAILED, kit, null, "failed");
         } finally {
             claiming.remove(id);
@@ -735,7 +735,7 @@ public final class KitService {
                 animator.accept(new Claimed(player, kit, List.copyOf(delivery.items().subList(0,
                         Math.min(PREVIEW_LIMIT, delivery.items().size()))), levelAfter));
             } catch (RuntimeException failure) {
-                NexusLog.warn(LogTopic.KITS, Tr.t("Animation du kit ") + kit.id() + Tr.t(" impossible"), failure);
+                PluginLog.warn(LogTopic.KITS, Tr.t("Animation du kit ") + kit.id() + Tr.t(" impossible"), failure);
             }
         }
         String detail = plain(kit) + (source == Source.MENU || source == Source.COMMAND ? ""

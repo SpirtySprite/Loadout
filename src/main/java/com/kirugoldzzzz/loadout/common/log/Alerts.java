@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
-public final class NexusAlerts {
+public final class Alerts {
 
     public static final String ALL = "loadout.alerts";
 
@@ -25,7 +25,7 @@ public final class NexusAlerts {
     private static final Map<String, Long> LAST = new ConcurrentHashMap<>();
     private static volatile Predicate<UUID> listening = ignored -> true;
 
-    private NexusAlerts() {
+    private Alerts() {
     }
 
     public static void listening(Predicate<UUID> filter) {
@@ -71,7 +71,7 @@ public final class NexusAlerts {
     }
 
     static void dispatch(StaffAlert alert) {
-        NexusLog.write(alert.severity().level(), alert.topic(), alert.console(), alert.cause());
+        PluginLog.write(alert.severity().level(), alert.topic(), alert.console(), alert.cause());
         Server server = Bukkit.getServer();
         if (server == null || !admit(alert.throttleKey(), alert.throttleMillis(), alert.at())) {
             return;
@@ -90,7 +90,7 @@ public final class NexusAlerts {
                 player.sendMessage(rendered.computeIfAbsent(key.toString(), ignored -> alert.render(player::hasPermission)));
             }
         } catch (RuntimeException failure) {
-            NexusLog.warn(LogTopic.GENERAL, Tr.t("Diffusion d'une alerte impossible"), failure);
+            PluginLog.warn(LogTopic.GENERAL, Tr.t("Diffusion d'une alerte impossible"), failure);
         }
     }
 }

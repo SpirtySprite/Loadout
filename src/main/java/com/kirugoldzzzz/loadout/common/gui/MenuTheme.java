@@ -11,9 +11,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-final class NexusGuiTheme {
+final class MenuTheme {
 
-    private NexusGuiTheme() {
+    private MenuTheme() {
     }
 
     static GuiTheme create() {

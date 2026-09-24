@@ -175,7 +175,7 @@ public final class Guis {
     }
 
     public static void installTheme() {
-        com.foliagui.FoliaGUI.theme(NexusGuiTheme.create());
+        com.foliagui.FoliaGUI.theme(MenuTheme.create());
     }
 
     public static void controls(PaginatedGui gui) {
