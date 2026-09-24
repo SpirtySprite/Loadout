@@ -105,6 +105,7 @@ public final class Loadout extends JavaPlugin {
         ConfigFile settings = new ConfigFile(this, "config.yml").load();
         Tr.configure(this, settings.get().getString("language", "en"));
         Palette.apply(settings.get().getConfigurationSection("theme"));
+        KitPoints.configure(settings.get().getConfigurationSection("points"), settings.get().getConfigurationSection("teams"));
         new ConfigFile(this, "lang/messages_fr.yml").load();
         Messages.load(new ConfigFile(this, Tr.messagesFile(this)).load().get());
         return settings;

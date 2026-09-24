@@ -57,6 +57,8 @@ public final class Palette {
                 Placeholder.unparsed("pipe", PIPE),
                 Placeholder.unparsed("check", CHECK),
                 Placeholder.unparsed("cross", CROSS),
+                TagResolver.resolver("points", (arguments, context) ->
+                        Tag.selfClosingInserting(net.kyori.adventure.text.Component.text(com.kirugoldzzzz.loadout.KitPoints.label()))),
                 Placeholder.parsed("brand", "<" + GRADIENT_BRAND + "><b>Loadout</b></gradient>"));
     }
 

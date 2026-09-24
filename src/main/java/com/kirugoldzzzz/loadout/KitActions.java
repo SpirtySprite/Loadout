@@ -110,7 +110,7 @@ public final class KitActions {
             card.money(Tr.t("Prix"), cost.money());
         }
         if (cost.shards() > 0L) {
-            card.stat(Card.STAR, Tr.t("Fragments"), Numbers.count(cost.shards()));
+            card.stat(Card.STAR, KitPoints.label(), Numbers.count(cost.shards()));
         }
         if (cost.levels() > 0) {
             card.stat(Card.STAR, Tr.t("Niveaux"), String.valueOf(cost.levels()));

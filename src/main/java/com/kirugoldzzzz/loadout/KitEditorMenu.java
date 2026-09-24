@@ -349,7 +349,7 @@ public final class KitEditorMenu {
             lines.add(Palette.TEXT + Tr.t("Argent : ") + Numbers.money(rewards.money()));
         }
         if (rewards.shards() > 0L) {
-            lines.add(Palette.TEXT + Tr.t("Fragments : ") + rewards.shards());
+            lines.add(Palette.TEXT + KitPoints.label() + " : " + rewards.shards());
         }
         if (rewards.levels() > 0) {
             lines.add(Palette.TEXT + Tr.t("Niveaux : ") + rewards.levels());
@@ -391,7 +391,7 @@ public final class KitEditorMenu {
             lines.add(Palette.TEXT + Tr.t("Argent : ") + Numbers.money(cost.money()));
         }
         if (cost.shards() > 0L) {
-            lines.add(Palette.TEXT + Tr.t("Fragments : ") + cost.shards());
+            lines.add(Palette.TEXT + KitPoints.label() + " : " + cost.shards());
         }
         if (cost.levels() > 0) {
             lines.add(Palette.TEXT + Tr.t("Niveaux : ") + cost.levels());
@@ -650,9 +650,9 @@ public final class KitEditorMenu {
                     editor.setCostMoney(id, 0.0D);
                     reopen.run();
                 }));
-        gui.setItem(2, 5, cleared(Material.AMETHYST_SHARD, Tr.t("Fragments"), Numbers.count(kit.cost().shards()),
-                Tr.t("Fragments du Rift retirés"),
-                viewer -> KitPrompts.integer(viewer, Tr.t("Fragments"), 1, Integer.MAX_VALUE,
+        gui.setItem(2, 5, cleared(Material.AMETHYST_SHARD, KitPoints.label(), Numbers.count(kit.cost().shards()),
+                Tr.t("Retirés à chaque récupération"),
+                viewer -> KitPrompts.integer(viewer, KitPoints.label(), 1, Integer.MAX_VALUE,
                         value -> editor.setCostShards(id, value), reopen),
                 viewer -> {
                     editor.setCostShards(id, 0L);
@@ -687,9 +687,9 @@ public final class KitEditorMenu {
                     editor.setRewardMoney(id, 0.0D);
                     reopen.run();
                 }));
-        gui.setItem(2, 3, cleared(Material.AMETHYST_CLUSTER, Tr.t("Fragments"), Numbers.count(rewards.shards()),
-                Tr.t("Fragments du Rift offerts"),
-                viewer -> KitPrompts.integer(viewer, Tr.t("Fragments"), 1, Integer.MAX_VALUE,
+        gui.setItem(2, 3, cleared(Material.AMETHYST_CLUSTER, KitPoints.label(), Numbers.count(rewards.shards()),
+                Tr.t("Offerts à chaque récupération"),
+                viewer -> KitPrompts.integer(viewer, KitPoints.label(), 1, Integer.MAX_VALUE,
                         value -> editor.setRewardShards(id, value), reopen),
                 viewer -> {
                     editor.setRewardShards(id, 0L);

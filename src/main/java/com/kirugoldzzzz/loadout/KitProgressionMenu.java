@@ -223,12 +223,12 @@ public final class KitProgressionMenu {
             String key = root + "." + count;
             Card card = Card.of(KitStyle.HEX).tag(title).blank()
                     .money(Tr.t("Argent"), rewards.money())
-                    .count(Card.STAR, Tr.t("Fragments"), rewards.shards())
+                    .count(Card.STAR, KitPoints.label(), rewards.shards())
                     .count(Card.STAR, Tr.t("Niveaux"), rewards.levels())
                     .count(Card.FLAG, Tr.t("Commandes"), rewards.commands().size())
                     .blank()
                     .click(Tr.t("Clic gauche"), Tr.t("argent"))
-                    .click(Tr.t("Clic droit"), Tr.t("fragments"))
+                    .click(Tr.t("Clic droit"), KitPoints.label())
                     .click(Tr.t("Shift clic gauche"), Tr.t("niveaux"))
                     .click(Tr.t("Touche 1"), Tr.t("commandes"))
                     .click(Tr.t("Touche 2"), Tr.t("lignes affichées"))
@@ -242,7 +242,7 @@ public final class KitProgressionMenu {
                         editor.setPath(key, null, title + " " + count);
                         reopen.run();
                     }
-                    case RIGHT -> KitPrompts.integer(viewer, Tr.t("Fragments"), 0, Integer.MAX_VALUE,
+                    case RIGHT -> KitPrompts.integer(viewer, KitPoints.label(), 0, Integer.MAX_VALUE,
                             value -> editor.setPath(key + ".shards", value <= 0 ? null : value, title), reopen);
                     case SHIFT_LEFT -> KitPrompts.integer(viewer, Tr.t("Niveaux"), 0, 10_000,
                             value -> editor.setPath(key + ".levels", value <= 0 ? null : value, title), reopen);

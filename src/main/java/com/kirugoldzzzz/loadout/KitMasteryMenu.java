@@ -99,7 +99,7 @@ public final class KitMasteryMenu {
             card.stat(Card.TIME, Tr.t("Recharge"), "-" + tier.cooldownReduction() + "%");
         }
         if (tier.bonus() > 0) {
-            card.stat(Card.MONEY, Tr.t("Argent, fragments, niveaux"), "+" + tier.bonus() + "%");
+            card.stat(Card.MONEY, Tr.t("Argent, points, niveaux"), "+" + tier.bonus() + "%");
         }
         if (tier.extraRolls() > 0) {
             card.stat(Card.CHANCE, Tr.t("Tirages aléatoires"), "+" + tier.extraRolls());
@@ -118,7 +118,7 @@ public final class KitMasteryMenu {
                 card.money(Tr.t("Prix"), tier.upgrade().money());
             }
             if (tier.upgrade().shards() > 0L) {
-                card.stat(Card.STAR, Tr.t("Fragments"), Numbers.count(tier.upgrade().shards()));
+                card.stat(Card.STAR, KitPoints.label(), Numbers.count(tier.upgrade().shards()));
             }
             if (tier.upgrade().levels() > 0) {
                 card.stat(Card.STAR, Tr.t("Niveaux"), String.valueOf(tier.upgrade().levels()));

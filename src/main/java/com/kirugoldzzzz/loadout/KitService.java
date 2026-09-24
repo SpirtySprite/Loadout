@@ -112,7 +112,7 @@ public final class KitService {
     private volatile KitCatalog catalog = KitCatalog.EMPTY;
     private volatile Consumer<Claimed> animator = ignored -> {
     };
-    private volatile Function<UUID, UUID> teams = ignored -> null;
+    private final Map<UUID, UUID> knownTeams = new ConcurrentHashMap<>();
     private volatile ScheduledTask reminderTask;
     private int ticks;
 
@@ -136,10 +136,6 @@ public final class KitService {
     public void animator(Consumer<Claimed> value) {
         animator = value == null ? ignored -> {
         } : value;
-    }
-
-    public void teams(Function<UUID, UUID> lookup) {
-        teams = lookup == null ? ignored -> null : lookup;
     }
 
     public KitCatalog catalog() {
@@ -185,10 +181,11 @@ public final class KitService {
         } catch (RuntimeException unavailable) {
             ticksPlayed = 0L;
         }
-        UUID team = teams.apply(player.getUniqueId());
+        UUID team = teamOf(player);
         return new KitViewer(player.getUniqueId(), player::hasPermission, ticksPlayed * MILLIS_PER_TICK,
-                economy.balance(player.getUniqueId()), 0L, player.getLevel(),
-                player.getWorld().getName(), team, statistic -> statistic(player, statistic));
+                economy.balance(player.getUniqueId()), KitPoints.balance(player), player.getLevel(),
+                player.getWorld().getName(), team, statistic -> statistic(player, statistic),
+                raw -> KitPoints.placeholder(player, raw));
     }
 
     static long statistic(Player player, KitStatistic statistic) {
@@ -587,7 +584,7 @@ public final class KitService {
 
     private void pay(Player player, KitCost cost) {
         UUID id = player.getUniqueId();
-        if (cost.shards() > 0L) {
+        if (cost.shards() > 0L && (!KitPoints.enabled() || KitPoints.balance(player) < cost.shards())) {
             throw new Refusal("shards");
         }
         if (cost.levels() > 0 && player.getLevel() < cost.levels()) {
@@ -595,6 +592,10 @@ public final class KitService {
         }
         if (cost.money() > 0.0D && !economy.withdraw(id, cost.money())) {
             throw new Refusal("money");
+        }
+        if (cost.shards() > 0L) {
+            KitPoints.take(player, cost.shards());
+            repository.watch(() -> KitPoints.give(player, cost.shards()));
         }
         if (cost.levels() > 0) {
             int level = player.getLevel();
@@ -612,6 +613,10 @@ public final class KitService {
         double money = Numbers.round(rewards.money() * percent / 100.0D);
         if (money > 0.0D && !economy.deposit(id, money)) {
             throw new Refusal("balance-full");
+        }
+        long points = rewards.shards() * percent / 100L;
+        if (points > 0L) {
+            KitPoints.give(player, points);
         }
         int levels = (int) Math.min(Integer.MAX_VALUE, (long) rewards.levels() * percent / 100L);
         if (levels > 0) {
@@ -754,8 +759,18 @@ public final class KitService {
         if (!kit.options().team()) {
             return player.getUniqueId();
         }
-        UUID team = teams.apply(player.getUniqueId());
+        UUID team = teamOf(player);
         return team == null ? player.getUniqueId() : team;
+    }
+
+    private UUID teamOf(Player player) {
+        UUID team = KitPoints.team(player);
+        if (team == null) {
+            knownTeams.remove(player.getUniqueId());
+        } else {
+            knownTeams.put(player.getUniqueId(), team);
+        }
+        return team;
     }
 
     private void effects(Player player, KitRewards rewards, Kit kit) {
@@ -818,7 +833,7 @@ public final class KitService {
             parts.add(Numbers.money(cost.money()));
         }
         if (cost.shards() > 0L) {
-            parts.add(Numbers.count(cost.shards()) + Tr.t(" fragments"));
+            parts.add(Numbers.count(cost.shards()) + " " + KitPoints.label());
         }
         if (cost.levels() > 0) {
             parts.add(cost.levels() + Tr.t(" niveaux"));
@@ -938,7 +953,7 @@ public final class KitService {
         for (KitClaim claim : claims.values()) {
             catalog.kit(claim.kit()).ifPresent(kit -> planReminder(player, player, kit));
         }
-        UUID team = teams.apply(player);
+        UUID team = knownTeams.get(player);
         if (team != null) {
             for (KitClaim claim : repository.claimsOf(team).values()) {
                 catalog.kit(claim.kit()).filter(kit -> kit.options().team())

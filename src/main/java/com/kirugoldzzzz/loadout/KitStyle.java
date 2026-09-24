@@ -174,7 +174,7 @@ public final class KitStyle {
             card.money(Tr.t("Argent"), rewards.money());
         }
         if (rewards.shards() > 0L) {
-            card.stat(Card.STAR, Tr.t("Fragments"), Numbers.count(rewards.shards()));
+            card.stat(Card.STAR, KitPoints.label(), Numbers.count(rewards.shards()));
         }
         if (rewards.levels() > 0) {
             card.stat(Card.STAR, Tr.t("Niveaux"), "+" + rewards.levels());

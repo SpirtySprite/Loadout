@@ -320,7 +320,7 @@ public final class KitEditor {
     }
 
     public void setCostShards(String id, long shards) {
-        set(id, "cost.shards", shards <= 0L ? null : shards, Tr.t("prix en fragments"));
+        set(id, "cost.shards", shards <= 0L ? null : shards, Tr.t("prix en ") + KitPoints.label());
     }
 
     public void setCostLevels(String id, int levels) {
@@ -443,7 +443,7 @@ public final class KitEditor {
     }
 
     public void setRewardShards(String id, long shards) {
-        set(id, "rewards.shards", shards <= 0L ? null : shards, Tr.t("fragments offerts"));
+        set(id, "rewards.shards", shards <= 0L ? null : shards, KitPoints.label() + Tr.t(" offerts"));
     }
 
     public void setRewardLevels(String id, int levels) {

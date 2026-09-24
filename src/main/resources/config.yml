@@ -3,3 +3,10 @@ update-checker: true
 theme:
   primary: "#8FBF7F"
   secondary: "#E5C07B"
+points:
+  name: "Points"
+  balance: ""
+  take: "points take {player} {amount}"
+  give: "points give {player} {amount}"
+teams:
+  placeholder: ""
